@@ -169,7 +169,6 @@ function App() {
         <AnimatedDivider />
         <ProductGrid products={products} />
       </main>
-      <Footer />
     </div>
   );
 }

@@ -16,6 +16,10 @@ import AllProductsPage from "./pages/allProduct.jsx";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { CartProvider } from "./pages/contexts/cartContext.jsx";
+import Dashboard from "./components/dashboard/dashboard.jsx";
+import ProductsPage from "./components/dashboard/productsPage.jsx";
+import CustomersPage from "./components/dashboard/customerComponent.jsx";
+import AnalyticsPage from "./components/dashboard/analyricsComponnetn.jsx";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -23,7 +27,7 @@ root.render(
     <BrowserRouter>
       <CartProvider>
         <div className="min-h-screen bg-gray-100 dark:bg-gray-900 transition-colors duration-300">
-          <Header />
+          {/* <Header /> */}
           <Routes>
             <Route path="/" element={<App />} />
             <Route path="/products/:id" element={<ProductPage />} />
@@ -32,6 +36,11 @@ root.render(
             <Route path="/orders" element={<OrdersPage />} />
             <Route path="/search" element={<SearchPage />} />
             <Route path="/all-products" element={<AllProductsPage />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/productsDash" element={<ProductsPage />} />
+            <Route path="/ordersDash" element={<OrdersPage />} />
+            <Route path="/customers" element={<CustomersPage />} />
+            <Route path="/analytics" element={<AnalyticsPage />} />
           </Routes>
           <Footer />
           <ToastContainer />

@@ -1,29 +1,38 @@
-// import React, { useState, useEffect, createContext, useContext } from "react";
+import React, { useState, useEffect } from 'react';
+import { Sun, Moon } from 'lucide-react';
+import { motion } from 'framer-motion';
 
-// const ThemeContext = createContext();
+const ThemeToggle = () => {
+    const [isDarkMode, setIsDarkMode] = useState(false);
 
-// export const ThemeProvider = ({ children }) => {
-//     const [theme, setTheme] = useState(() => {
-//         const storedTheme = localStorage.getItem("theme");
-//         if (storedTheme) return storedTheme;
-//         // Default to system preference
-//         return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-//     });
+    useEffect(() => {
+        const isDark = localStorage.getItem('theme') === 'dark';
+        setIsDarkMode(isDark);
+        document.documentElement.classList.toggle('dark', isDark);
+    }, []);
 
-//     useEffect(() => {
-//         document.documentElement.className = theme;
-//         localStorage.setItem("theme", theme);
-//     }, [theme]);
+    const toggleTheme = () => {
+        const newTheme = isDarkMode ? 'light' : 'dark';
+        setIsDarkMode(!isDarkMode);
+        localStorage.setItem('theme', newTheme);
+        document.documentElement.classList.toggle('dark');
+    };
 
-//     const toggleTheme = () => {
-//         setTheme((prevTheme) => (prevTheme === "dark" ? "light" : "dark"));
-//     };
+    return (
+        <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={toggleTheme}
+            className="p-2 rounded-full bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 transition-colors duration-200"
+            aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
+        >
+            {isDarkMode ? (
+                <Sun className="w-5 h-5" />
+            ) : (
+                <Moon className="w-5 h-5" />
+            )}
+        </motion.button>
+    );
+};
 
-//     return (
-//         <ThemeContext.Provider value={{ theme, setTheme, toggleTheme }}>
-//             {children}
-//         </ThemeContext.Provider>
-//     );
-// };
-
-// export const useTheme = () => useContext(ThemeContext);
+export default ThemeToggle;

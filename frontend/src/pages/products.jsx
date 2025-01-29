@@ -4,13 +4,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import { getProduct } from "../App.js";
 import { Button } from "../components/ui/button.jsx";
 import Header from "../components/Header.jsx";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useCart } from "../pages/contexts/cartContext.jsx";
 import "react-toastify/dist/ReactToastify.css";
-// import Image from "react-image";
+
 export default function ProductPage() {
     const { id } = useParams();
-    // const history = useHistory();
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
     const [quantity, setQuantity] = useState(1);
@@ -23,8 +22,6 @@ export default function ProductPage() {
             const fetchedProduct = getProduct(Number(id));
             if (fetchedProduct) {
                 setProduct(fetchedProduct);
-            } else {
-                // history.push("/404");
             }
             setLoading(false);
         };
@@ -33,11 +30,19 @@ export default function ProductPage() {
     }, [id]);
 
     if (loading) {
-        return <div>Loading...</div>;
+        return (
+            <div className="min-h-screen bg-white dark:bg-gray-900 flex items-center justify-center">
+                <div className="text-gray-900 dark:text-gray-100">Loading...</div>
+            </div>
+        );
     }
 
     if (!product) {
-        return <div>Product not found</div>;
+        return (
+            <div className="min-h-screen bg-white dark:bg-gray-900 flex items-center justify-center">
+                <div className="text-gray-900 dark:text-gray-100">Product not found</div>
+            </div>
+        );
     }
 
     const nextImage = () => {
@@ -60,7 +65,7 @@ export default function ProductPage() {
     };
 
     return (
-        <div className="min-h-screen bg-white dark:bg-gray-900">
+        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
             <Header />
             <main className="container mx-auto px-4 pt-24 pb-12">
                 <motion.div
@@ -71,8 +76,13 @@ export default function ProductPage() {
                 >
                     <div className="grid md:grid-cols-2 gap-8 lg:gap-16">
                         {/* Product Images */}
-                        <motion.div initial={{ x: -50 }} animate={{ x: 0 }} transition={{ duration: 0.6 }} className="space-y-4">
-                            <div className="relative aspect-square overflow-hidden rounded-lg border border-gray-200 dark:border-gray-800">
+                        <motion.div
+                            initial={{ x: -50 }}
+                            animate={{ x: 0 }}
+                            transition={{ duration: 0.6 }}
+                            className="space-y-4 bg-white dark:bg-gray-800 p-4 rounded-lg shadow-lg"
+                        >
+                            <div className="relative aspect-square overflow-hidden rounded-lg border border-gray-200 dark:border-gray-700">
                                 <AnimatePresence mode="wait">
                                     <motion.div
                                         key={currentImageIndex}
@@ -85,7 +95,7 @@ export default function ProductPage() {
                                         <img
                                             src={product.images[currentImageIndex] || "/placeholder.svg"}
                                             alt={product.name}
-                                            className="rounded-lg"
+                                            className="w-full h-full object-cover rounded-lg"
                                         />
                                     </motion.div>
                                 </AnimatePresence>
@@ -95,17 +105,17 @@ export default function ProductPage() {
                                             whileHover={{ scale: 1.1 }}
                                             whileTap={{ scale: 0.9 }}
                                             onClick={prevImage}
-                                            className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white/80 dark:bg-gray-800/80 rounded-full p-2 hover:bg-white dark:hover:bg-gray-800 transition-colors"
+                                            className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white/80 dark:bg-gray-800/80 rounded-full p-2 hover:bg-white dark:hover:bg-gray-700 transition-colors"
                                         >
-                                            <ChevronLeft className="w-6 h-6" />
+                                            <ChevronLeft className="w-6 h-6 text-gray-900 dark:text-gray-100" />
                                         </motion.button>
                                         <motion.button
                                             whileHover={{ scale: 1.1 }}
                                             whileTap={{ scale: 0.9 }}
                                             onClick={nextImage}
-                                            className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white/80 dark:bg-gray-800/80 rounded-full p-2 hover:bg-white dark:hover:bg-gray-800 transition-colors"
+                                            className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white/80 dark:bg-gray-800/80 rounded-full p-2 hover:bg-white dark:hover:bg-gray-700 transition-colors"
                                         >
-                                            <ChevronRight className="w-6 h-6" />
+                                            <ChevronRight className="w-6 h-6 text-gray-900 dark:text-gray-100" />
                                         </motion.button>
                                     </>
                                 )}
@@ -118,14 +128,14 @@ export default function ProductPage() {
                                         whileTap={{ scale: 0.95 }}
                                         onClick={() => setCurrentImageIndex(index)}
                                         className={`relative w-20 h-20 flex-shrink-0 rounded-md overflow-hidden border-2 transition-colors ${index === currentImageIndex
-                                            ? "border-pink-500"
-                                            : "border-gray-200 dark:border-gray-800 hover:border-pink-300"
+                                                ? "border-pink-500"
+                                                : "border-gray-200 dark:border-gray-700 hover:border-pink-300"
                                             }`}
                                     >
                                         <img
                                             src={image || "/placeholder.svg"}
                                             alt={`${product.name} - View ${index + 1}`}
-                                            className="rounded-lg"
+                                            className="w-full h-full object-cover rounded-lg"
                                         />
                                     </motion.button>
                                 ))}
@@ -137,15 +147,19 @@ export default function ProductPage() {
                             initial={{ x: 50, opacity: 0 }}
                             animate={{ x: 0, opacity: 1 }}
                             transition={{ duration: 0.6 }}
-                            className="space-y-6"
+                            className="space-y-6 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg"
                         >
                             <motion.div
                                 initial={{ y: 20, opacity: 0 }}
                                 animate={{ y: 0, opacity: 1 }}
                                 transition={{ duration: 0.6, delay: 0.2 }}
                             >
-                                <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">{product.name}</h1>
-                                <p className="mt-4 text-lg text-gray-600 dark:text-gray-300">{product.description}</p>
+                                <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+                                    {product.name}
+                                </h1>
+                                <p className="text-lg text-gray-600 dark:text-gray-300">
+                                    {product.description}
+                                </p>
                             </motion.div>
 
                             <motion.div
@@ -164,52 +178,51 @@ export default function ProductPage() {
                                 className="space-y-4"
                             >
                                 <div className="flex items-center space-x-4">
-                                    <label htmlFor="quantity" className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
                                         Quantity:
                                     </label>
                                     <div className="flex items-center">
                                         <button
-                                            type="button"
                                             onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                                            className="w-10 h-10 flex items-center justify-center rounded-l-md border border-r-0 border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none"
-                                            aria-label="Decrease quantity"
+                                            className="w-10 h-10 flex items-center justify-center rounded-l-md border border-r-0 border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
                                         >
-                                            <span className="text-xl font-bold">−</span>
+                                            −
                                         </button>
                                         <input
                                             type="number"
-                                            id="quantity"
-                                            min="1"
                                             value={quantity}
-                                            onChange={(e) => setQuantity(Math.max(1, Number(e.target.value)))}
-                                            className="w-16 text-center border-y border-gray-300 dark:border-gray-700 py-2 px-3 text-gray-900 dark:text-gray-100 dark:bg-gray-800 focus:outline-none focus:ring-1 focus:ring-pink-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                            onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
+                                            className="w-16 text-center border-y border-gray-300 dark:border-gray-600 py-2 text-gray-900 dark:text-gray-100 bg-gray-50 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-pink-500"
+                                            min="1"
                                         />
                                         <button
-                                            type="button"
                                             onClick={() => setQuantity(quantity + 1)}
-                                            className="w-10 h-10 flex items-center justify-center rounded-r-md border border-l-0 border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none"
-                                            aria-label="Increase quantity"
+                                            className="w-10 h-10 flex items-center justify-center rounded-r-md border border-l-0 border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
                                         >
-                                            <span className="text-xl font-bold">+</span>
+                                            +
                                         </button>
                                     </div>
                                 </div>
 
                                 <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                                    <Button onClick={handleAddToCart} size="lg" className="w-full">
+                                    <Button
+                                        onClick={handleAddToCart}
+                                        className="w-full bg-pink-600 hover:bg-pink-700 text-white transition-colors"
+                                    >
                                         Add to Cart
                                     </Button>
                                 </motion.div>
                             </motion.div>
 
-                            {/* Product Details */}
                             <motion.div
                                 initial={{ y: 20, opacity: 0 }}
                                 animate={{ y: 0, opacity: 1 }}
                                 transition={{ duration: 0.6, delay: 0.6 }}
-                                className="space-y-4 pt-6"
+                                className="space-y-4 pt-6 border-t border-gray-200 dark:border-gray-700"
                             >
-                                <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Product Details:</h3>
+                                <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                                    Product Details:
+                                </h3>
                                 <div className="space-y-2 text-gray-600 dark:text-gray-300">
                                     <p>
                                         <span className="font-medium">Category:</span> {product.category}

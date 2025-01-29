@@ -1,23 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { Link } from "react-router-dom";
-import {
-  ShoppingBag,
-  Search,
-  Menu,
-  User,
-  X,
-  ChevronDown,
-  Ruler,
-  Weight,
-  Scissors,
-  Palette,
-  Sparkles,
-  Heart,
-  Droplet,
-  Home,
-} from "lucide-react";
+import { ShoppingBag, Search, Menu, User, X, ChevronDown, Ruler, Weight, Scissors, Palette, Sparkles, Heart, Droplet, Home } from 'lucide-react';
 import { useCart } from "../pages/contexts/cartContext";
+import ThemeToggle from "./themeProvider.jsx";
 
 const categories = [
   {
@@ -216,6 +202,7 @@ const Header = () => {
                   </Link>
                 </motion.div>
               ))}
+              <ThemeToggle />
             </div>
           </div>
         </div>
