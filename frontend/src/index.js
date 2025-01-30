@@ -20,6 +20,10 @@ import Dashboard from "./components/dashboard/dashboard.jsx";
 import ProductsPage from "./components/dashboard/productsPage.jsx";
 import CustomersPage from "./components/dashboard/customerComponent.jsx";
 import AnalyticsPage from "./components/dashboard/analyricsComponnetn.jsx";
+import SignIn from "./components/auth/signIn.jsx";
+import SignUp from "./components/auth/signUp.jsx";
+import Verify from "./components/auth/verify.jsx";
+import SignUpSuccess from "./components/auth/signUpSuccess.jsx";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -30,6 +34,10 @@ root.render(
           {/* <Header /> */}
           <Routes>
             <Route path="/" element={<App />} />
+            <Route path="/signin" element={<SignIn />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/verify" element={<Verify />} />
+            <Route path="/signup-success" element={<SignUpSuccess />} />
             <Route path="/products/:id" element={<ProductPage />} />
             <Route path="/cart" element={<CartPage />} />
             <Route path="/checkout" element={<CheckoutPage />} />

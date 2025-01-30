@@ -1,0 +1,132 @@
+    @import "tailwindcss/base";
+    @import "tailwindcss/components";
+    @import "tailwindcss/utilities";
+
+    :root {
+    --color-main: #ffffff;
+    --color-secondary: #e5ddd3;
+    --color-tertiary: #d1c9bf;
+    --color-mix: #e5ddd3;
+    --color-button: #402e20;
+    --color-text-light: #8f8f8f;
+    }
+
+    @layer components {
+    .glass-morphism {
+        @apply bg-secondary bg-opacity-70 shadow-lg backdrop-blur-sm border border-tertiary border-opacity-30;
+    }
+
+    .modern-input {
+        @apply w-full px-4 py-3 bg-transparent border-b-2 border-tertiary focus:border-button focus:outline-none transition-all duration-300 ease-in-out;
+    }
+
+    .auth-container {
+        @apply min-h-screen flex items-center justify-center p-4 sm:p-6 md:p-8;
+    }
+
+    .auth-card {
+        @apply w-full max-w-4xl glass-morphism rounded-3xl overflow-hidden shadow-2xl;
+    }
+
+    .auth-card-content {
+        @apply flex flex-col md:flex-row min-h-[600px] md:min-h-0;
+    }
+
+    .auth-card-left {
+        @apply w-full md:w-1/2 p-6 sm:p-8 md:p-12 flex flex-col justify-center text-center md:text-left;
+    }
+
+    .auth-card-right {
+        @apply w-full md:w-1/2 p-6 sm:p-8 md:p-12 flex flex-col;
+    }
+
+    .auth-title {
+        @apply text-3xl sm:text-4xl font-bold mb-4 sm:mb-6;
+    }
+
+    .auth-subtitle {
+        @apply text-base sm:text-lg mb-6 sm:mb-8;
+    }
+
+    .auth-icon-container {
+        @apply flex justify-center md:justify-start space-x-4;
+    }
+
+    .auth-icon {
+        @apply w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center transition-transform hover:scale-110;
+    }
+
+    .auth-form {
+        @apply space-y-4 sm:space-y-6;
+    }
+
+    .auth-input-container {
+        @apply relative;
+    }
+
+    .auth-input {
+        @apply modern-input text-base sm:text-lg;
+    }
+
+    .auth-input-icon {
+        @apply absolute right-3 top-1/2 -translate-y-1/2 text-tertiary text-lg sm:text-xl;
+    }
+
+    .auth-button {
+        @apply w-full bg-button text-white rounded-full px-4 py-3 sm:py-4 font-semibold 
+            hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-button focus:ring-offset-2 
+            transition duration-200 flex items-center justify-center text-base sm:text-lg
+            active:scale-95 transform;
+    }
+
+    .auth-link {
+        @apply text-sm sm:text-base text-button hover:text-opacity-80 transition-colors;
+    }
+    }
+
+    @layer utilities {
+    .text-button {
+        color: var(--color-button);
+    }
+
+    .bg-button {
+        background-color: var(--color-button);
+    }
+
+    .text-tertiary {
+        color: var(--color-tertiary);
+    }
+
+    .bg-secondary {
+        background-color: var(--color-secondary);
+    }
+
+    .border-tertiary {
+        border-color: var(--color-tertiary);
+    }
+
+    .bg-mix {
+        background-color: var(--color-mix);
+    }
+    }
+
+    /* Custom scrollbar for mobile */
+    @media (max-width: 768px) {
+    .auth-card {
+        @apply max-h-[90vh] overflow-y-auto;
+    }
+
+    .auth-card::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    .auth-card::-webkit-scrollbar-track {
+        background: var(--color-secondary);
+    }
+
+    .auth-card::-webkit-scrollbar-thumb {
+        background: var(--color-tertiary);
+        border-radius: 4px;
+    }
+    }
+
