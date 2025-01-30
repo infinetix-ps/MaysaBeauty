@@ -1,5 +1,6 @@
 import React from "react"
 import { Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts"
+import { motion } from "framer-motion"
 
 const data = [
     {
@@ -46,22 +47,37 @@ const data = [
 
 export const Overview = () => {
     return (
-        <ResponsiveContainer width="100%" height={350}>
-            <LineChart data={data}>
-                <XAxis dataKey="name" stroke="#888888" fontSize={12} tickLine={false} axisLine={false} />
-                <YAxis
-                    stroke="#888888"
-                    fontSize={12}
-                    tickLine={false}
-                    axisLine={false}
-                    tickFormatter={(value) => `$${value}`}
-                />
-                <Tooltip />
-                <Line type="monotone" dataKey="revenue" stroke="#8884d8" strokeWidth={2} />
-                <Line type="monotone" dataKey="dresses" stroke="#82ca9d" strokeWidth={2} />
-                <Line type="monotone" dataKey="accessories" stroke="#ffc658" strokeWidth={2} />
-            </LineChart>
-        </ResponsiveContainer>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+            <ResponsiveContainer width="100%" height={350}>
+                <LineChart data={data}>
+                    <XAxis dataKey="name" stroke="#888888" fontSize={12} tickLine={false} axisLine={false} />
+                    <YAxis
+                        stroke="#888888"
+                        fontSize={12}
+                        tickLine={false}
+                        axisLine={false}
+                        tickFormatter={(value) => `$${value}`}
+                    />
+                    <Tooltip
+                        contentStyle={{
+                            backgroundColor: "rgba(255, 255, 255, 0.8)",
+                            border: "1px solid #ccc",
+                            borderRadius: "4px",
+                        }}
+                    />
+                    <Line
+                        type="monotone"
+                        dataKey="revenue"
+                        stroke="#8884d8"
+                        strokeWidth={2}
+                        dot={{ fill: "#8884d8" }}
+                        activeDot={{ r: 8 }}
+                    />
+                    <Line type="monotone" dataKey="dresses" stroke="#82ca9d" strokeWidth={2} dot={{ fill: "#82ca9d" }} />
+                    <Line type="monotone" dataKey="accessories" stroke="#ffc658" strokeWidth={2} dot={{ fill: "#ffc658" }} />
+                </LineChart>
+            </ResponsiveContainer>
+        </motion.div>
     )
 }
 

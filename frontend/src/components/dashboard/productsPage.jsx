@@ -1,6 +1,6 @@
-import React, { useState, useCallback } from "react"
+import { useState, useCallback } from "react"
 import { Link } from "react-router-dom"
-import { Card, CardContent, CardHeader, CardTitle } from "../uiDashboard/card.jsx"
+import { Card, CardContent } from "../uiDashboard/card.jsx"
 import { Input } from "../uiDashboard/input.jsx"
 import { Label } from "../ui/label.jsx"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../uiDashboard/tabs.jsx"
@@ -63,7 +63,7 @@ const initialProducts = [
 
 const ProductCard = ({ product, onEdit, onDelete }) => {
     return (
-        <Card className="h-full">
+        <Card className="h-full bg-white border border-gray-200 shadow-md hover:shadow-lg transition-shadow duration-300">
             <CardContent className="p-4">
                 <div className="grid gap-2">
                     <div className="flex gap-2 overflow-x-auto pb-2">
@@ -73,31 +73,31 @@ const ProductCard = ({ product, onEdit, onDelete }) => {
                                     key={index}
                                     src={photo || "/placeholder.svg"}
                                     alt={`${product.name} ${index + 1}`}
-                                    className="h-20 w-20 rounded-md object-cover"
+                                    className="h-20 w-20 rounded-md object-cover border border-gray-200"
                                 />
                             ))
                         ) : (
-                            <div className="h-20 w-20 rounded-md bg-muted" />
+                            <div className="h-20 w-20 rounded-md bg-gray-100" />
                         )}
                     </div>
                     <div className="flex items-start justify-between">
                         <div>
-                            <h3 className="font-semibold">{product.name}</h3>
-                            <p className="text-sm text-muted-foreground">${product.price.toFixed(2)}</p>
+                            <h3 className="font-semibold text-gray-900">{product.name}</h3>
+                            <p className="text-sm text-gray-600">${product.price.toFixed(2)}</p>
                         </div>
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
-                                <Button variant="ghost" size="icon">
+                                <Button variant="ghost" size="icon" className="text-gray-500 hover:text-gray-700">
                                     <MoreHorizontal className="h-4 w-4" />
                                 </Button>
                             </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end">
-                                <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                                <DropdownMenuItem onClick={() => onEdit(product)}>
+                            <DropdownMenuContent align="end" className="bg-white border border-gray-200">
+                                <DropdownMenuLabel className="text-gray-700">Actions</DropdownMenuLabel>
+                                <DropdownMenuItem onClick={() => onEdit(product)} className="text-gray-700 hover:bg-gray-100">
                                     <Pencil className="mr-2 h-4 w-4" />
                                     Edit
                                 </DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => onDelete(product.id)} className="text-red-600">
+                                <DropdownMenuItem onClick={() => onDelete(product.id)} className="text-red-600 hover:bg-red-50">
                                     <Trash2 className="mr-2 h-4 w-4" />
                                     Delete
                                 </DropdownMenuItem>
@@ -105,17 +105,19 @@ const ProductCard = ({ product, onEdit, onDelete }) => {
                         </DropdownMenu>
                     </div>
                     <div className="flex items-center gap-2">
-                        <Badge variant="outline">{product.category}</Badge>
+                        <Badge variant="outline" className="bg-gray-100 text-gray-800 border-gray-200">
+                            {product.category}
+                        </Badge>
                         <Badge
                             variant={
                                 product.status === "In Stock" ? "default" : product.status === "Low Stock" ? "warning" : "destructive"
                             }
-                            className={product.status === "Low Stock" ? "bg-yellow-100 text-yellow-800 hover:bg-yellow-100/80" : ""}
+                            className={getStatusClassName(product.status)}
                         >
                             {product.status}
                         </Badge>
                     </div>
-                    <p className="text-sm text-muted-foreground">Stock: {product.stock}</p>
+                    <p className="text-sm text-gray-600">Stock: {product.stock}</p>
                 </div>
             </CardContent>
         </Card>
@@ -124,94 +126,87 @@ const ProductCard = ({ product, onEdit, onDelete }) => {
 
 const ProductTable = ({ products, onEdit, onDelete }) => {
     return (
-        <div className="hidden md:block">
-            <Card>
-                <CardHeader>
-                    <CardTitle>Products</CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <Table>
-                        <TableHeader>
-                            <TableRow>
-                                <TableHead>Name</TableHead>
-                                <TableHead>Category</TableHead>
-                                <TableHead>Price</TableHead>
-                                <TableHead>Stock</TableHead>
-                                <TableHead>Status</TableHead>
-                                <TableHead>Photos</TableHead>
-                                <TableHead>Actions</TableHead>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            {products.map((product) => (
-                                <TableRow key={product.id}>
-                                    <TableCell>{product.name}</TableCell>
-                                    <TableCell>
-                                        <Badge variant="outline">{product.category}</Badge>
-                                    </TableCell>
-                                    <TableCell>${product.price.toFixed(2)}</TableCell>
-                                    <TableCell>{product.stock}</TableCell>
-                                    <TableCell>
-                                        <Badge
-                                            variant={
-                                                product.status === "In Stock"
-                                                    ? "default"
-                                                    : product.status === "Low Stock"
-                                                        ? "warning"
-                                                        : "destructive"
-                                            }
-                                            className={
-                                                product.status === "Low Stock" ? "bg-yellow-100 text-yellow-800 hover:bg-yellow-100/80" : ""
-                                            }
-                                        >
-                                            {product.status}
-                                        </Badge>
-                                    </TableCell>
-                                    <TableCell>
-                                        <div className="flex gap-1">
-                                            {product.photos.map((photo, index) => (
-                                                <img
-                                                    key={index}
-                                                    src={photo || "/placeholder.svg"}
-                                                    alt={`Product ${index + 1}`}
-                                                    className="h-10 w-10 rounded-md object-cover"
-                                                />
-                                            ))}
-                                        </div>
-                                    </TableCell>
-                                    <TableCell>
-                                        <DropdownMenu>
-                                            <DropdownMenuTrigger asChild>
-                                                <Button variant="ghost" size="icon">
-                                                    <MoreHorizontal className="h-4 w-4" />
-                                                </Button>
-                                            </DropdownMenuTrigger>
-                                            <DropdownMenuContent align="end">
-                                                <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                                                <DropdownMenuItem onClick={() => onEdit(product)}>
-                                                    <Pencil className="mr-2 h-4 w-4" />
-                                                    Edit
-                                                </DropdownMenuItem>
-                                                <DropdownMenuItem onClick={() => onDelete(product.id)} className="text-red-600">
-                                                    <Trash2 className="mr-2 h-4 w-4" />
-                                                    Delete
-                                                </DropdownMenuItem>
-                                            </DropdownMenuContent>
-                                        </DropdownMenu>
-                                    </TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </CardContent>
-            </Card>
+        <div className="hidden lg:block overflow-x-auto">
+            <Table>
+                <TableHeader>
+                    <TableRow className="bg-gray-50">
+                        <TableHead className="text-gray-700">Name</TableHead>
+                        <TableHead className="text-gray-700">Category</TableHead>
+                        <TableHead className="text-gray-700">Price</TableHead>
+                        <TableHead className="text-gray-700">Stock</TableHead>
+                        <TableHead className="text-gray-700">Status</TableHead>
+                        <TableHead className="text-gray-700">Photos</TableHead>
+                        <TableHead className="text-gray-700">Actions</TableHead>
+                    </TableRow>
+                </TableHeader>
+                <TableBody>
+                    {products.map((product) => (
+                        <TableRow key={product.id} className="hover:bg-gray-50">
+                            <TableCell className="font-medium text-gray-900">{product.name}</TableCell>
+                            <TableCell>
+                                <Badge variant="outline" className="bg-gray-100 text-gray-800 border-gray-200">
+                                    {product.category}
+                                </Badge>
+                            </TableCell>
+                            <TableCell>${product.price.toFixed(2)}</TableCell>
+                            <TableCell>{product.stock}</TableCell>
+                            <TableCell>
+                                <Badge
+                                    variant={
+                                        product.status === "In Stock"
+                                            ? "default"
+                                            : product.status === "Low Stock"
+                                                ? "warning"
+                                                : "destructive"
+                                    }
+                                    className={getStatusClassName(product.status)}
+                                >
+                                    {product.status}
+                                </Badge>
+                            </TableCell>
+                            <TableCell>
+                                <div className="flex gap-1">
+                                    {product.photos.map((photo, index) => (
+                                        <img
+                                            key={index}
+                                            src={photo || "/placeholder.svg"}
+                                            alt={`Product ${index + 1}`}
+                                            className="h-10 w-10 rounded-md object-cover border border-gray-200"
+                                        />
+                                    ))}
+                                </div>
+                            </TableCell>
+                            <TableCell>
+                                <DropdownMenu>
+                                    <DropdownMenuTrigger asChild>
+                                        <Button variant="ghost" size="icon" className="text-gray-500 hover:text-gray-700">
+                                            <MoreHorizontal className="h-4 w-4" />
+                                        </Button>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent align="end" className="bg-white border border-gray-200">
+                                        <DropdownMenuLabel className="text-gray-700">Actions</DropdownMenuLabel>
+                                        <DropdownMenuItem onClick={() => onEdit(product)} className="text-gray-700 hover:bg-gray-100">
+                                            <Pencil className="mr-2 h-4 w-4" />
+                                            Edit
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem onClick={() => onDelete(product.id)} className="text-red-600 hover:bg-red-50">
+                                            <Trash2 className="mr-2 h-4 w-4" />
+                                            Delete
+                                        </DropdownMenuItem>
+                                    </DropdownMenuContent>
+                                </DropdownMenu>
+                            </TableCell>
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
         </div>
     )
 }
 
 const ProductGrid = ({ products, onEdit, onDelete }) => {
     return (
-        <div className="grid grid-cols-1 gap-4 md:hidden">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:hidden gap-4">
             {products.map((product) => (
                 <ProductCard key={product.id} product={product} onEdit={onEdit} onDelete={onDelete} />
             ))}
@@ -277,7 +272,7 @@ const ProductsPage = () => {
         setEditDialogOpen(true)
     }
 
-    const handleEditProductOld = () => {
+    const handleUpdateProduct = () => {
         if (editingProduct) {
             const updatedStatus =
                 editingProduct.stock > 10 ? "In Stock" : editingProduct.stock > 0 ? "Low Stock" : "Out of Stock"
@@ -309,129 +304,166 @@ const ProductsPage = () => {
     }
 
     return (
-        <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
-            <div className="flex items-center justify-between">
+        <div className="flex-1 space-y-4 p-4 md:p-8 pt-6 bg-white">
+            <div className="flex flex-col md:flex-row items-center justify-between space-y-2 md:space-y-0">
                 <div className="flex items-center space-x-2">
                     <Link to="/dashboard">
-                        <Button variant="outline" size="icon">
+                        <Button variant="outline" size="icon" className="border-gray-200 hover:bg-gray-100 hover:text-gray-900">
                             <ArrowLeft className="h-4 w-4" />
                         </Button>
                     </Link>
-                    <h2 className="text-3xl font-bold tracking-tight">Products</h2>
+                    <h2 className="text-3xl font-bold tracking-tight text-gray-900">Products</h2>
                 </div>
-                <div className="flex flex-col gap-4 md:flex-row md:items-center">
-                    <div className="relative">
-                        <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                <div className="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
+                    <div className="relative flex-grow sm:flex-grow-0">
+                        <Search className="absolute left-2 top-2.5 h-4 w-4 text-gray-500" />
                         <Input
                             placeholder="Search products..."
-                            className="pl-8"
+                            className="pl-8 w-full sm:w-[300px] border-gray-200 focus:border-gray-900 bg-white"
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
                     </div>
                     <Dialog>
                         <DialogTrigger asChild>
-                            <Button className="w-full md:w-auto">
+                            <Button className="bg-black hover:bg-gray-800 text-white w-full sm:w-auto">
                                 <PlusCircle className="mr-2 h-4 w-4" />
                                 Add Product
                             </Button>
                         </DialogTrigger>
-                        <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-[625px]">
-                            <DialogHeader>
-                                <DialogTitle>Add New Product</DialogTitle>
-                                <DialogDescription>
-                                    Enter the details of the new product here. Click save when you're done.
+                        <DialogContent className="max-w-4xl bg-white border-2 border-gray-200">
+                            <DialogHeader className="border-b border-gray-200 pb-4">
+                                <DialogTitle className="text-2xl font-bold tracking-tight text-black">Add New Product</DialogTitle>
+                                <DialogDescription className="text-base text-gray-600">
+                                    Fill in the product details below. All fields marked with <span className="text-red-500">*</span> are
+                                    required.
                                 </DialogDescription>
                             </DialogHeader>
-                            <div className="grid gap-4 py-4">
-                                <div className="grid grid-cols-4 items-center gap-4">
-                                    <Label htmlFor="name" className="text-right">
-                                        Name
-                                    </Label>
-                                    <Input
-                                        id="name"
-                                        value={newProduct.name}
-                                        onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
-                                        className="col-span-3"
-                                    />
-                                </div>
-                                <div className="grid grid-cols-4 items-center gap-4">
-                                    <Label htmlFor="category" className="text-right">
-                                        Category
-                                    </Label>
-                                    <Select onValueChange={(value) => setNewProduct({ ...newProduct, category: value })}>
-                                        <SelectTrigger className="col-span-3">
-                                            <SelectValue placeholder="Select a category" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="Dresses">Dresses</SelectItem>
-                                            <SelectItem value="Tops">Tops</SelectItem>
-                                            <SelectItem value="Bottoms">Bottoms</SelectItem>
-                                            <SelectItem value="Accessories">Accessories</SelectItem>
-                                            <SelectItem value="Shoes">Shoes</SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                </div>
-                                <div className="grid grid-cols-4 items-center gap-4">
-                                    <Label htmlFor="price" className="text-right">
-                                        Price
-                                    </Label>
-                                    <Input
-                                        id="price"
-                                        type="number"
-                                        value={newProduct.price}
-                                        onChange={(e) => setNewProduct({ ...newProduct, price: Number.parseFloat(e.target.value) })}
-                                        className="col-span-3"
-                                    />
-                                </div>
-                                <div className="grid grid-cols-4 items-center gap-4">
-                                    <Label htmlFor="stock" className="text-right">
-                                        Stock
-                                    </Label>
-                                    <Input
-                                        id="stock"
-                                        type="number"
-                                        value={newProduct.stock}
-                                        onChange={(e) => setNewProduct({ ...newProduct, stock: Number.parseInt(e.target.value) })}
-                                        className="col-span-3"
-                                    />
-                                </div>
-                                <div className="grid grid-cols-4 items-center gap-4">
-                                    <Label className="text-right">Photos</Label>
-                                    <div className="col-span-3">
-                                        <div
-                                            {...getRootProps()}
-                                            className="border-2 border-dashed rounded-md p-4 text-center cursor-pointer"
-                                        >
-                                            <input {...getInputProps()} />
-                                            {isDragActive ? (
-                                                <p>Drop the files here ...</p>
-                                            ) : (
-                                                <p>Drag 'n' drop up to 4 product photos here, or click to select files</p>
-                                            )}
+                            <div className="grid gap-6 py-4">
+                                <div className="grid gap-6 md:grid-cols-2">
+                                    <div className="space-y-4">
+                                        <div className="space-y-2">
+                                            <Label htmlFor="name" className="text-sm font-medium text-gray-700">
+                                                Product Name <span className="text-red-500">*</span>
+                                            </Label>
+                                            <Input
+                                                id="name"
+                                                placeholder="Enter product name"
+                                                value={newProduct.name}
+                                                onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
+                                                className="border-gray-200 focus:border-black focus:ring-black"
+                                            />
                                         </div>
-                                        <div className="mt-4 flex flex-wrap gap-2">
-                                            {newProduct.photos.map((photo, index) => (
-                                                <div key={index} className="relative">
-                                                    <img
-                                                        src={photo || "/placeholder.svg"}
-                                                        alt={`Product ${index + 1}`}
-                                                        className="w-20 h-20 object-cover rounded"
-                                                    />
-                                                    <button
-                                                        onClick={() => removePhoto(index)}
-                                                        className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1"
-                                                    >
-                                                        <X size={12} />
-                                                    </button>
+                                        <div className="space-y-2">
+                                            <Label htmlFor="category" className="text-sm font-medium text-gray-700">
+                                                Category <span className="text-red-500">*</span>
+                                            </Label>
+                                            <Select onValueChange={(value) => setNewProduct({ ...newProduct, category: value })}>
+                                                <SelectTrigger className="border-gray-200 focus:border-black focus:ring-black">
+                                                    <SelectValue placeholder="Select a category" />
+                                                </SelectTrigger>
+                                                <SelectContent className="bg-white border border-gray-200">
+                                                    <SelectItem value="Dresses" className="text-gray-700 hover:bg-gray-100">
+                                                        Dresses
+                                                    </SelectItem>
+                                                    <SelectItem value="Tops" className="text-gray-700 hover:bg-gray-100">
+                                                        Tops
+                                                    </SelectItem>
+                                                    <SelectItem value="Bottoms" className="text-gray-700 hover:bg-gray-100">
+                                                        Bottoms
+                                                    </SelectItem>
+                                                    <SelectItem value="Accessories" className="text-gray-700 hover:bg-gray-100">
+                                                        Accessories
+                                                    </SelectItem>
+                                                    <SelectItem value="Shoes" className="text-gray-700 hover:bg-gray-100">
+                                                        Shoes
+                                                    </SelectItem>
+                                                </SelectContent>
+                                            </Select>
+                                        </div>
+                                        <div className="grid gap-4 sm:grid-cols-2">
+                                            <div className="space-y-2">
+                                                <Label htmlFor="price" className="text-sm font-medium text-gray-700">
+                                                    Price ($) <span className="text-red-500">*</span>
+                                                </Label>
+                                                <Input
+                                                    id="price"
+                                                    type="number"
+                                                    placeholder="0.00"
+                                                    value={newProduct.price}
+                                                    onChange={(e) => setNewProduct({ ...newProduct, price: Number.parseFloat(e.target.value) })}
+                                                    className="border-gray-200 focus:border-black focus:ring-black"
+                                                />
+                                            </div>
+                                            <div className="space-y-2">
+                                                <Label htmlFor="stock" className="text-sm font-medium text-gray-700">
+                                                    Stock <span className="text-red-500">*</span>
+                                                </Label>
+                                                <Input
+                                                    id="stock"
+                                                    type="number"
+                                                    placeholder="0"
+                                                    value={newProduct.stock}
+                                                    onChange={(e) => setNewProduct({ ...newProduct, stock: Number.parseInt(e.target.value) })}
+                                                    className="border-gray-200 focus:border-black focus:ring-black"
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="space-y-4">
+                                        <div className="space-y-2">
+                                            <Label className="text-sm font-medium text-gray-700">Product Photos</Label>
+                                            <div
+                                                {...getRootProps()}
+                                                className="border-2 border-dashed border-gray-200 rounded-lg p-6 hover:bg-gray-50 transition-colors duration-200 cursor-pointer"
+                                            >
+                                                <input {...getInputProps()} />
+                                                <div className="flex flex-col items-center gap-2 text-center">
+                                                    <div className="rounded-full bg-gray-100 p-3">
+                                                        <PlusCircle className="h-6 w-6 text-gray-600" />
+                                                    </div>
+                                                    <div className="space-y-1">
+                                                        <p className="text-sm font-medium text-gray-900">Upload product photos</p>
+                                                        <p className="text-xs text-gray-500">Drag and drop up to 4 photos, or click to browse</p>
+                                                    </div>
                                                 </div>
-                                            ))}
+                                            </div>
+                                            {newProduct.photos.length > 0 && (
+                                                <div className="grid grid-cols-2 gap-4 mt-4">
+                                                    {newProduct.photos.map((photo, index) => (
+                                                        <div key={index} className="relative group">
+                                                            <img
+                                                                src={photo || "/placeholder.svg"}
+                                                                alt={`Product ${index + 1}`}
+                                                                className="w-full aspect-square object-cover rounded-lg border-2 border-gray-200"
+                                                            />
+                                                            <button
+                                                                onClick={() => removePhoto(index)}
+                                                                className="absolute top-2 right-2 p-1 rounded-full bg-white/80 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:bg-red-50"
+                                                            >
+                                                                <X className="h-4 w-4 text-red-500" />
+                                                            </button>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <DialogFooter>
-                                <Button type="submit" onClick={handleAddProduct} className="w-full md:w-auto">
+                            <DialogFooter className="border-t border-gray-200 pt-4">
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    onClick={() => {
+                                        setNewProduct({ name: "", category: "", price: 0, stock: 0, photos: [] })
+                                        document.querySelector('[role="dialog"]')?.closest("button")?.click()
+                                    }}
+                                    className="border-gray-200 hover:bg-gray-50"
+                                >
+                                    Cancel
+                                </Button>
+                                <Button type="submit" onClick={handleAddProduct} className="bg-black hover:bg-gray-800 text-white ml-2">
                                     Save Product
                                 </Button>
                             </DialogFooter>
@@ -441,12 +473,37 @@ const ProductsPage = () => {
             </div>
             <Tabs defaultValue="all" className="space-y-4">
                 <ScrollArea className="w-full whitespace-nowrap">
-                    <TabsList>
-                        <TabsTrigger value="all">All Products</TabsTrigger>
-                        <TabsTrigger value="dresses">Dresses</TabsTrigger>
-                        <TabsTrigger value="tops">Tops</TabsTrigger>
-                        <TabsTrigger value="bottoms">Bottoms</TabsTrigger>
-                        <TabsTrigger value="accessories">Accessories</TabsTrigger>
+                    <TabsList className="border-b border-gray-200 bg-transparent p-0">
+                        <TabsTrigger
+                            value="all"
+                            className="px-4 py-2 text-gray-600 data-[state=active]:text-gray-900 data-[state=active]:border-b-2 data-[state=active]:border-gray-900"
+                        >
+                            All Products
+                        </TabsTrigger>
+                        <TabsTrigger
+                            value="dresses"
+                            className="px-4 py-2 text-gray-600 data-[state=active]:text-gray-900 data-[state=active]:border-b-2 data-[state=active]:border-gray-900"
+                        >
+                            Dresses
+                        </TabsTrigger>
+                        <TabsTrigger
+                            value="tops"
+                            className="px-4 py-2 text-gray-600 data-[state=active]:text-gray-900 data-[state=active]:border-b-2 data-[state=active]:border-gray-900"
+                        >
+                            Tops
+                        </TabsTrigger>
+                        <TabsTrigger
+                            value="bottoms"
+                            className="px-4 py-2 text-gray-600 data-[state=active]:text-gray-900 data-[state=active]:border-b-2 data-[state=active]:border-gray-900"
+                        >
+                            Bottoms
+                        </TabsTrigger>
+                        <TabsTrigger
+                            value="accessories"
+                            className="px-4 py-2 text-gray-600 data-[state=active]:text-gray-900 data-[state=active]:border-b-2 data-[state=active]:border-gray-900"
+                        >
+                            Accessories
+                        </TabsTrigger>
                     </TabsList>
                     <ScrollBar orientation="horizontal" />
                 </ScrollArea>
@@ -505,10 +562,12 @@ const ProductsPage = () => {
                 </TabsContent>
             </Tabs>
             <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
-                <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-[625px]">
+                <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-[625px] bg-white">
                     <DialogHeader>
-                        <DialogTitle>Edit Product</DialogTitle>
-                        <DialogDescription>Make changes to the product here. Click save when you're done.</DialogDescription>
+                        <DialogTitle className="text-xl font-semibold text-black">Edit Product</DialogTitle>
+                        <DialogDescription className="text-gray-500">
+                            Make changes to the product here. Click save when you're done.
+                        </DialogDescription>
                     </DialogHeader>
                     {editingProduct && (
                         <div className="grid gap-4 py-4">
@@ -570,7 +629,7 @@ const ProductsPage = () => {
                         </div>
                     )}
                     <DialogFooter>
-                        <Button type="submit" onClick={handleEditProductOld}>
+                        <Button type="submit" onClick={handleUpdateProduct} className="bg-black hover:bg-gray-800 text-white">
                             Save Changes
                         </Button>
                     </DialogFooter>
@@ -578,6 +637,19 @@ const ProductsPage = () => {
             </Dialog>
         </div>
     )
+}
+
+function getStatusClassName(status) {
+    switch (status) {
+        case "In Stock":
+            return "bg-green-50 text-green-700 border-green-200"
+        case "Low Stock":
+            return "bg-yellow-50 text-yellow-700 border-yellow-200"
+        case "Out of Stock":
+            return "bg-red-50 text-red-700 border-red-200"
+        default:
+            return "bg-gray-100 text-gray-800 border-gray-200"
+    }
 }
 
 export default ProductsPage

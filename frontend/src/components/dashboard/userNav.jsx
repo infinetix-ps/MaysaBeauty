@@ -1,4 +1,3 @@
-import React from "react"
 import { Avatar, AvatarFallback, AvatarImage } from "../uiDashboard/avatar.jsx"
 import { Button } from "../uiDashboard/button.jsx"
 import {
@@ -19,15 +18,15 @@ export const UserNav = () => {
                 <Button variant="ghost" className="relative h-8 w-8 rounded-full" aria-label="Open user menu">
                     <Avatar className="h-8 w-8">
                         <AvatarImage src="/placeholder.svg?height=32&width=32" alt="User avatar" />
-                        <AvatarFallback>SC</AvatarFallback>
+                        <AvatarFallback>LD</AvatarFallback>
                     </Avatar>
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56" align="end" forceMount>
                 <DropdownMenuLabel className="font-normal">
                     <div className="flex flex-col space-y-1">
-                        <p className="text-sm font-medium leading-none">shadcn</p>
-                        <p className="text-xs leading-none text-muted-foreground">m@example.com</p>
+                        <p className="text-sm font-medium leading-none">LittleDiva Admin</p>
+                        <p className="text-xs leading-none text-muted-foreground">admin@littlediva.com</p>
                     </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
@@ -55,3 +54,4 @@ export const UserNav = () => {
         </DropdownMenu>
     )
 }
+

@@ -128,8 +128,8 @@ export default function ProductPage() {
                                         whileTap={{ scale: 0.95 }}
                                         onClick={() => setCurrentImageIndex(index)}
                                         className={`relative w-20 h-20 flex-shrink-0 rounded-md overflow-hidden border-2 transition-colors ${index === currentImageIndex
-                                                ? "border-pink-500"
-                                                : "border-gray-200 dark:border-gray-700 hover:border-pink-300"
+                                            ? "border-pink-500"
+                                            : "border-gray-200 dark:border-gray-700 hover:border-pink-300"
                                             }`}
                                     >
                                         <img

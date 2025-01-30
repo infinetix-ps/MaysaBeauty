@@ -8,30 +8,54 @@ import { AgeGroupDistribution } from "./ageGroupDistribution.jsx"
 import { SeasonalTrends } from "./seasonalTrends"
 import { Button } from "../uiDashboard/button.jsx"
 import { ArrowLeft } from "lucide-react"
+import { motion } from "framer-motion"
 
 const AnalyticsPage = () => {
     return (
-        <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
-            <div className="flex items-center justify-between space-y-2">
+        <motion.div
+            className="flex-1 space-y-4 p-4 md:p-8 pt-6 bg-gradient-to-b from-blue-50 via-indigo-50 to-purple-50"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+        >
+            <motion.div
+                className="flex items-center justify-between space-y-2"
+                initial={{ y: -20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.5 }}
+            >
                 <div className="flex items-center space-x-2">
                     <Link to="/dashboard">
-                        <Button variant="outline" size="icon">
+                        <Button variant="outline" size="icon" className="bg-white hover:bg-blue-100">
                             <ArrowLeft className="h-4 w-4" />
                         </Button>
                     </Link>
-                    <h2 className="text-3xl font-bold tracking-tight">Analytics</h2>
+                    <h2 className="text-3xl font-bold tracking-tight text-blue-800">Analytics</h2>
                 </div>
-            </div>
+            </motion.div>
             <Tabs defaultValue="overview" className="space-y-4">
-                <TabsList>
-                    <TabsTrigger value="overview">Overview</TabsTrigger>
-                    <TabsTrigger value="sales">Sales</TabsTrigger>
-                    <TabsTrigger value="customers">Customers</TabsTrigger>
-                    <TabsTrigger value="products">Products</TabsTrigger>
+                <TabsList className="bg-white">
+                    <TabsTrigger value="overview" className="data-[state=active]:bg-blue-100">
+                        Overview
+                    </TabsTrigger>
+                    <TabsTrigger value="sales" className="data-[state=active]:bg-blue-100">
+                        Sales
+                    </TabsTrigger>
+                    <TabsTrigger value="customers" className="data-[state=active]:bg-blue-100">
+                        Customers
+                    </TabsTrigger>
+                    <TabsTrigger value="products" className="data-[state=active]:bg-blue-100">
+                        Products
+                    </TabsTrigger>
                 </TabsList>
                 <TabsContent value="overview" className="space-y-4">
-                    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-                        <Card>
+                    <motion.div
+                        className="grid gap-4 md:grid-cols-2 lg:grid-cols-4"
+                        initial={{ y: 20, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        transition={{ duration: 0.5, delay: 0.2 }}
+                    >
+                        <Card className="bg-gradient-to-br from-blue-400 to-indigo-300 text-white">
                             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                                 <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
                                 <svg
@@ -42,17 +66,17 @@ const AnalyticsPage = () => {
                                     strokeLinecap="round"
                                     strokeLinejoin="round"
                                     strokeWidth="2"
-                                    className="h-4 w-4 text-muted-foreground"
+                                    className="h-4 w-4 text-white"
                                 >
                                     <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
                                 </svg>
                             </CardHeader>
                             <CardContent>
                                 <div className="text-2xl font-bold">$45,231.89</div>
-                                <p className="text-xs text-muted-foreground">+20.1% from last month</p>
+                                <p className="text-xs text-blue-100">+20.1% from last month</p>
                             </CardContent>
                         </Card>
-                        <Card>
+                        <Card className="bg-gradient-to-br from-indigo-400 to-purple-300 text-white">
                             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                                 <CardTitle className="text-sm font-medium">Sales</CardTitle>
                                 <svg
@@ -63,7 +87,7 @@ const AnalyticsPage = () => {
                                     strokeLinecap="round"
                                     strokeLinejoin="round"
                                     strokeWidth="2"
-                                    className="h-4 w-4 text-muted-foreground"
+                                    className="h-4 w-4 text-white"
                                 >
                                     <rect width="20" height="14" x="2" y="5" rx="2" />
                                     <path d="M2 10h20" />
@@ -71,10 +95,10 @@ const AnalyticsPage = () => {
                             </CardHeader>
                             <CardContent>
                                 <div className="text-2xl font-bold">+1,234</div>
-                                <p className="text-xs text-muted-foreground">+19% from last month</p>
+                                <p className="text-xs text-indigo-100">+19% from last month</p>
                             </CardContent>
                         </Card>
-                        <Card>
+                        <Card className="bg-gradient-to-br from-purple-400 to-pink-300 text-white">
                             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                                 <CardTitle className="text-sm font-medium">Active Customers</CardTitle>
                                 <svg
@@ -85,7 +109,7 @@ const AnalyticsPage = () => {
                                     strokeLinecap="round"
                                     strokeLinejoin="round"
                                     strokeWidth="2"
-                                    className="h-4 w-4 text-muted-foreground"
+                                    className="h-4 w-4 text-white"
                                 >
                                     <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
                                     <circle cx="9" cy="7" r="4" />
@@ -94,10 +118,10 @@ const AnalyticsPage = () => {
                             </CardHeader>
                             <CardContent>
                                 <div className="text-2xl font-bold">+573</div>
-                                <p className="text-xs text-muted-foreground">+201 since last hour</p>
+                                <p className="text-xs text-purple-100">+201 since last hour</p>
                             </CardContent>
                         </Card>
-                        <Card>
+                        <Card className="bg-gradient-to-br from-pink-400 to-red-300 text-white">
                             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                                 <CardTitle className="text-sm font-medium">Inventory Status</CardTitle>
                                 <svg
@@ -108,18 +132,23 @@ const AnalyticsPage = () => {
                                     strokeLinecap="round"
                                     strokeLinejoin="round"
                                     strokeWidth="2"
-                                    className="h-4 w-4 text-muted-foreground"
+                                    className="h-4 w-4 text-white"
                                 >
                                     <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
                                 </svg>
                             </CardHeader>
                             <CardContent>
                                 <div className="text-2xl font-bold">86.3%</div>
-                                <p className="text-xs text-muted-foreground">+4.1% from last week</p>
+                                <p className="text-xs text-pink-100">+4.1% from last week</p>
                             </CardContent>
                         </Card>
-                    </div>
-                    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
+                    </motion.div>
+                    <motion.div
+                        className="grid gap-4 md:grid-cols-2 lg:grid-cols-7"
+                        initial={{ y: 20, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        transition={{ duration: 0.5, delay: 0.4 }}
+                    >
                         <Card className="col-span-4">
                             <CardHeader>
                                 <CardTitle>Overview</CardTitle>
@@ -136,7 +165,7 @@ const AnalyticsPage = () => {
                                 <RecentSales />
                             </CardContent>
                         </Card>
-                    </div>
+                    </motion.div>
                 </TabsContent>
                 <TabsContent value="sales" className="space-y-4">
                     <Card>
@@ -159,7 +188,7 @@ const AnalyticsPage = () => {
                     </Card>
                 </TabsContent>
             </Tabs>
-        </div>
+        </motion.div>
     )
 }
 

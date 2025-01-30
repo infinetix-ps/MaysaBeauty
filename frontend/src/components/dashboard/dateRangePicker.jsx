@@ -1,18 +1,17 @@
-import React, { useState } from "react"
-import { CalendarIcon } from "@radix-ui/react-icons"
-import { addDays, format } from "date-fns"
-// import { DateRange } from "react-day-picker"
-import { cn } from "../../lib/utils.ts"
-import { Button } from "../uiDashboard/button.jsx"
 import { Calendar } from "../ui/calender.jsx"
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover.jsx"
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
+import { Button } from "../uiDashboard/button"
+import { format } from "date-fns"
+import { CalendarIcon } from "lucide-react"
+import { motion } from "framer-motion"
+import { clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
 
-export const CalendarDateRangePicker = ({ className }) => {
-    const [date, setDate] = useState({
-        from: new Date(2023, 0, 20),
-        to: addDays(new Date(2023, 0, 20), 20),
-    })
+function cn(...inputs) {
+    return twMerge(clsx(inputs));
+}
 
+export const CalendarDateRangePicker = ({ className, date, onSelect }) => {
     return (
         <div className={cn("grid gap-2", className)}>
             <Popover>
@@ -37,14 +36,21 @@ export const CalendarDateRangePicker = ({ className }) => {
                     </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0" align="end">
-                    <Calendar
-                        initialFocus
-                        mode="range"
-                        defaultMonth={date?.from}
-                        selected={date}
-                        onSelect={setDate}
-                        numberOfMonths={2}
-                    />
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.2 }}
+                    >
+                        <Calendar
+                            initialFocus
+                            mode="range"
+                            defaultMonth={date?.from}
+                            selected={date}
+                            onSelect={onSelect}
+                            numberOfMonths={2}
+                            className="rounded-md border"
+                        />
+                    </motion.div>
                 </PopoverContent>
             </Popover>
         </div>
