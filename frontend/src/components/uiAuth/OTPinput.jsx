@@ -1,5 +1,4 @@
 import { useMemo } from "react"
-
 const RE_DIGIT = new RegExp(/^\d+$/)
 
 function OtpInput({ value, valueLength, onChange }) {
@@ -115,7 +114,7 @@ function OtpInput({ value, valueLength, onChange }) {
                     autoComplete="one-time-code"
                     pattern="\d{1}"
                     maxLength={valueLength}
-                    className="w-12 h-12 text-center text-2xl font-bold border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+                    className="w-12 h-12 text-center text-2xl font-bold text-text border border-tertiary rounded-lg focus:outline-none focus:ring-2 focus:ring-button focus:border-transparent bg-white"
                     value={digit}
                     onChange={(e) => inputOnChange(e, idx)}
                     onKeyDown={inputOnKeyDown}

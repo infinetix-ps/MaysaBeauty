@@ -52,77 +52,71 @@ function SignIn() {
         <div className="auth-container">
             <div className="auth-card">
                 <div className="auth-card-content">
-                    <div className="auth-card-left bg-black text-white">
-                        <h2 className="auth-title">Welcome Back!</h2>
-                        <p className="auth-subtitle">Sign in to access your account and continue shopping.</p>
+                    <div className="auth-card-left bg-secondary">
+                        <h2 className="auth-title text-button">Welcome Back!</h2>
+                        <p className="auth-subtitle text-button">Sign in to access your account and continue shopping.</p>
                         <div className="auth-icon-container">
-                            <div className="auth-icon bg-white">
-                                <i className="fas fa-user text-black text-xl"></i>
+                            <div className="auth-icon bg-main">
+                                <i className="fas fa-user text-button text-xl"></i>
                             </div>
-                            <div className="auth-icon bg-white">
-                                <i className="fas fa-envelope text-black text-xl"></i>
+                            <div className="auth-icon bg-main">
+                                <i className="fas fa-envelope text-button text-xl"></i>
                             </div>
-                            <div className="auth-icon bg-white">
-                                <i className="fas fa-lock text-black text-xl"></i>
+                            <div className="auth-icon bg-main">
+                                <i className="fas fa-lock text-button text-xl"></i>
                             </div>
                         </div>
                     </div>
-                    <div className="auth-card-right">
+                    <div className="auth-card-right bg-main">
                         <StepIndicator steps={["Credentials", "Authenticated"]} currentStep={0} />
-                        <h1 className="auth-title text-gray-800">Sign In</h1>
+                        <h1 className="auth-title text-button">Sign In</h1>
                         <form onSubmit={handleSubmit} className="auth-form">
                             <div>
-                                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                                    Email Address
-                                </label>
                                 <div className="auth-input-container">
                                     <input
                                         id="email"
                                         type="email"
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
-                                        className={`auth-input ${errors.email ? "border-red-500" : "border-gray-300"}`}
-                                        placeholder="you@example.com"
+                                        className="auth-input text-tertiary"
+                                        placeholder="Email Address"
                                         required
                                     />
                                     <i className="fas fa-envelope auth-input-icon"></i>
                                 </div>
-                                {errors.email && <p className="mt-2 text-sm text-red-600">{errors.email}</p>}
+                                {errors.email && <p className="mt-2 text-sm text-red-600 break-words">{errors.email}</p>}
                             </div>
                             <div>
-                                <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-                                    Password
-                                </label>
                                 <div className="auth-input-container">
                                     <input
                                         id="password"
                                         type="password"
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
-                                        className={`auth-input ${errors.password ? "border-red-500" : "border-gray-300"}`}
-                                        placeholder="••••••••"
+                                        className="auth-input text-tertiary"
+                                        placeholder="Password"
                                         required
                                     />
                                     <i className="fas fa-lock auth-input-icon"></i>
                                 </div>
-                                {errors.password && <p className="mt-2 text-sm text-red-600">{errors.password}</p>}
+                                {errors.password && <p className="mt-2 text-sm text-red-600 break-words">{errors.password}</p>}
                             </div>
-                            <div className="flex items-center justify-between">
+                            <div className="flex items-center justify-between mb-4">
                                 <div className="flex items-center">
                                     <input
                                         id="remember-me"
                                         name="remember-me"
                                         type="checkbox"
-                                        className="h-4 w-4 text-black focus:ring-black border-gray-300 rounded"
+                                        className="h-4 w-4 text-button focus:ring-button border-tertiary rounded"
                                     />
-                                    <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
+                                    <label htmlFor="remember-me" className="ml-2 block text-sm text-button">
                                         Remember me
                                     </label>
                                 </div>
                                 <div className="text-sm">
-                                    <a href="#" className="font-medium text-black hover:text-gray-800">
+                                    <Link to="/forgot-password" className="font-medium text-button hover:text-opacity-80">
                                         Forgot your password?
-                                    </a>
+                                    </Link>
                                 </div>
                             </div>
                             <button type="submit" className="auth-button">
@@ -142,3 +136,4 @@ function SignIn() {
 }
 
 export default SignIn
+

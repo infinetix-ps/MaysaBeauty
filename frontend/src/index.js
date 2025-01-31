@@ -24,6 +24,8 @@ import SignIn from "./components/auth/signIn.jsx";
 import SignUp from "./components/auth/signUp.jsx";
 import Verify from "./components/auth/verify.jsx";
 import SignUpSuccess from "./components/auth/signUpSuccess.jsx";
+import ForgotPassword from "./components/auth/forgetPassword.jsx";
+import ResetPassword from "./components/auth/resetPassword.jsx";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -38,6 +40,10 @@ root.render(
             <Route path="/signup" element={<SignUp />} />
             <Route path="/verify" element={<Verify />} />
             <Route path="/signup-success" element={<SignUpSuccess />} />
+
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
+            
             <Route path="/products/:id" element={<ProductPage />} />
             <Route path="/cart" element={<CartPage />} />
             <Route path="/checkout" element={<CheckoutPage />} />
