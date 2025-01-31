@@ -26,6 +26,7 @@ import Verify from "./components/auth/verify.jsx";
 import SignUpSuccess from "./components/auth/signUpSuccess.jsx";
 import ForgotPassword from "./components/auth/forgetPassword.jsx";
 import ResetPassword from "./components/auth/resetPassword.jsx";
+import EnhancedSettingsPage from "./pages/setting.jsx";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -43,7 +44,7 @@ root.render(
 
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
-            
+            <Route path="/setting" element={<EnhancedSettingsPage />} />
             <Route path="/products/:id" element={<ProductPage />} />
             <Route path="/cart" element={<CartPage />} />
             <Route path="/checkout" element={<CheckoutPage />} />
