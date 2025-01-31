@@ -1,0 +1,335 @@
+@import url("https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap");
+
+.royal-slim-container {
+  font-family: "Tajawal", sans-serif;
+  background: #f1ede9;
+  min-height: 100vh;
+  direction: rtl;
+  overflow-x: hidden;
+}
+
+.royal-slim-header {
+  background-color: #64766a;
+  color: #f1ede9;
+  text-align: center;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.royal-slim-header::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(213, 169, 170, 0.2) 0%, rgba(100, 118, 106, 0) 70%);
+  animation: royal-slim-rotate 20s linear infinite;
+}
+
+@keyframes royal-slim-rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.royal-slim-header-content {
+  position: relative;
+  z-index: 1;
+}
+
+.royal-slim-header h1 {
+  font-size: 3rem;
+  margin: 0;
+  font-weight: 700;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.royal-slim-header p {
+  font-size: 1.2rem;
+  margin: 0.5rem 0 0;
+  color: #dadad2;
+}
+
+.royal-slim-crown-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  color: #d5a9aa;
+  filter: drop-shadow(0 0 10px rgba(213, 169, 170, 0.5));
+}
+
+.royal-slim-hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6rem 4rem;
+  background: linear-gradient(135deg, #64766a, #d5a9aa);
+  color: #f1ede9;
+  position: relative;
+  overflow: hidden;
+}
+
+.royal-slim-hero::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  opacity: 0.1;
+}
+
+.royal-slim-hero-content {
+  max-width: 600px;
+  position: relative;
+  z-index: 1;
+}
+
+.royal-slim-hero h2 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  font-weight: 700;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.royal-slim-hero p {
+  font-size: 1.4rem;
+  opacity: 0.9;
+  line-height: 1.6;
+}
+
+.royal-slim-product-image-wrapper {
+  position: relative;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  border: 12px solid rgba(255, 255, 255, 0.1);
+  z-index: 1;
+}
+
+.royal-slim-product-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.royal-slim-product-image-wrapper:hover .royal-slim-product-image {
+  transform: scale(1.1);
+}
+
+.royal-slim-faq-section {
+  padding: 6rem 2rem;
+  background: #f1ede9;
+  position: relative;
+}
+
+.royal-slim-faq-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 200px;
+  background: linear-gradient(to bottom, rgba(213, 169, 170, 0.1), transparent);
+}
+
+.royal-slim-faq-section h2 {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 3rem;
+  color: #64766a;
+  font-weight: 700;
+  position: relative;
+}
+
+.royal-slim-faq-container {
+  max-width: 800px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.royal-slim-faq-item {
+  border-radius: 15px;
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+  border: 1px solid rgba(213, 169, 170, 0.2);
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+}
+
+.royal-slim-faq-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(213, 169, 170, 0.3);
+}
+
+.royal-slim-faq-question {
+  display: flex;
+  align-items: center;
+  padding: 1.5rem;
+  cursor: pointer;
+  background: #64766a;
+  color: #f1ede9;
+  transition: background 0.2s ease;
+}
+
+.royal-slim-faq-question:hover {
+  background: #9e7677;
+}
+
+.royal-slim-faq-icon {
+  font-size: 1.8rem;
+  margin-left: 1.5rem;
+  color: #d5a9aa;
+}
+
+.royal-slim-faq-question h3 {
+  flex-grow: 1;
+  font-size: 1.3rem;
+  margin: 0;
+}
+
+.royal-slim-faq-answer {
+  padding: 1.5rem;
+  transition: opacity 0.1s ease-in-out;
+  color: #64766a;
+  line-height: 1.8;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.royal-slim-cta-section {
+  text-align: center;
+  padding: 6rem 2rem;
+  background: linear-gradient(45deg, #d5a9aa, #9e7677);
+  color: #f1ede9;
+  position: relative;
+  overflow: hidden;
+}
+
+.royal-slim-cta-section::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(213, 169, 170, 0.3) 0%, rgba(158, 118, 119, 0) 70%);
+  animation: royal-slim-rotate 30s linear infinite;
+}
+
+.royal-slim-cta-section h2 {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  font-weight: 700;
+  position: relative;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.royal-slim-order-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 2.5rem;
+  font-size: 1.3rem;
+  background: #64766a;
+  color: #f1ede9;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.royal-slim-order-button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+}
+
+.royal-slim-order-button:hover::before {
+  transform: translateX(100%);
+}
+
+.royal-slim-order-button:hover {
+  background: #9e7677;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+.royal-slim-order-button svg {
+  margin-left: 0.8rem;
+  font-size: 1.2rem;
+}
+
+.royal-slim-footer {
+  background-color: #64766a;
+  color: #f1ede9;
+  text-align: center;
+  padding: 2rem;
+  font-size: 1rem;
+  position: relative;
+}
+
+.royal-slim-footer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(to right, #d5a9aa, #9e7677);
+}
+
+@media (max-width: 768px) {
+  .royal-slim-hero {
+    flex-direction: column;
+    text-align: center;
+    padding: 4rem 1rem;
+  }
+
+  .royal-slim-hero-content {
+    margin-bottom: 3rem;
+  }
+
+  .royal-slim-product-image-wrapper {
+    width: 300px;
+    height: 300px;
+  }
+
+  .royal-slim-hero h2 {
+    font-size: 2.5rem;
+  }
+
+  .royal-slim-hero p {
+    font-size: 1.2rem;
+  }
+
+  .royal-slim-faq-question h3 {
+    font-size: 1.1rem;
+  }
+
+  .royal-slim-header h1 {
+    font-size: 2.5rem;
+  }
+
+  .royal-slim-cta-section h2 {
+    font-size: 2rem;
+  }
+}
+

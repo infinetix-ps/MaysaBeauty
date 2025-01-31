@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react"
+import { useState, useEffect, useCallback, useRef } from "react"
 import { motion } from "framer-motion"
 import Header from "../components/Header.jsx"
 import { Input } from "../components/ui/input.jsx"
@@ -19,14 +19,18 @@ import { Checkbox } from "../components/ui/checkbox.jsx"
 import { products } from "../App.js"
 import ProductGrid from "../components/ProductGrid.jsx"
 import debounce from "lodash.debounce"
+import { useSearchParams } from "react-router-dom"
 
 const AllProductsPage = () => {
+    const pageTopRef = useRef(null)
     // Extract unique categories
     const categories = [...new Set(products.map((product) => product.category))]
     const maxPrice = Math.max(...products.map((product) => product.price))
     const minPrice = Math.min(...products.map((product) => product.price))
 
     // States
+    const [searchParams] = useSearchParams()
+    const categoryParam = searchParams.get("category")
     const [searchTerm, setSearchTerm] = useState("")
     const [selectedCategories, setSelectedCategories] = useState([])
     const [priceRange, setPriceRange] = useState([minPrice, maxPrice])
@@ -50,6 +54,9 @@ const AllProductsPage = () => {
 
         if (selectedCategories.length > 0) {
             result = result.filter((product) => selectedCategories.includes(product.category))
+        } else if (categoryParam) {
+            result = result.filter((product) => product.category === categoryParam)
+            setSelectedCategories([categoryParam])
         }
 
         result = result.filter((product) => product.price >= priceRange[0] && product.price <= priceRange[1])
@@ -69,6 +76,11 @@ const AllProductsPage = () => {
 
         setFilteredProducts(result)
     }, [searchTerm, selectedCategories, priceRange, sortBy])
+
+    // Scroll to top when component mounts or URL parameters change
+    useEffect(() => {
+        pageTopRef.current?.scrollIntoView({ behavior: "smooth" })
+    }, [])
 
     const FilterControls = () => (
         <div className="space-y-6">
@@ -170,6 +182,7 @@ const AllProductsPage = () => {
 
     return (
         <div className="min-h-screen bg-[#f5f0eb] dark:bg-gray-900">
+            <div ref={pageTopRef} />
             <Header />
             <main className="container mx-auto px-4 py-8 pt-24">
                 <div className="flex flex-col space-y-6">

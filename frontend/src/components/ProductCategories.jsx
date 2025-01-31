@@ -1,6 +1,5 @@
-import React from "react";
-import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { motion } from "framer-motion"
+import { useNavigate } from "react-router-dom"
 
 const categories = [
     {
@@ -43,9 +42,10 @@ const categories = [
         image: "https://images.unsplash.com/photo-1505944270255-72b8c68c6a70?auto=format&fit=crop&q=80&w=1000",
         color: "bg-teal-100 dark:bg-teal-900",
     },
-];
+]
 
 const ProductCategories = () => {
+    const navigate = useNavigate()
     return (
         <section className="py-16 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 transition-colors duration-300">
             <div className="container mx-auto px-4">
@@ -65,7 +65,10 @@ const ProductCategories = () => {
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ duration: 0.6, delay: index * 0.1 }}
                         >
-                            <Link to={`/category/${category.name.toLowerCase().replace(" ", "-")}`}>
+                            <div
+                                onClick={() => navigate(`/all-products?category=${encodeURIComponent(category.name)}`)}
+                                className="cursor-pointer"
+                            >
                                 <motion.div
                                     whileHover={{ scale: 1.1 }}
                                     whileTap={{ scale: 0.95 }}
@@ -88,13 +91,14 @@ const ProductCategories = () => {
                                         <h3 className="text-sm font-semibold text-white drop-shadow-lg">{category.name}</h3>
                                     </motion.div>
                                 </motion.div>
-                            </Link>
+                            </div>
                         </motion.div>
                     ))}
                 </div>
             </div>
         </section>
-    );
-};
+    )
+}
 
-export default ProductCategories;
+export default ProductCategories
+

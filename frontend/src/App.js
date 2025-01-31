@@ -1,12 +1,13 @@
 import React from "react";
 import DynamicHeader from "./components/DynamicHeader.jsx";
 import ProductCategories from "./components/ProductCategories.jsx";
-import AboutUs from "./components/AboutUs.jsx";
+// import AboutUs from "./components/AboutUs.jsx";
 import ProductGrid from "./components/ProductGrid.jsx";
 import AnimatedDivider from "./components/AnimatedDivider.jsx";
 import Header from "./components/Header.jsx";
 import { CartProvider } from "./pages/contexts/cartContext.jsx"; // Import CartProvider
 import Footer from "./components/Footer.jsx";
+import RoyalSlimHome from "./pages/royalSlim.jsx";
 
 export const products = [
   {
@@ -164,8 +165,9 @@ function App() {
       <DynamicHeader />
       <main>
         <ProductCategories />
-        <AnimatedDivider />
-        <AboutUs />
+        {/* <AnimatedDivider /> */}
+        {/* <AboutUs /> */}
+        <RoyalSlimHome />
         <ProductGrid products={products} />
       </main>
     </div>

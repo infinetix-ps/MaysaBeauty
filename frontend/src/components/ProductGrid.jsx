@@ -94,12 +94,13 @@ const ProductGrid = ({ showAll = false, products = [], limit = 8 }) => {
                                     <div className="mt-auto">
                                         <Button
                                             onClick={() => handleAddToCart(product)}
-                                            className="w-full bg-[#C17F82] hover:bg-[#A66467] text-white 
+                                            className="w-full !bg-[#C17F82] hover:!bg-[#A66467] !text-white 
                                                      transition-all duration-300 rounded-lg py-1 sm:py-2 md:py-3
                                                      text-xs sm:text-sm md:text-base
                                                      shadow-[0_4px_20px_rgb(193,127,130,0.2)]
                                                      hover:shadow-[0_4px_20px_rgb(193,127,130,0.4)]
                                                      transform hover:-translate-y-0.5"
+                                            style={{ backgroundColor: "#C17F82" }}
                                         >
                                             Add to Cart
                                         </Button>
@@ -119,13 +120,14 @@ const ProductGrid = ({ showAll = false, products = [], limit = 8 }) => {
                     >
                         <Button
                             onClick={loadMore}
-                                className="bg-[#C17F82] hover:bg-[#A66467] text-white 
-                                        transition-all duration-300 rounded-lg px-4 sm:px-6 md:px-8 py-2 sm:py-3
-                                        text-sm sm:text-base
-                                        shadow-[0_4px_20px_rgb(193,127,130,0.2)]
-                                        hover:shadow-[0_4px_20px_rgb(193,127,130,0.4)]
-                                        transform hover:-translate-y-0.5"
-                            >
+                            className="!bg-[#C17F82] hover:!bg-[#A66467] !text-white 
+                                    transition-all duration-300 rounded-lg px-4 sm:px-6 md:px-8 py-2 sm:py-3
+                                    text-sm sm:text-base
+                                    shadow-[0_4px_20px_rgb(193,127,130,0.2)]
+                                    hover:shadow-[0_4px_20px_rgb(193,127,130,0.4)]
+                                    transform hover:-translate-y-0.5"
+                            style={{ backgroundColor: "#C17F82" }}
+                        >
                             Load More Products
                         </Button>
                     </motion.div>
