@@ -1,146 +1,254 @@
-            @import "tailwindcss/base";
-            @import "tailwindcss/components";
-            @import "tailwindcss/utilities";
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
 
-            :root {
-                --color-main: #ffffff;
-                --color-secondary: #e5ddd3;
-                --color-tertiary: #d1c9bf;
-                --color-mix: #e5ddd3;
-                --color-button: #402e20;
-                --color-text: #2d2d2d;
-                --color-text-light: #666666;
-            }
-            
-            @layer components {
-                .glass-morphism {
-                @apply bg-secondary bg-opacity-70 shadow-lg backdrop-blur-sm border border-tertiary border-opacity-30;
-                }
-            
-                .modern-input {
-                @apply w-full px-4 py-3 bg-transparent border-b-2 border-tertiary focus:border-button focus:outline-none transition-all duration-300 ease-in-out text-text placeholder:text-text-light;
-                }
-            
-                .auth-container {
-                @apply min-h-screen flex items-center justify-center p-4 sm:p-6 md:p-8;
-                }
-            
-                .auth-card {
-                @apply w-full max-w-4xl glass-morphism rounded-3xl overflow-hidden shadow-2xl;
-                }
-            
-                .auth-card-content {
-                @apply flex flex-col md:flex-row min-h-[600px] md:min-h-0;
-                }
-            
-                .auth-card-left {
-                @apply w-full md:w-1/2 p-6 sm:p-8 md:p-12 flex flex-col justify-center text-center md:text-left;
-                }
-            
-                .auth-card-right {
-                @apply w-full md:w-1/2 p-6 sm:p-8 md:p-12 flex flex-col;
-                }
-            
-                .auth-title {
-                @apply text-3xl sm:text-4xl font-bold mb-4 sm:mb-6;
-                }
-            
-                .auth-subtitle {
-                @apply text-base sm:text-lg mb-6 sm:mb-8;
-                }
-            
-                .auth-icon-container {
-                @apply flex justify-center md:justify-start space-x-4;
-                }
-            
-                .auth-icon {
-                @apply w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center transition-transform hover:scale-110;
-                }
-            
-                .auth-form {
-                @apply space-y-4 sm:space-y-6;
-                }
-            
-                .auth-input-container {
-                @apply relative;
-                }
-            
-                .auth-input {
-                @apply modern-input text-base sm:text-lg;
-                }
-            
-                .auth-input-icon {
-                @apply absolute right-3 top-1/2 -translate-y-1/2 text-tertiary text-lg sm:text-xl;
-                }
-            
-                .auth-button {
-                @apply w-full bg-button text-white rounded-full px-4 py-3 sm:py-4 font-semibold 
-                        hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-button focus:ring-offset-2 
-                        transition duration-200 flex items-center justify-center text-base sm:text-lg
-                        active:scale-95 transform;
-                }
-            
-                .auth-link {
-                @apply text-sm sm:text-base text-button hover:text-opacity-80 transition-colors;
-                }
-            }
-            
-            @layer utilities {
-                .text-button {
-                color: var(--color-button);
-                }
-            
-                .bg-button {
-                background-color: var(--color-button);
-                }
-            
-                .text-tertiary {
-                color: var(--color-tertiary);
-                }
-            
-                .bg-secondary {
-                background-color: var(--color-secondary);
-                }
-            
-                .border-tertiary {
-                border-color: var(--color-tertiary);
-                }
-            
-                .bg-mix {
-                background-color: var(--color-mix);
-                }
-            
-                .text-text {
-                color: var(--color-text);
-                }
-            
-                .text-text-light {
-                color: var(--color-text-light);
-                }
-            
-                .placeholder-text-light::placeholder {
-                color: var(--color-text-light);
-                }
-            }
-            
-            /* Custom scrollbar for mobile */
-            @media (max-width: 768px) {
-                .auth-card {
-                @apply max-h-[90vh] overflow-y-auto;
-                }
-            
-                .auth-card::-webkit-scrollbar {
-                width: 4px;
-                }
-            
-                .auth-card::-webkit-scrollbar-track {
-                background: var(--color-secondary);
-                }
-            
-                .auth-card::-webkit-scrollbar-thumb {
-                background: var(--color-tertiary);
-                border-radius: 4px;
-                }
-            }
-            
-            
+/* Root variables */
+:root {
+  /* Left card colors */
+  --color-main: #ffffff;
+  --color-secondary: #e5ddd3;
+  --color-tertiary: #d1c9bf;
+  --color-mix: #e5ddd3;
+  --color-button: #402e20;
+  --color-text: #2d2d2d;
+  --color-text-light: #666666;
+
+  /* Right card colors */
+  --color-right-bg: #a67c7c; /* Muted deep mauve */
+  --color-right-text: #ffffff; /* Dark brown for better contrast */
+  --color-right-button: #6d4c41; /* Rich coffee brown */
+  --color-right-accent: #c49a8d;
+  --color-right-shadow: rgba(0, 0, 0, 0.1);
+  --color-right-input: #ffffff; /* Pure white for clarity */
+}
+@layer components {
+  .glass-morphism {
+    @apply bg-secondary bg-opacity-70 shadow-lg backdrop-blur-sm border border-tertiary border-opacity-30;
+  }
+
+  /* ✅ Fix: Set a static background for the whole page */
+  .auth-container {
+    @apply min-h-screen flex items-center justify-center p-4 sm:p-6 md:p-8;
+    background-color: #f9f9f9; /* 🔹 Now the page background won’t change */
+  }
+
+  .auth-card {
+    @apply w-full max-w-4xl glass-morphism rounded-3xl overflow-hidden shadow-2xl;
+  }
+
+  .auth-card-content {
+    @apply flex flex-col md:flex-row min-h-[600px] md:min-h-0;
+  }
+
+  /* Left Card */
+  .auth-card-left {
+    @apply w-full md:w-1/2 p-6 sm:p-8 md:p-12 flex flex-col justify-center text-center md:text-left;
+  }
+
+  /* ✅ Right Card - Only This Background Will Change */
+  .auth-card-right {
+    @apply w-full md:w-1/2 p-6 sm:p-8 md:p-12 flex flex-col items-center;
+    background-color: var(--color-right-bg); /* ✅ Now ONLY the right card changes */
+  }
+
+  .auth-title {
+    @apply text-3xl sm:text-4xl font-bold mb-8 text-center;
+    color: var(--color-right-text);
+  }
+
+  .auth-subtitle {
+    @apply text-base sm:text-lg mb-6 sm:mb-8;
+  }
+
+  .auth-icon-container {
+    @apply flex justify-center md:justify-start space-x-4;
+  }
+
+  .auth-icon {
+    @apply w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center transition-transform hover:scale-110;
+  }
+
+  .auth-form {
+    @apply w-full max-w-md space-y-6;
+  }
+
+  .auth-input-container {
+    @apply relative mt-8; /* Changed from mt-6 to mt-8 for more spacing */
+  }
+
+  .auth-input {
+    @apply w-full px-4 py-3 bg-white rounded-md border-0 focus:outline-none transition-all duration-300 ease-in-out text-lg;
+    transform-origin: left top;
+    color: var(--color-text);
+  }
+
+  .auth-input:-webkit-autofill,
+  .auth-input:-webkit-autofill:hover,
+  .auth-input:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
+    -webkit-text-fill-color: var(--color-text) !important;
+    caret-color: var(--color-text);
+  }
+
+  .auth-input-label {
+    @apply absolute left-4 top-3 text-lg transition-all duration-300 ease-in-out pointer-events-none;
+    color: var(--color-right-accent);
+    transform-origin: left top;
+  }
+
+  .auth-input:focus ~ .auth-input-label,
+  .auth-input:not(:placeholder-shown) ~ .auth-input-label {
+    @apply text-sm;
+    transform: translateY(-2rem) scale(0.85);
+    color: var(--color-right-text);
+  }
+
+  .auth-input-icon {
+    @apply absolute right-4 top-4 text-lg transition-all duration-300 ease-in-out;
+    color: var(--color-right-accent);
+  }
+
+  .group:focus-within .auth-input-icon {
+    color: var(--color-right-text);
+  }
+
+  .auth-button {
+    @apply w-full rounded-full px-6 py-3 font-semibold text-lg
+                   hover:bg-opacity-90 focus:outline-none mt-6
+                   transition duration-200;
+    background-color: var(--color-right-button);
+    color: var(--color-right-text);
+  }
+
+  .auth-button-underline {
+    @apply absolute bottom-0 left-0 w-full h-0.5 transform scale-x-0 transition-transform duration-300 ease-in-out;
+    background-color: var(--color-right-text);
+  }
+
+  .auth-button:hover .auth-button-underline {
+    @apply scale-x-100;
+  }
+
+  .auth-link {
+    @apply text-sm sm:text-base hover:text-opacity-80 transition-colors;
+    color: var(--color-right-text);
+  }
+
+  .remember-me-container {
+    @apply flex items-center justify-between mt-4 mb-6;
+  }
+
+  .remember-me-label {
+    @apply ml-2 text-sm;
+    color: var(--color-right-text);
+  }
+
+  .forgot-password {
+    @apply text-sm font-medium hover:text-opacity-80 transition-colors;
+    color: var(--color-right-text);
+  }
+
+  .sign-up-link {
+    @apply mt-6 text-center text-sm;
+    color: var(--color-right-text);
+  }
+
+  /* Step Indicator */
+  .step-indicator {
+    @apply flex justify-center items-center space-x-4 mb-8;
+  }
+
+  .step-indicator-item {
+    @apply w-8 h-8 rounded-full flex items-center justify-center;
+  }
+
+  .step-indicator-item.active {
+    background-color: var(--color-right-input);
+    color: var(--color-right-text);
+    border-color: var(--color-right-accent);
+  }
+
+  .step-indicator-item.completed {
+    background-color: var(--color-right-button);
+    color: var(--color-right-input);
+  }
+
+  .step-indicator-line {
+    @apply w-12 h-0.5;
+  }
+
+  .step-indicator-line.completed {
+    background-color: var(--color-right-button);
+  }
+
+  .step-indicator-line.incomplete {
+    background-color: var(--color-right-accent);
+  }
+}
+
+@layer utilities {
+  .text-button {
+    color: var(--color-button);
+  }
+
+  .bg-button {
+    background-color: var(--color-button);
+  }
+
+  .text-tertiary {
+    color: var(--color-tertiary);
+  }
+
+  .bg-secondary {
+    background-color: var(--color-secondary);
+  }
+
+  .border-tertiary {
+    border-color: var(--color-tertiary);
+  }
+
+  .bg-mix {
+    background-color: var(--color-mix);
+  }
+
+  .text-text {
+    color: var(--color-text);
+  }
+
+  .text-text-light {
+    color: var(--color-text-light);
+  }
+
+  .text-right {
+    color: var(--color-right-text);
+  }
+
+  .bg-right {
+    background-color: var(--color-right-bg);
+  }
+
+  .border-right {
+    border-color: var(--color-right-accent);
+  }
+}
+
+/* Custom scrollbar for mobile */
+@media (max-width: 768px) {
+  .auth-card {
+    @apply max-h-[90vh] overflow-y-auto;
+  }
+
+  .auth-card::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .auth-card::-webkit-scrollbar-track {
+    background: var(--color-right-input);
+  }
+
+  .auth-card::-webkit-scrollbar-thumb {
+    background: var(--color-right-button);
+    border-radius: 4px;
+  }
+}
+

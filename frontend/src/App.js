@@ -166,7 +166,6 @@ function App() {
         <ProductCategories />
         <AnimatedDivider />
         <AboutUs />
-        <AnimatedDivider />
         <ProductGrid products={products} />
       </main>
     </div>

@@ -5,10 +5,10 @@ function StepIndicator({ steps, currentStep }) {
                 <div key={step} className="flex items-center">
                     <div
                         className={`w-8 h-8 rounded-full flex items-center justify-center ${index < currentStep
-                                ? "bg-button text-white"
+                                ? "bg-tertiary text-white"
                                 : index === currentStep
-                                    ? "bg-secondary text-button border-2 border-button"
-                                    : "bg-tertiary text-button"
+                                    ? "bg-white text-tertiary border-2 border-tertiary"
+                                    : "bg-secondary text-text"
                             }`}
                     >
                         {index < currentStep ? (
@@ -18,7 +18,7 @@ function StepIndicator({ steps, currentStep }) {
                         )}
                     </div>
                     {index < steps.length - 1 && (
-                        <div className={`w-12 h-0.5 ${index < currentStep ? "bg-button" : "bg-tertiary"}`}></div>
+                        <div className={`w-12 h-0.5 ${index < currentStep ? "bg-tertiary" : "bg-secondary"}`}></div>
                     )}
                 </div>
             ))}
@@ -27,4 +27,3 @@ function StepIndicator({ steps, currentStep }) {
 }
 
 export default StepIndicator
-

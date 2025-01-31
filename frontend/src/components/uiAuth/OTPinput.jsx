@@ -114,7 +114,9 @@ function OtpInput({ value, valueLength, onChange }) {
                     autoComplete="one-time-code"
                     pattern="\d{1}"
                     maxLength={valueLength}
-                    className="w-12 h-12 text-center text-2xl font-bold text-text border border-tertiary rounded-lg focus:outline-none focus:ring-2 focus:ring-button focus:border-transparent bg-white"
+                    className="w-12 h-12 text-center text-2xl font-bold text-text border border-secondary 
+                   rounded-lg focus:outline-none focus:ring-2 focus:ring-tertiary focus:border-transparent
+                   bg-white shadow-sm"
                     value={digit}
                     onChange={(e) => inputOnChange(e, idx)}
                     onKeyDown={inputOnKeyDown}
@@ -126,4 +128,3 @@ function OtpInput({ value, valueLength, onChange }) {
 }
 
 export default OtpInput
-

@@ -1,34 +1,20 @@
-import React, { useState, useEffect } from "react";
-import { Heart } from 'lucide-react';
-import { Button } from "./ui/button.jsx";
-import { Link } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
-import { toast } from "react-toastify";
+import { useState, useEffect } from "react"
+import { Button } from "./ui/button.jsx"
+import { Link } from "react-router-dom"
+import { motion, AnimatePresence } from "framer-motion"
+import { toast } from "react-toastify"
 import { useCart } from "../pages/contexts/cartContext.jsx"
 
 const ProductGrid = ({ showAll = false, products = [], limit = 8 }) => {
-    const [favorites, setFavorites] = useState([]);
-    const [displayedProducts, setDisplayedProducts] = useState([]);
-    const [page, setPage] = useState(1);
-    const productsPerPage = 12;
-    const { addToCart } = useCart();
+    const [displayedProducts, setDisplayedProducts] = useState([])
+    const [page, setPage] = useState(1)
+    const productsPerPage = 12
+    const { addToCart } = useCart()
 
     useEffect(() => {
-        // Calculate products to display based on pagination or showAll flag
-        const slicedProducts = showAll 
-            ? products.slice(0, page * productsPerPage)
-            : products.slice(0, limit);
-        setDisplayedProducts(slicedProducts);
-    }, [products, page, showAll, limit]);
-
-    const toggleFavorite = (productId) => {
-        setFavorites(prev => {
-            const newFavorites = prev.includes(productId)
-                ? prev.filter(id => id !== productId)
-                : [...prev, productId];
-            return newFavorites;
-        });
-    };
+        const slicedProducts = showAll ? products.slice(0, page * productsPerPage) : products.slice(0, limit)
+        setDisplayedProducts(slicedProducts)
+    }, [products, page, showAll, limit])
 
     const handleAddToCart = (product) => {
         addToCart({
@@ -37,29 +23,29 @@ const ProductGrid = ({ showAll = false, products = [], limit = 8 }) => {
             price: product.price,
             image: product.images[0],
             quantity: 1,
-        });
+        })
         toast.success("Added to cart!", {
             position: "bottom-right",
             autoClose: 2000,
-        });
-    };
+        })
+    }
 
     const loadMore = () => {
-        setPage(prev => prev + 1);
-    };
+        setPage((prev) => prev + 1)
+    }
 
     return (
-        <div className="bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 transition-all duration-300">
-            <div className="container mx-auto px-4 py-16 relative">
+        <div className="bg-[#f5f0eb] dark:from-gray-900 dark:to-gray-800 transition-all duration-300">
+            <div className="container mx-auto px-2 sm:px-4 py-8 sm:py-16 relative">
                 {!showAll && (
                     <>
-                        <div className="flex flex-col items-center mb-16">
-                            <div className="w-full max-w-3xl h-0.5 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 mb-8" />
+                        <div className="flex flex-col items-center mb-8 sm:mb-16">
+                            <div className="w-full max-w-3xl h-0.5 bg-gradient-to-r from-[#C17F82] via-[#a67c7c] to-[#6d4c41] mb-4 sm:mb-8" />
                             <motion.h2
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.6 }}
-                                className="text-4xl md:text-5xl font-bold text-center text-gray-900 dark:text-white"
+                                className="text-3xl sm:text-4xl md:text-5xl font-bold text-center text-[#402e20] dark:text-white"
                             >
                                 Discover Our Collection
                             </motion.h2>
@@ -72,7 +58,7 @@ const ProductGrid = ({ showAll = false, products = [], limit = 8 }) => {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ duration: 0.6 }}
-                        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8"
+                        className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6 lg:gap-8"
                     >
                         {displayedProducts.map((product, index) => (
                             <motion.div
@@ -80,46 +66,43 @@ const ProductGrid = ({ showAll = false, products = [], limit = 8 }) => {
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.3, delay: (index % 8) * 0.1 }}
-                                className="group bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden border border-gray-100 dark:border-gray-700 transition-all duration-300 hover:shadow-xl"
+                                className="group relative bg-white/80 backdrop-blur-sm rounded-xl overflow-hidden 
+                                         shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] 
+                                         transition-all duration-500 flex flex-col h-full"
                             >
-                                <Link to={`/products/${product.id}`}>
-                                    <div className="relative overflow-hidden aspect-square">
+                                <Link to={`/products/${product.id}`} className="block aspect-square overflow-hidden">
+                                    <div className="relative w-full h-full transform transition-transform duration-700 group-hover:scale-105">
+                                        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/5 group-hover:opacity-0 transition-opacity duration-500" />
                                         <img
                                             src={product.images[0] || "/placeholder.svg"}
                                             alt={product.name}
-                                            className="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-110"
+                                            className="w-full h-full object-cover"
                                             loading="lazy"
                                         />
+                                        <div className="absolute inset-0 bg-[#C17F82]/0 group-hover:bg-[#C17F82]/10 transition-colors duration-500" />
                                     </div>
                                 </Link>
-                                <div className="p-6">
+                                <div className="relative p-3 sm:p-4 md:p-6 flex flex-col flex-grow bg-gradient-to-b from-white/80 to-white/95 backdrop-blur-sm">
                                     <Link to={`/products/${product.id}`}>
-                                        <h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-white">
+                                        <h3 className="text-xs sm:text-sm md:text-base lg:text-lg font-medium mb-1 sm:mb-2 text-[#402e20] group-hover:text-[#C17F82] transition-colors duration-300 line-clamp-2">
                                             {product.name}
                                         </h3>
                                     </Link>
-                                    <p className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+                                    <p className="text-sm sm:text-base md:text-lg lg:text-xl font-bold text-[#402e20] mb-2 sm:mb-3 md:mb-4">
                                         ${product.price.toFixed(2)}
                                     </p>
-                                    <div className="flex justify-between items-center">
+                                    <div className="mt-auto">
                                         <Button
                                             onClick={() => handleAddToCart(product)}
-                                            className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white border-0"
+                                            className="w-full bg-[#C17F82] hover:bg-[#A66467] text-white 
+                                                     transition-all duration-300 rounded-lg py-1 sm:py-2 md:py-3
+                                                     text-xs sm:text-sm md:text-base
+                                                     shadow-[0_4px_20px_rgb(193,127,130,0.2)]
+                                                     hover:shadow-[0_4px_20px_rgb(193,127,130,0.4)]
+                                                     transform hover:-translate-y-0.5"
                                         >
                                             Add to Cart
                                         </Button>
-                                        <button
-                                            onClick={() => toggleFavorite(product.id)}
-                                            className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700"
-                                        >
-                                            <Heart
-                                                className={`h-6 w-6 transition-colors ${
-                                                    favorites.includes(product.id)
-                                                        ? "text-pink-500 fill-pink-500"
-                                                        : "text-gray-400 dark:text-gray-500"
-                                                }`}
-                                            />
-                                        </button>
                                     </div>
                                 </div>
                             </motion.div>
@@ -128,19 +111,29 @@ const ProductGrid = ({ showAll = false, products = [], limit = 8 }) => {
                 </AnimatePresence>
 
                 {showAll && products.length > displayedProducts.length && (
-                    <div className="mt-12 text-center">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.3 }}
+                        className="mt-8 sm:mt-16 text-center"
+                    >
                         <Button
                             onClick={loadMore}
-                            variant="outline"
-                            className="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700"
-                        >
+                                className="bg-[#C17F82] hover:bg-[#A66467] text-white 
+                                        transition-all duration-300 rounded-lg px-4 sm:px-6 md:px-8 py-2 sm:py-3
+                                        text-sm sm:text-base
+                                        shadow-[0_4px_20px_rgb(193,127,130,0.2)]
+                                        hover:shadow-[0_4px_20px_rgb(193,127,130,0.4)]
+                                        transform hover:-translate-y-0.5"
+                            >
                             Load More Products
                         </Button>
-                    </div>
+                    </motion.div>
                 )}
             </div>
         </div>
-    );
-};
+    )
+}
 
-export default ProductGrid;
+export default ProductGrid
+

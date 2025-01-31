@@ -38,7 +38,6 @@ function SignIn() {
         }
 
         try {
-            // TODO: Implement sign-in logic here
             console.log("Signing in with:", email, password)
             toast.success("Sign in successful!")
             navigate("/dashboard")
@@ -52,6 +51,7 @@ function SignIn() {
         <div className="auth-container">
             <div className="auth-card">
                 <div className="auth-card-content">
+                    {/* Left Card */}
                     <div className="auth-card-left bg-secondary">
                         <h2 className="auth-title text-button">Welcome Back!</h2>
                         <p className="auth-subtitle text-button">Sign in to access your account and continue shopping.</p>
@@ -67,60 +67,66 @@ function SignIn() {
                             </div>
                         </div>
                     </div>
-                    <div className="auth-card-right bg-main">
+
+                    {/* Right Card */}
+                    <div className="auth-card-right">
                         <StepIndicator steps={["Credentials", "Authenticated"]} currentStep={0} />
-                        <h1 className="auth-title text-button">Sign In</h1>
+                        <h1 className="auth-title text-right">Sign In</h1>
                         <form onSubmit={handleSubmit} className="auth-form">
-                            <div>
-                                <div className="auth-input-container">
+                            <div className="mb-6">
+                                <div className="auth-input-container group">
                                     <input
                                         id="email"
                                         type="email"
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
-                                        className="auth-input text-tertiary"
-                                        placeholder="Email Address"
+                                        className="auth-input peer"
+                                        placeholder=" "
                                         required
                                     />
+                                    <label htmlFor="email" className="auth-input-label">
+                                        Email Address
+                                    </label>
                                     <i className="fas fa-envelope auth-input-icon"></i>
                                 </div>
-                                {errors.email && <p className="mt-2 text-sm text-red-600 break-words">{errors.email}</p>}
+                                {errors.email && <p className="mt-2 text-sm text-red-600">{errors.email}</p>}
                             </div>
-                            <div>
-                                <div className="auth-input-container">
+                            <div className="mb-6">
+                                <div className="auth-input-container group">
                                     <input
                                         id="password"
                                         type="password"
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
-                                        className="auth-input text-tertiary"
-                                        placeholder="Password"
+                                        className="auth-input peer"
+                                        placeholder=" "
                                         required
                                     />
+                                    <label htmlFor="password" className="auth-input-label">
+                                        Password
+                                    </label>
                                     <i className="fas fa-lock auth-input-icon"></i>
                                 </div>
-                                {errors.password && <p className="mt-2 text-sm text-red-600 break-words">{errors.password}</p>}
+                                {errors.password && <p className="mt-2 text-sm text-red-600">{errors.password}</p>}
                             </div>
                             <div className="flex items-center justify-between mb-4">
                                 <div className="flex items-center">
-                                    <input
-                                        id="remember-me"
-                                        name="remember-me"
-                                        type="checkbox"
-                                        className="h-4 w-4 text-button focus:ring-button border-tertiary rounded"
-                                    />
-                                    <label htmlFor="remember-me" className="ml-2 block text-sm text-button">
+                                    <input id="remember-me" name="remember-me" type="checkbox" className="h-4 w-4" />
+                                    <label htmlFor="remember-me" className="ml-2 block text-sm text-right">
                                         Remember me
                                     </label>
                                 </div>
                                 <div className="text-sm">
-                                    <Link to="/forgot-password" className="font-medium text-button hover:text-opacity-80">
+                                    <Link to="/forgot-password" className="font-medium text-right hover:text-opacity-80">
                                         Forgot your password?
                                     </Link>
                                 </div>
                             </div>
-                            <button type="submit" className="auth-button">
-                                Sign In
+                            <button type="submit" className="auth-button group">
+                                <span className="relative">
+                                    Sign In
+                                    <span className="auth-button-underline"></span>
+                                </span>
                             </button>
                         </form>
                         <div className="mt-6 text-center">
