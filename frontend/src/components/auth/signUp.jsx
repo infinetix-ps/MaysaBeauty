@@ -71,7 +71,7 @@ function SignUp() {
                             </div>
                         </div>
                     </div>
-                    <div className="auth-card-right bg-main">
+                    <div className="auth-card-right">
                         <StepIndicator steps={["Account", "Verify", "Complete"]} currentStep={0} />
                         <h1 className="auth-title text-button">Create Account</h1>
                         <form onSubmit={handleSubmit} className="auth-form">
@@ -123,4 +123,5 @@ function SignUp() {
 }
 
 export default SignUp
+
 

@@ -94,7 +94,7 @@ function ResetPassword() {
                             </div>
                         </div>
                     </div>
-                    <div className="auth-card-right bg-main">
+                    <div className="auth-card-right">
                         <StepIndicator steps={["Request", "Reset", "Complete"]} currentStep={step} />
                         <h1 className="auth-title text-button">Set New Password</h1>
 

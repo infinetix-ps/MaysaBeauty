@@ -41,7 +41,6 @@ root.render(
             <Route path="/signup" element={<SignUp />} />
             <Route path="/verify" element={<Verify />} />
             <Route path="/signup-success" element={<SignUpSuccess />} />
-
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/setting" element={<EnhancedSettingsPage />} />

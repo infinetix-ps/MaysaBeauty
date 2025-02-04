@@ -5,6 +5,7 @@ import StepIndicator from "../uiAuth/stepIndicator.jsx"
 import "./auth.css"
 
 
+
 function ForgotPassword() {
     const [email, setEmail] = useState("")
     const [errors, setErrors] = useState({})
@@ -55,7 +56,7 @@ function ForgotPassword() {
                             </div>
                         </div>
                     </div>
-                    <div className="auth-card-right bg-main">
+                    <div className="auth-card-right">
                         <StepIndicator steps={["Request", "Reset", "Complete"]} currentStep={0} />
                         <h1 className="auth-title text-button">Reset Your Password</h1>
                         <p className="text-tertiary mb-6">

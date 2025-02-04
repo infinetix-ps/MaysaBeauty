@@ -7,17 +7,17 @@ function SignUpSuccess() {
         <div className="auth-container">
             <div className="auth-card">
                 <div className="auth-card-content">
-                    <div className="auth-card-left bg-black text-white">
-                        <h2 className="auth-title">Welcome Aboard!</h2>
+                    <div className="auth-card-left bg-secondary">
+                        <h2 className="auth-title text-button">Welcome Aboard!</h2>
                         <p className="auth-subtitle">
                             Your account has been created successfully. Get ready for an amazing shopping experience!
                         </p>
                         <div className="auth-icon-container">
-                            <div className="auth-icon bg-white">
-                                <i className="fas fa-check-circle text-black text-xl"></i>
+                            <div className="auth-icon bg-main">
+                                <i className="fas fa-check-circle text-button text-xl"></i>
                             </div>
-                            <div className="auth-icon bg-white">
-                                <i className="fas fa-shopping-bag text-black text-xl"></i>
+                            <div className="auth-icon bg-main">
+                                <i className="fas fa-shopping-bag text-button text-xl"></i>
                             </div>
                         </div>
                     </div>
@@ -30,7 +30,7 @@ function SignUpSuccess() {
                         <p className="text-gray-600 mb-8 text-center">
                             Your account has been created and you're now ready to start shopping.
                         </p>
-                        <Link to="/signin" className="auth-button bg-black text-center">
+                        <Link to="/signin" className="auth-button text-center">
                             Sign In to Your Account
                         </Link>
                     </div>
@@ -41,4 +41,3 @@ function SignUpSuccess() {
 }
 
 export default SignUpSuccess
-
