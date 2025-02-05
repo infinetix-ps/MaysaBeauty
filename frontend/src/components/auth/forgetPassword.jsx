@@ -59,7 +59,7 @@ function ForgotPassword() {
                     <div className="auth-card-right">
                         <StepIndicator steps={["Request", "Reset", "Complete"]} currentStep={0} />
                         <h1 className="auth-title text-button">Reset Your Password</h1>
-                        <p className="text-tertiary mb-6">
+                        <p className="text-white mb-6">
                             Enter your email address and we'll send you instructions to reset your password.
                         </p>
                         <form onSubmit={handleSubmit} className="auth-form">

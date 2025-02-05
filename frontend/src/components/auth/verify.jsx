@@ -67,7 +67,7 @@ function Verify() {
                     <div className="auth-card-right">
                         <StepIndicator steps={["Account", "Verify", "Complete"]} currentStep={1} />
                         <h1 className="auth-title">Verify Your Email</h1>
-                        <p className=" mb-6">We've sent a verification code to {email}. Please enter it below.</p>
+                        <p className="text-white text-m mb-6">We've sent a verification code to {email}. Please enter it below.</p>
                         <form onSubmit={handleSubmit} className="auth-form">
                             <div>
                                 <label htmlFor="verificationCode" className="block text-m font-medium mb-1 text-center my-2 ">

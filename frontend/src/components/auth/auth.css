@@ -14,7 +14,7 @@
   --color-text-light: #666666;
 
   /* Right card colors */
-  --color-right-bg: #a67c7c; /* Muted deep mauve */
+  --color-right-bg: #C89FA3; /* Muted deep mauve */
   --color-right-text: #ffffff; /* Dark brown for better contrast */
   --color-right-button: #6d4c41; /* Rich coffee brown */
   --color-right-accent: #c49a8d;
@@ -188,7 +188,7 @@
 
 @layer utilities {
   .text-button {
-    color: var(--color-button);
+    color: var(--color-right-text);
   }
 
   .bg-button {

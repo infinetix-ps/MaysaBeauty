@@ -211,7 +211,7 @@ const AllProductsPage = () => {
                                     <Button
                                         variant="outline"
                                         className="md:hidden bg-[#C17F82] text-white hover:bg-[#A66467] 
-                                                 border-[#C17F82] transition-colors"
+                                                    border-[#C17F82] transition-colors"
                                     >
                                         <SlidersHorizontal className="h-4 w-4 mr-2" />
                                         Filters
@@ -235,9 +235,9 @@ const AllProductsPage = () => {
                             initial={{ opacity: 0, x: -20 }}
                             animate={{ opacity: 1, x: 0 }}
                             className="hidden md:block bg-gradient-to-br from-white via-[#f8f3f3] to-[#f5e6e6] 
-                                     dark:from-gray-800 dark:via-gray-750 dark:to-gray-700
-                                     p-6 rounded-lg shadow-md"
-                        >
+                                        dark:from-gray-800 dark:via-gray-750 dark:to-gray-700
+                                        p-6 rounded-lg shadow-md"
+                            >
                             <FilterControls />
                         </motion.aside>
 

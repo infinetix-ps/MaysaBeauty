@@ -140,10 +140,10 @@ function ResetPassword() {
                         ) : (
                             <form onSubmit={handleVerificationSubmit} className="auth-form">
                                 <div>
-                                    <label htmlFor="verificationCode" className="block text-sm font-medium text-text mb-1">
+                                    <label htmlFor="verificationCode" className="block text-m font-medium text-text mb-1">
                                         Verification Code
                                     </label>
-                                    <p className="text-text-light mb-4">Enter the 6-digit code sent to {email}</p>
+                                    <p className="text-white  mb-4">Enter the 6-digit code sent to {email}</p>
                                     <OtpInput value={verificationCode} valueLength={6} onChange={setVerificationCode} />
                                     {errors.verificationCode && (
                                         <p className="mt-2 text-sm text-red-600 break-words">{errors.verificationCode}</p>

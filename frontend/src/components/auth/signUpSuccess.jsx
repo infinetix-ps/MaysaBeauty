@@ -9,7 +9,7 @@ function SignUpSuccess() {
                 <div className="auth-card-content">
                     <div className="auth-card-left bg-secondary">
                         <h2 className="auth-title text-button">Welcome Aboard!</h2>
-                        <p className="auth-subtitle">
+                        <p className=" text-white auth-subtitle">
                             Your account has been created successfully. Get ready for an amazing shopping experience!
                         </p>
                         <div className="auth-icon-container">
@@ -26,8 +26,8 @@ function SignUpSuccess() {
                         <div className="mb-8 text-center">
                             <i className="fas fa-check-circle text-green-500 text-6xl"></i>
                         </div>
-                        <h1 className="auth-title text-gray-800 text-center">Account Created Successfully!</h1>
-                        <p className="text-gray-600 mb-8 text-center">
+                        <h1 className="auth-title text-[#64766a] text-center">Account Created Successfully!</h1>
+                        <p className="text-white mb-8 text-center">
                             Your account has been created and you're now ready to start shopping.
                         </p>
                         <Link to="/signin" className="auth-button text-center">
