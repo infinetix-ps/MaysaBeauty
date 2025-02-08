@@ -8,7 +8,7 @@ import Header from "./components/Header.jsx";
 import { CartProvider } from "./pages/contexts/cartContext.jsx"; // Import CartProvider
 import Footer from "./components/Footer.jsx";
 import RoyalSlimHome from "./pages/royalSlim.jsx";
-
+import iphonePage from "./pages/iphonePage.jsx";
 export const products = [
   {
     id: 1,
@@ -24,6 +24,25 @@ export const products = [
     usage:
       "Apply to target areas and leave for 60 minutes. Use 2-3 times per week for best results.",
     ingredients: "Caffeine, Green Tea Extract, Seaweed Extract, Shea Butter",
+    rating: 4.5,
+    numReviews: 28,
+    reviews: [
+      {
+        rating: 5,
+        author: "Jane D.",
+        text: "Amazing results! I saw a difference after just one use.",
+      },
+      {
+        rating: 4,
+        author: "Mike S.",
+        text: "Good product, but takes consistent use to see results.",
+      },
+      {
+        rating: 5,
+        author: "Emily R.",
+        text: "Love how my skin feels after using this. Definitely firmer!",
+      },
+    ],
   },
   {
     id: 2,
@@ -39,6 +58,20 @@ export const products = [
     usage:
       "Massage into desired areas twice daily. Results may vary and are most effective when combined with a balanced diet.",
     ingredients: "Volufiline, Maca Root Extract, Saw Palmetto, Coconut Oil",
+    rating: 4.2,
+    numReviews: 15,
+    reviews: [
+      {
+        rating: 4,
+        author: "Sarah L.",
+        text: "Noticed some improvement in my curves. Will continue using.",
+      },
+      {
+        rating: 5,
+        author: "Tina M.",
+        text: "This cream is a game-changer! Love the results.",
+      },
+    ],
   },
   {
     id: 3,
@@ -54,6 +87,20 @@ export const products = [
     usage:
       "Apply 2-3 drops to cleansed face and neck, morning and night. Gently pat into skin.",
     ingredients: "Vitamin C, Hyaluronic Acid, Niacinamide, Peptides",
+    rating: 4.2,
+    numReviews: 15,
+    reviews: [
+      {
+        rating: 4,
+        author: "Sarah L.",
+        text: "Noticed some improvement in my curves. Will continue using.",
+      },
+      {
+        rating: 5,
+        author: "Tina M.",
+        text: "This cream is a game-changer! Love the results.",
+      },
+    ],
   },
   {
     id: 4,
@@ -149,6 +196,26 @@ export const orders = [
     items: [3, 8],
   },
 ];
+const contents = [
+  {
+    id: 1,
+    src: "https://images.unsplash.com/photo-1707343843437-caacff5cfa74?q=80&w=1000&h=2000&fit=crop",
+    alt: "Demo Content 1",
+    type: "image",
+  },
+  {
+    id: 2,
+    src: "https://images.unsplash.com/photo-1682687220198-88e9bdea9931?q=80&w=1000&h=2000&fit=crop",
+    alt: "Demo Content 2",
+    type: "image",
+  },
+  {
+    id: 3,
+    src: "https://images.unsplash.com/photo-1707345512638-997d31a10eaa?q=80&w=1000&h=2000&fit=crop",
+    alt: "Demo Content 3",
+    type: "image",
+  },
+];
 
 export function getProduct(id) {
   return products.find((p) => p.id === Number(id)) || null;
@@ -158,19 +225,42 @@ export function getOrder(id) {
   return orders.find((o) => o.id === id);
 }
 
+const content = [
+  {
+    id: 1,
+    src: "https://images.unsplash.com/photo-1707343843437-caacff5cfa74?q=80&w=1000&h=2000&fit=crop",
+    alt: "Demo Content 1",
+    type: "image",
+  },
+  {
+    id: 2,
+    src: "https://images.unsplash.com/photo-1682687220198-88e9bdea9931?q=80&w=1000&h=2000&fit=crop",
+    alt: "Demo Content 2",
+    type: "image",
+  },
+  {
+    id: 3,
+    src: "https://images.unsplash.com/photo-1707345512638-997d31a10eaa?q=80&w=1000&h=2000&fit=crop",
+    alt: "Demo Content 3",
+    type: "image",
+  },
+];
+
 function App() {
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 transition-colors duration-300">
-      <Header />
-      <DynamicHeader />
-      <main>
-        <ProductCategories />
-        {/* <AnimatedDivider /> */}
-        {/* <AboutUs /> */}
-        <RoyalSlimHome />
-        <ProductGrid products={products} />
-      </main>
-    </div>
+    <CartProvider>
+      <div className="min-h-screen bg-gray-100 dark:bg-gray-900 transition-colors duration-300">
+        <Header />
+        <DynamicHeader />
+        <main>
+          <ProductCategories />
+          <iphonePage />
+          <RoyalSlimHome />
+          <ProductGrid products={products} />
+        </main>
+        <Footer />
+      </div>
+    </CartProvider>
   );
 }
 

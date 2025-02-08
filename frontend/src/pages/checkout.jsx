@@ -11,6 +11,7 @@ import { RadioGroup, RadioGroupItem } from "../components/ui/radioGroub.jsx";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Truck, CreditCard } from "lucide-react";
+import WhatsAppButton from "../components/ui/whatsappButton.jsx";
 // import Image from "next/image";
 
 const cardPatterns = [
@@ -306,7 +307,7 @@ export default function CheckoutPage() {
                             Place Order
                         </Button>
                     </motion.form>
-
+                            <WhatsAppButton/>
                 </div>
             </main>
         </div>

@@ -20,6 +20,7 @@ import { products } from "../App.js"
 import ProductGrid from "../components/ProductGrid.jsx"
 import debounce from "lodash.debounce"
 import { useSearchParams } from "react-router-dom"
+import WhatsAppButton from "../components/ui/whatsappButton.jsx"
 
 const AllProductsPage = () => {
     const pageTopRef = useRef(null)
@@ -251,6 +252,7 @@ const AllProductsPage = () => {
                         </motion.div>
                     </div>
                 </div>
+                <WhatsAppButton/>
             </main>
         </div>
     )

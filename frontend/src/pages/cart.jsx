@@ -5,6 +5,7 @@ import Header from "../components/Header.jsx"
 import { Button } from "../components/ui/button"
 import { Trash2, Plus, Minus, ShoppingBag } from "lucide-react"
 import { Link } from "react-router-dom"
+import WhatsAppButton from "../components/ui/whatsappButton.jsx"
 
 export default function CartPage() {
     const { cart, removeFromCart, updateQuantity, clearCart } = useCart()
@@ -147,6 +148,7 @@ export default function CartPage() {
                         </motion.div>
                     </div>
                 )}
+                <WhatsAppButton/>
             </main>
         </div>
     )

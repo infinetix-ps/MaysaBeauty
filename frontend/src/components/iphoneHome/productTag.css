@@ -1,0 +1,31 @@
+    .product-tag {
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border-radius: 0.5rem;
+        padding: 0.5rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    .product-tag-name {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: white;
+        margin-bottom: 0.25rem;
+    }
+    
+    .product-tag-price {
+        font-size: 0.75rem;
+        color: #90caf9;
+    }
+    
+    .product-tag-rating {
+        display: flex;
+        align-items: center;
+        margin-top: 0.25rem;
+    }
+    
+    

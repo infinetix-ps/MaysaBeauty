@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { ShoppingBag, Search, Menu, User, X, ChevronDown, Ruler, Weight, Scissors, Palette, Sparkles, Heart, Droplet, Home } from 'lucide-react';
 import { useCart } from "../pages/contexts/cartContext";
 import ThemeToggle from "./themeProvider.jsx";
+import WhatsAppButton from "./ui/whatsappButton.jsx";
 
 const categories = [
   {
@@ -305,6 +306,7 @@ const Header = () => {
           </motion.nav>
         )}
       </AnimatePresence>
+      <WhatsAppButton />
     </>
   );
 };

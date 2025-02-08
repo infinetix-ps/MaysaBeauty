@@ -4,6 +4,7 @@ import { Link } from "react-router-dom"
 import { motion, AnimatePresence } from "framer-motion"
 import { toast } from "react-toastify"
 import { useCart } from "../pages/contexts/cartContext.jsx"
+import StarRating from "./starRating.jsx"
 
 const ProductGrid = ({ showAll = false, products = [], limit = 8 }) => {
     const [displayedProducts, setDisplayedProducts] = useState([])
@@ -91,6 +92,12 @@ const ProductGrid = ({ showAll = false, products = [], limit = 8 }) => {
                                     <p className="text-sm sm:text-base md:text-lg lg:text-xl font-bold text-[#402e20] mb-2 sm:mb-3 md:mb-4">
                                         ${product.price.toFixed(2)}
                                     </p>
+                                    <div className="flex items-center mb-2 sm:mb-3 md:mb-4">
+                                        <StarRating rating={product.rating} size={16} />
+                                        <span className="ml-2 text-xs sm:text-sm text-gray-600 dark:text-gray-400">
+                                            ({product.numReviews})
+                                        </span>
+                                    </div>
                                     <div className="mt-auto">
                                         <Button
                                             onClick={() => handleAddToCart(product)}

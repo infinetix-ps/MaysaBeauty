@@ -1,0 +1,97 @@
+    .iphone-container {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        padding: 2rem;
+    }
+    
+    .iphone-frame {
+        position: relative;
+        width: 320px;
+        height: 655px;
+    }
+    
+    .iphone-screen {
+        position: absolute;
+        inset: 10px;
+        overflow: hidden;
+        border-radius: 44px;
+        background-color: black;
+    }
+    
+    .screen-content {
+        width: 100%;
+        height: 100%;
+        position: relative;
+    }
+    
+    .screen-reflection {
+        position: absolute;
+        inset: 0;
+        opacity: 0.05;
+        pointer-events: none;
+        background: linear-gradient(145deg, white 0%, transparent 20%);
+    }
+    
+    .dynamic-island {
+        position: absolute;
+        top: 1px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 106px;
+        height: 31px;
+        overflow: visible;
+        filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.5));
+    }
+    
+    .dynamic-island-content {
+        position: absolute;
+        inset: 0;
+        background-color: black;
+        border-bottom-left-radius: 22px;
+        border-bottom-right-radius: 22px;
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+    }
+    
+    .camera-system {
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 10px;
+        height: 10px;
+    }
+    
+    .side-button {
+        position: absolute;
+        width: 2px;
+        height: 22px;
+        background-color: #2a2a2a;
+    }
+    
+    .side-button-left {
+        left: 0;
+        border-top-left-radius: 2px;
+        border-bottom-left-radius: 2px;
+    }
+    
+    .side-button-right {
+        right: 0;
+        height: 34px;
+        border-top-right-radius: 2px;
+        border-bottom-right-radius: 2px;
+    }
+    
+    .background-glow {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to right, rgba(128, 0, 128, 0.1), transparent, rgba(0, 0, 255, 0.1));
+        border-radius: 70px;
+        filter: blur(20px);
+        opacity: 0.5;
+    }
+    
+    

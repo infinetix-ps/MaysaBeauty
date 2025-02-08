@@ -4,10 +4,27 @@ import { motion, AnimatePresence } from "framer-motion"
 import { getProduct } from "../App.js"
 import { Button } from "../components/ui/button.jsx"
 import Header from "../components/Header.jsx"
-import { ChevronLeft, ChevronRight } from "lucide-react"
+import { ChevronLeft, ChevronRight, Star } from "lucide-react"
 import { useCart } from "../pages/contexts/cartContext.jsx"
 import "react-toastify/dist/ReactToastify.css"
 import { toast } from "react-toastify"
+import WhatsAppButton from "../components/ui/whatsappButton.jsx"
+import ReviewList from "../components/reviewList.jsx"
+import ReviewForm from "../components/reviewForm.jsx"
+
+const StarRating = ({ rating, size = 20 }) => {
+    return (
+        <div className="flex">
+            {[1, 2, 3, 4, 5].map((star) => (
+                <Star
+                    key={star}
+                    size={size}
+                    className={`${star <= rating ? "text-yellow-400 fill-yellow-400" : "text-gray-300"}`}
+                />
+            ))}
+        </div>
+    )
+}
 
 export default function ProductPage() {
     const { id } = useParams()
@@ -48,6 +65,29 @@ export default function ProductPage() {
         }
         addToCart(cartItem)
         toast.success("Added to cart!", {
+            position: "bottom-right",
+            autoClose: 2000,
+        })
+    }
+
+    const handleReviewSubmit = async (reviewData) => {
+        // Here you would typically send the review data to your backend
+        // For now, we'll just update the local state
+        const newReview = {
+            id: Date.now(), // Use a proper ID in production
+            author: "Anonymous", // In a real app, this would be the logged-in user
+            rating: reviewData.rating,
+            text: reviewData.review,
+        }
+
+        setProduct((prevProduct) => ({
+            ...prevProduct,
+            reviews: [newReview, ...prevProduct.reviews],
+            numReviews: prevProduct.numReviews + 1,
+            rating: (prevProduct.rating * prevProduct.numReviews + reviewData.rating) / (prevProduct.numReviews + 1),
+        }))
+
+        toast.success("Review submitted successfully!", {
             position: "bottom-right",
             autoClose: 2000,
         })
@@ -165,6 +205,11 @@ export default function ProductPage() {
                                     ${product.price.toFixed(2)}
                                 </motion.div>
 
+                                <div className="flex items-center space-x-2">
+                                    <StarRating rating={product.rating} />
+                                    <span className="text-sm text-gray-600 dark:text-gray-400">({product.numReviews} reviews)</span>
+                                </div>
+
                                 <motion.div
                                     initial={{ y: 20, opacity: 0 }}
                                     animate={{ y: 0, opacity: 1 }}
@@ -250,8 +295,24 @@ export default function ProductPage() {
                                 </motion.div>
                             </motion.div>
                         </div>
+
+                        {/* Review Section */}
+                        <div className="mt-12 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+                            <h2 className="text-2xl font-bold text-[#402e20] dark:text-gray-100 mb-6">Customer Reviews</h2>
+                            <div className="flex items-center mb-6">
+                                <StarRating rating={product.rating} size={24} />
+                                <span className="ml-2 text-lg text-gray-600 dark:text-gray-400">
+                                    {product.rating.toFixed(1)} out of 5
+                                </span>
+                            </div>
+                            <ReviewForm productId={product.id} onSubmit={handleReviewSubmit} />
+                            <div className="mt-8">
+                                <ReviewList reviews={product.reviews} />
+                            </div>
+                        </div>
                     </motion.div>
                 )}
+                <WhatsAppButton />
             </main>
         </div>
     )

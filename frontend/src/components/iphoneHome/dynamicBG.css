@@ -1,0 +1,78 @@
+    .dynamic-background {
+        position: fixed;
+        inset: 0;
+        overflow: hidden;
+        z-index: -10;
+    }
+    
+    .floating-shape {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(60px);
+        opacity: 0.2;
+    }
+    
+    .shape-1 {
+        top: 25%;
+        left: 25%;
+        width: 16rem;
+        height: 16rem;
+        background-color: #c89fa3;
+        animation: float 6s ease-in-out infinite;
+    }
+    
+    .shape-2 {
+        top: 75%;
+        right: 25%;
+        width: 24rem;
+        height: 24rem;
+        background-color: #c49a8d;
+        animation: float-delay 9s ease-in-out infinite;
+    }
+    
+    .shape-3 {
+        bottom: 25%;
+        left: 50%;
+        width: 20rem;
+        height: 20rem;
+        background-color: #6d4c41;
+        animation: float-slow 8s ease-in-out infinite;
+    }
+    
+    .gradient-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to bottom right, rgba(230, 215, 217, 0.1), rgba(200, 159, 163, 0.1));
+    }
+    
+    @keyframes float {
+        0%,
+        100% {
+        transform: translateY(0);
+        }
+        50% {
+        transform: translateY(-20px);
+        }
+    }
+    
+    @keyframes float-delay {
+        0%,
+        100% {
+        transform: translateY(0) translateX(0);
+        }
+        50% {
+        transform: translateY(10px) translateX(-5px);
+        }
+    }
+    
+    @keyframes float-slow {
+        0%,
+        100% {
+        transform: translateY(0) translateX(0);
+        }
+        50% {
+        transform: translateY(-10px) translateX(5px);
+        }
+    }
+    
+    
