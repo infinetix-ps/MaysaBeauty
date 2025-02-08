@@ -1,4 +1,6 @@
 import React from 'react'
+import { motion} from 'framer-motion';
+
 import DynamicBackground from '../components/iphoneHome/dynamicBG.jsx'
 import ParticleAnimation from '../components/iphoneHome/animation.jsx'
 import IPhoneTemplate from '../components/iphoneHome/iphoneTemplate.jsx'
@@ -26,16 +28,31 @@ const content = [
     },
 ]
 
-const iphonePage = () => {
+const IphonePage = () => {
     return (
-        <div className="relative overflow-hidden">
+        <main className="min-h-screen bg-[#E6D7D9] overflow-hidden">
             <DynamicBackground />
             <ParticleAnimation />
-            <IPhoneTemplate content={content}>
-                <FeedbackCarousel />
-            </IPhoneTemplate>
-        </div>
+            <div className="container mx-auto px-4 py-8 flex flex-col lg:flex-row items-center justify-center gap-8 min-h-screen">
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, ease: "easeOut" }}
+                    className="w-full lg:w-2/5"
+                >
+                    <IPhoneTemplate content={content} />
+                </motion.div>
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+                    className="w-full lg:w-3/5"
+                >
+                    <FeedbackCarousel />
+                </motion.div>
+            </div>
+        </main>
     )
 }
 
-export default iphonePage
+export default IphonePage

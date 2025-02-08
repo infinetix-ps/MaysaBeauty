@@ -8,7 +8,7 @@ import Header from "./components/Header.jsx";
 import { CartProvider } from "./pages/contexts/cartContext.jsx"; // Import CartProvider
 import Footer from "./components/Footer.jsx";
 import RoyalSlimHome from "./pages/royalSlim.jsx";
-import iphonePage from "./pages/iphonePage.jsx";
+import IphonePage from "./pages/iphonePage.jsx";
 export const products = [
   {
     id: 1,
@@ -254,7 +254,7 @@ function App() {
         <DynamicHeader />
         <main>
           <ProductCategories />
-          <iphonePage />
+          <IphonePage />
           <RoyalSlimHome />
           <ProductGrid products={products} />
         </main>
