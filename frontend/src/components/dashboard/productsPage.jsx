@@ -232,7 +232,7 @@ const ProductsPage = () => {
         const fetchData = async () => {
             try {
                 // Fetch products from the backend API
-                const productResponse = await axios.get(`http://localhost:4000/products`);
+                const productResponse = await axios.get(`http://147.93.127.60:4000/products`);
                 setProducts(productResponse.data.products);
 
 
@@ -246,7 +246,7 @@ const ProductsPage = () => {
 
     const [categories, setCategories] = useState([]);
     useEffect(() => {
-        fetch("http://localhost:4000/categories")
+        fetch("http://147.93.127.60:4000/categories")
             .then((response) => response.json())
             .then((data) => {
                 if (data.message === "success") {
@@ -343,11 +343,11 @@ const ProductsPage = () => {
     const handleAddProduct = async () => {
         try {
             console.log("Adding product:", newProduct);
-    
+
             if (!newProduct.name || !newProduct.category || newProduct.price <= 0 || newProduct.stock < 0) {
                 throw new Error("Please fill all required fields with valid values.");
             }
-    
+
             // Construct the request payload
             const productData = {
                 name: newProduct.name,
@@ -356,22 +356,22 @@ const ProductsPage = () => {
                 categoryId: newProduct.category, // Ensure this matches your backend schema
                 subCategoryId: newProduct.subCategory || null, // Optional subcategory
             };
-    
+
             // Send a POST request to the backend using Axios
-            const { data } = await axios.post("http://localhost:4000/products", productData, {
+            const { data } = await axios.post("http://147.93.127.60:4000/products", productData, {
                 headers: {
                     "Content-Type": "application/json",
                 },
             });
-    
+
             // Successfully added product
             setProducts((prevProducts) => [...prevProducts, data.product]);
-    
+
             toast({
                 title: "Product Added",
                 description: `${data.product.name} has been added to the inventory.`,
             });
-    
+
             console.log("Product added successfully:", data.product);
             return data.product; // Return newly created product
         } catch (error) {

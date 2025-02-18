@@ -22,7 +22,7 @@ const ProductGrid = ({ showAll = false, products = [], limit = 8 }) => {
         try {
             const token = localStorage.getItem("token"); // Assuming token is stored in localStorage
             console.log(product._id);
-            await axios.post("http://localhost:4000/cart", {
+            await axios.post("http://147.93.127.60:4000/cart", {
                 productId: product._id
             }, {
                 headers: {
@@ -34,8 +34,8 @@ const ProductGrid = ({ showAll = false, products = [], limit = 8 }) => {
                 id: product._id,
                 name: product.name,
                 price: product.price,
-                image:  null,
-                quantity:1,
+                image: null,
+                quantity: 1,
             }
             addToCart(cartItem)
 
@@ -44,8 +44,8 @@ const ProductGrid = ({ showAll = false, products = [], limit = 8 }) => {
                 position: "bottom-right",
                 autoClose: 2000,
             });
-            
-            
+
+
         } catch (error) {
             console.log(5666);
             toast.error(error.response?.data?.message || "Something went wrong", {
@@ -54,8 +54,8 @@ const ProductGrid = ({ showAll = false, products = [], limit = 8 }) => {
             });
         }
     };
-    
-    
+
+
 
     const loadMore = () => {
         setPage((prev) => prev + 1)
@@ -101,7 +101,7 @@ const ProductGrid = ({ showAll = false, products = [], limit = 8 }) => {
                                     <div className="relative w-full h-full transform transition-transform duration-700 group-hover:scale-105">
                                         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/5 group-hover:opacity-0 transition-opacity duration-500" />
                                         <img
-                                            src={product.images? product.images[0] : "/placeholder.svg"}
+                                            src={product.images ? product.images[0] : "/placeholder.svg"}
                                             alt={product.name}
                                             className="w-full h-full object-cover"
                                             loading="lazy"

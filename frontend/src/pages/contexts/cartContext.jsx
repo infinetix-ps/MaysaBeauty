@@ -96,7 +96,7 @@ export const CartProvider = ({ children }) => {
         } else {
             // If no cart in localStorage, fetch it from the backend
             axios
-                .get("http://localhost:4000/cart", {
+                .get("http://147.93.127.60:4000/cart", {
                     headers: {
                         Authorization: `Hossam__${localStorage.getItem('token')}`,
                     },
@@ -105,7 +105,7 @@ export const CartProvider = ({ children }) => {
                     if (response.data.message === "success") {
                         setCart(response.data.cart.products); // Set the cart products from the backend
                     } else {
-                        setError("Failed to load cart");
+                        // setError("Failed to load cart");
                         // If the backend doesn't return cart data, fall back to localStorage
                         if (!savedCart) {
                             toast.error("No cart data available, using an empty cart");
@@ -113,7 +113,7 @@ export const CartProvider = ({ children }) => {
                     }
                 })
                 .catch((err) => {
-                    setError("Error fetching cart data");
+                    // setError("Error fetching cart data");
                     // Fallback to localStorage if the backend call fails
                     if (!savedCart) {
                         toast.error("Error fetching cart, using local storage data");

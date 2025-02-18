@@ -48,12 +48,12 @@ function SignUp() {
         }
 
         try {
-            const response = await fetch("http://localhost:4000/auth/register", {
+            const response = await fetch("http://147.93.127.60:4000/auth/register", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ userName, email, password })
             })
-            
+
             const data = await response.json()
             if (response.ok) {
                 toast.success("Verification email sent successfully!")

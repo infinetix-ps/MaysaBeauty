@@ -46,7 +46,7 @@
 //         }
 
 //         try {
-//             const response = await axios.post("http://localhost:4000/auth/login", { email, password });
+//             const response = await axios.post("http://147.93.127.60:4000/auth/login", { email, password });
 //             localStorage.setItem("token", response.data.token);
 //             toast.success("Sign in successful!");
 //             navigate("/dashboard");
@@ -156,7 +156,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
-import {jwtDecode} from "jwt-decode"; // To decode Google token
+import { jwtDecode } from "jwt-decode"; // To decode Google token
 import StepIndicator from "../uiAuth/stepIndicator.jsx";
 import "./auth.css";
 
@@ -203,7 +203,7 @@ function SignIn() {
         }
 
         try {
-            const response = await axios.post("http://localhost:4000/auth/login", { email, password });
+            const response = await axios.post("http://147.93.127.60:4000/auth/login", { email, password });
             localStorage.setItem("token", response.data.token);
             toast.success("Sign in successful!");
             navigate("/dashboard");
@@ -219,7 +219,7 @@ function SignIn() {
             const { email, name, sub: googleId } = decodedToken;
 
             // Send the Google login data to your backend for verification
-            const response = await axios.post("http://localhost:4000/auth/google-login", {
+            const response = await axios.post("http://147.93.127.60:4000/auth/google-login", {
                 email,
                 name,
                 googleId

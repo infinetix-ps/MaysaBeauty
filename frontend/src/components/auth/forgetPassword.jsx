@@ -28,8 +28,8 @@ function ForgotPassword() {
 
         try {
             // Send PATCH request to the backend
-            const response = await axios.patch("http://localhost:4000/auth/sendCode", { email })
-            
+            const response = await axios.patch("http://147.93.127.60:4000/auth/sendCode", { email })
+
             if (response.status === 200) {
                 // If the request is successful, show a success message
                 toast.success("Password reset email sent successfully!")

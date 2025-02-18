@@ -1,27 +1,28 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../components/Header.jsx";
 import { Link } from "react-router-dom";
 import { Input } from "../components/ui/input.jsx";
 import { motion } from "framer-motion";
+import axios from "axios";
 
 export default function SearchPage() {
     const [products, setProducts] = useState([]);
 
-  // Fetch products and orders from backend
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // Fetch products from the backend API
-        const productResponse = await axios.get("http://localhost:4000/products");
-        setProducts(productResponse.data.products);
+    // Fetch products and orders from backend
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                // Fetch products from the backend API
+                const productResponse = await axios.get("http://147.93.127.60:4000/products");
+                setProducts(productResponse.data.products);
 
-      } catch (error) {
-        console.error("Error fetching data", error);
-      }
-    };
+            } catch (error) {
+                console.error("Error fetching data", error);
+            }
+        };
 
-    fetchData();
-  }, []); // Empty dependency array ensures this runs only once on mount
+        fetchData();
+    }, []); // Empty dependency array ensures this runs only once on mount
 
 
     const [searchTerm, setSearchTerm] = useState("");

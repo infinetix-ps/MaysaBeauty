@@ -53,16 +53,16 @@ import WhatsAppButton from "./ui/whatsappButton.jsx";
 
 const icons = [
 
-    Ruler,
+  Ruler,
   Weight,
-  
-   Scissors,
-   Palette,
 
- Sparkles,
+  Scissors,
+  Palette,
 
- Heart,
-Droplet,
+  Sparkles,
+
+  Heart,
+  Droplet,
 
 ];
 
@@ -86,7 +86,7 @@ const Header = () => {
   const { scrollY } = useScroll();
   const [categories, setCategories] = useState([]);
   useEffect(() => {
-    fetch("http://localhost:4000/categories")
+    fetch("http://147.93.127.60:4000/categories")
       .then((response) => response.json())
       .then((data) => {
         if (data.message === "success") {
@@ -158,9 +158,9 @@ const Header = () => {
                   <div className="absolute top-full left-1/2 -translate-x-1/2 w-[800px] bg-white shadow-xl rounded-lg overflow-hidden border border-gray-200">
                     <div className="grid grid-cols-2 gap-6 p-6">
                       {categories?.map((category, index) => {
-                         const randomIndex = Math.floor(Math.random() * 5) ;
-                       
-                         const Icon= icons[randomIndex];
+                        const randomIndex = Math.floor(Math.random() * 5);
+
+                        const Icon = icons[randomIndex];
                         return (
                           <div
                             key={category.name}
@@ -172,10 +172,10 @@ const Header = () => {
                                 <Icon className="w-6 h-6 text-pink-500" />
                               </div>
                               <div className="flex-1">
-                              <Link  to={`/products?categoryName=${category.name}`}  className="text-lg font-semibold text-gray-800 mb-1">
+                                <Link to={`/products?categoryName=${category.name}`} className="text-lg font-semibold text-gray-800 mb-1">
                                   {category.name}
                                 </Link>
-                        
+
                               </div>
                             </div>
                           </div>
@@ -278,8 +278,8 @@ const Header = () => {
                       <span>Categories</span>
                     </h3>
                     <div className="grid gap-6">
-                    {categories?.map((category, index) => {
-                         const image= category.image?.secure_url;
+                      {categories?.map((category, index) => {
+                        const image = category.image?.secure_url;
                         return (
                           <div
                             key={category.name}
@@ -287,8 +287,8 @@ const Header = () => {
                               }`}
                           >
                             <div className="flex items-start space-x-4">
-                                 <img src={image} alt={category.name}className="w-6 h-6 text-pink-500" /> 
-                              
+                              <img src={image} alt={category.name} className="w-6 h-6 text-pink-500" />
+
                               <div className="flex-1">
                                 <Link to={`/products?categoryName=${category.name}`} className="text-lg font-semibold text-gray-800 mb-1">
                                   {category.name}

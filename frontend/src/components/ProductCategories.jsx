@@ -48,16 +48,16 @@ import { useNavigate } from "react-router-dom"
 const ProductCategories = () => {
     const [categories, setCategories] = useState([]);
 
-     useEffect(() => {
-        fetch("http://localhost:4000/categories")
-          .then((response) => response.json())
-          .then((data) => {
-            if (data.message === "success") {
-              setCategories(data.categorise);
-            }
-          })
-          .catch((error) => console.error("Error fetching categories:", error));
-      }, []);
+    useEffect(() => {
+        fetch("http://147.93.127.60:4000/categories")
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.message === "success") {
+                    setCategories(data.categorise);
+                }
+            })
+            .catch((error) => console.error("Error fetching categories:", error));
+    }, []);
     const navigate = useNavigate()
     return (
         <section className="py-16 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 transition-colors duration-300">

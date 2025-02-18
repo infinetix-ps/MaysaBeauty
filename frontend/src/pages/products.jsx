@@ -34,23 +34,23 @@ export default function ProductPage() {
     const [currentImageIndex, setCurrentImageIndex] = useState(0)
     const { addToCart } = useCart()
 
-       
-     // Fetch products and orders from backend
-     useEffect(() => {
-       const fetchData = async () => {
-         try {
-           // Fetch products from the backend API
-           const productResponse = await axios.get(`http://localhost:4000/products/${id}`);
-           setProduct(productResponse.data.product);
-           setLoading(false);
-           
-         } catch (error) {
-           console.error("Error fetching data", error);
-         }
-       };
-   
-       fetchData();
-     }, []); // Empty dependency array ensures this runs only once on mount
+
+    // Fetch products and orders from backend
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                // Fetch products from the backend API
+                const productResponse = await axios.get(`http://147.93.127.60:4000/products/${id}`);
+                setProduct(productResponse.data.product);
+                setLoading(false);
+
+            } catch (error) {
+                console.error("Error fetching data", error);
+            }
+        };
+
+        fetchData();
+    }, []); // Empty dependency array ensures this runs only once on mount
 
     const nextImage = () => {
         setCurrentImageIndex((prevIndex) => (prevIndex + 1) % product.images.length)
@@ -171,8 +171,8 @@ export default function ProductPage() {
                                             whileTap={{ scale: 0.95 }}
                                             onClick={() => setCurrentImageIndex(index)}
                                             className={`relative w-20 h-20 flex-shrink-0 rounded-md overflow-hidden border-2 transition-colors ${index === currentImageIndex
-                                                    ? "border-[#C17F82]"
-                                                    : "border-gray-200 dark:border-gray-700 hover:border-[#C17F82]"
+                                                ? "border-[#C17F82]"
+                                                : "border-gray-200 dark:border-gray-700 hover:border-[#C17F82]"
                                                 }`}
                                         >
                                             <img

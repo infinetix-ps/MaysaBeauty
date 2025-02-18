@@ -11,7 +11,7 @@ function Verify() {
     const [loading, setLoading] = useState(false);
     const [resendLoading, setResendLoading] = useState(false);
     const navigate = useNavigate();
-    
+
     // Retrieve email from state using useLocation
     const location = useLocation();
     const { email: emailFromState } = location.state || {};
@@ -26,7 +26,7 @@ function Verify() {
         setLoading(true);
 
         try {
-            const response = await fetch("http://localhost:4000/auth/verify-email", {
+            const response = await fetch("http://147.93.127.60:4000/auth/verify-email", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, otpCode: verificationCode }),
@@ -49,7 +49,7 @@ function Verify() {
         setResendLoading(true);
 
         try {
-            const response = await fetch("http://localhost:4000/auth/resend-otp", {
+            const response = await fetch("http://147.93.127.60:4000/auth/resend-otp", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email }),

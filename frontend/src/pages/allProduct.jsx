@@ -25,24 +25,24 @@ import axios from "axios"
 const AllProductsPage = () => {
     const location = useLocation();
     const [products, setProducts] = useState([]);
-  
+
     // Fetch products and orders from backend
     useEffect(() => {
-      const fetchData = async () => {
-        try {
-          // Fetch products from the backend API
-          const productResponse = location.search ?await axios.get(`http://localhost:4000/products/category${location.search}`) : await axios.get("http://localhost:4000/products");
-          
-          setProducts(productResponse.data.products);
-  console.log(productResponse.data.products);
-  
-          
-        } catch (error) {
-          console.error("Error fetching data", error);
-        }
-      };
-  
-      fetchData();
+        const fetchData = async () => {
+            try {
+                // Fetch products from the backend API
+                const productResponse = location.search ? await axios.get(`http://147.93.127.60:4000/products/category${location.search}`) : await axios.get("http://147.93.127.60:4000/products");
+
+                setProducts(productResponse.data.products);
+                console.log(productResponse.data.products);
+
+
+            } catch (error) {
+                console.error("Error fetching data", error);
+            }
+        };
+
+        fetchData();
     }, [location.search]);
     const pageTopRef = useRef(null)
     // Extract unique categories
@@ -260,7 +260,7 @@ const AllProductsPage = () => {
                             className="hidden md:block bg-gradient-to-br from-white via-[#f8f3f3] to-[#f5e6e6] 
                                         dark:from-gray-800 dark:via-gray-750 dark:to-gray-700
                                         p-6 rounded-lg shadow-md"
-                            >
+                        >
                             <FilterControls />
                         </motion.aside>
 
@@ -275,7 +275,7 @@ const AllProductsPage = () => {
                         </motion.div>
                     </div>
                 </div>
-                <WhatsAppButton/>
+                <WhatsAppButton />
             </main>
         </div>
     )

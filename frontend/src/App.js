@@ -287,11 +287,11 @@ function App() {
     const fetchData = async () => {
       try {
         // Fetch products from the backend API
-        const productResponse = await axios.get("http://localhost:4000/products");
+        const productResponse = await axios.get("http://147.93.127.60:4000/products");
         setProducts(productResponse.data.products);
 
         // Fetch orders from the backend API
-        const orderResponse = await axios.get("http://localhost:4000/orders");
+        const orderResponse = await axios.get("http://147.93.127.60:4000/orders");
         setOrders(orderResponse.data);
       } catch (error) {
         console.error("Error fetching data", error);
