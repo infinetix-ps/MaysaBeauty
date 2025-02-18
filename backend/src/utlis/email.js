@@ -11,7 +11,7 @@ async function SendEmail(to,subject,html) {
         });
 
         const info = await transporter.sendMail({
-            from: `H-shop <${process.env.EMAIL_ACCOUNT}>`,
+            from: `Maysa-shop <${process.env.EMAIL_ACCOUNT}>`,
             to,
             subject,
             html,

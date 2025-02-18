@@ -58,7 +58,7 @@ const productSchema = new Schema({
     subCategoryId : {
         type:Types.ObjectId,
         ref:'SubCategory',
-        required:true,
+        required:false,
     },
    createdBy:{type:Types.ObjectId,ref:'User'},
    updatedBy:{type:Types.ObjectId,ref:'User'},

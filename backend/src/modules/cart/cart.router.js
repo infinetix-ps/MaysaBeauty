@@ -5,6 +5,7 @@ import { endPoints } from "./cart.role.js";
 
 const router = Router();
 
+router.get('/',auth(endPoints.create),controller.getCartByUserId);
 router.post('/',auth(endPoints.create),controller.create);
 router.patch('/:productId',auth(endPoints.delete),controller.remove);
 router.put('/clear',auth(endPoints.delete),controller.clearCart);

@@ -46,7 +46,9 @@ const userSchema = new Schema({
     sendCode:{
         type:String,
         default:null,
-    }
+    },
+    otpCode: { type: Number, required: false },
+    otpExpires: { type: Date, required: false },
 
 },
 {

@@ -50,14 +50,13 @@ export const create = async (req, res) => {
 //     queryObj = JSON.stringify(queryObj);
 //     queryObj = queryObj.replace(/gt|gte|lt|lte|in|nin|eq/g, match => `$${match}`);
 //     queryObj = JSON.parse(queryObj);
-    
 //     const mongoseQuery = productModel.find(queryObj).skip(skip).limit(limit);
 
 //     // If search query is provided, add search functionality
 //     if (req.query.search) {
 //         mongoseQuery.find({
 //             $or: [
-//                 { name: { $regex: req.query.search, $options: 'i' } },
+//                 { name: { $regex: req.query.search, $options: 'i' } }, // Added case-insensitive flag
 //                 { description: { $regex: req.query.search, $options: 'i' } }
 //             ]
 //         });
@@ -66,26 +65,19 @@ export const create = async (req, res) => {
 //     // Fetch count for pagination
 //     const count = await productModel.estimatedDocumentCount();
 
-//     try {
-//         // Fetch products and populate category name
-//         const products = await mongoseQuery
-//             .sort(req.query.sort)
-//             .select('name price discount categoryId') // Ensure categoryId is selected
-//             .populate({
-//                 path: 'categoryId', // Ensure you're populating categoryId
-//                 select: 'name'  // Select only the category name
-//             });
+//     // Populate category name and select necessary fields
+//     const products = await mongoseQuery
+//         .sort(req.query.sort)
+//         .select('name price discount categoryId') // Select categoryId to populate
+//         .populate({
+//             path: 'categoryId', // Assuming 'categoryId' is the reference field
+//             select: 'name', // Fetch only the category name
+//         });
 
-//         if (products.length === 0) {
-//             return res.status(404).json({ message: 'No products found' });
-//         }
-
-//         return res.status(200).json({ message: "success", products });
-//     } catch (error) {
-//         console.error("Error during population:", error);
-//         return res.status(500).json({ message: "Error populating category", error: error.message });
-//     }
+//     return res.status(200).json({ message: "success", products });
 // };
+
+// Update Product
 
 export const getProducts = async (req, res) => {
     const { skip, limit } = pagination(req.query.page, req.query.limit);
@@ -97,54 +89,41 @@ export const getProducts = async (req, res) => {
     queryObj = JSON.stringify(queryObj);
     queryObj = queryObj.replace(/gt|gte|lt|lte|in|nin|eq/g, match => `$${match}`);
     queryObj = JSON.parse(queryObj);
-    
     const mongoseQuery = productModel.find(queryObj).skip(skip).limit(limit);
 
     // If search query is provided, add search functionality
     if (req.query.search) {
         mongoseQuery.find({
             $or: [
-                { name: { $regex: req.query.search, $options: 'i' } },
+                { name: { $regex: req.query.search, $options: 'i' } }, // Added case-insensitive flag
                 { description: { $regex: req.query.search, $options: 'i' } }
             ]
+        });
+    }
+
+    // If categoryName query is provided, filter by category
+    if (req.query.categoryName) {
+        mongoseQuery.find({
+            'categoryId.name': { $regex: req.query.categoryName, $options: 'i' } // Filter by category name
         });
     }
 
     // Fetch count for pagination
     const count = await productModel.estimatedDocumentCount();
 
-    try {
-        // Fetch products and populate category name
-        const products = await mongoseQuery
-            .sort(req.query.sort)
-            .select('name price discount categoryId') // Ensure categoryId is selected
-            .populate({
-                path: 'categoryId', // Ensure you're populating categoryId
-                select: 'name'  // Select only the category name
-            });
+    // Populate category name and select necessary fields
+    const products = await mongoseQuery
+        .sort(req.query.sort)
+        .select('name price discount categoryId') // Select categoryId to populate
+        .populate({
+            path: 'categoryId', // Assuming 'categoryId' is the reference field
+            select: 'name', // Fetch only the category name
+        });
 
-        if (products.length === 0) {
-            return res.status(404).json({ message: 'No products found' });
-        }
-
-        // Transform the product data to match the desired response format
-        const transformedProducts = products.map(product => ({
-            _id: product._id,
-            name: product.name,
-            price: product.price,
-            discount: product.discount,
-            category: product.categoryId.name // Extract the category name directly
-        }));
-
-        return res.status(200).json({ message: "success", products: transformedProducts });
-    } catch (error) {
-        console.error("Error during population:", error);
-        return res.status(500).json({ message: "Error populating category", error: error.message });
-    }
+    return res.status(200).json({ message: "success", products });
 };
 
 
-// Update Product
 export const update = async (req, res) => {
     const { productId } = req.params;
     const { name, price, discount, categoryId, subCategoryId } = req.body;
