@@ -16,13 +16,34 @@ import {
     SheetTrigger,
 } from "../components/ui/sheet.jsx"
 import { Checkbox } from "../components/ui/checkbox.jsx"
-import { products } from "../App.js"
 import ProductGrid from "../components/ProductGrid.jsx"
 import debounce from "lodash.debounce"
-import { useSearchParams } from "react-router-dom"
+import { useLocation, useSearchParams } from "react-router-dom"
 import WhatsAppButton from "../components/ui/whatsappButton.jsx"
+import axios from "axios"
 
 const AllProductsPage = () => {
+    const location = useLocation();
+    const [products, setProducts] = useState([]);
+  
+    // Fetch products and orders from backend
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          // Fetch products from the backend API
+          const productResponse = location.search ?await axios.get(`http://localhost:4000/products/category${location.search}`) : await axios.get("http://localhost:4000/products");
+          
+          setProducts(productResponse.data.products);
+  console.log(productResponse.data.products);
+  
+          
+        } catch (error) {
+          console.error("Error fetching data", error);
+        }
+      };
+  
+      fetchData();
+    }, [location.search]);
     const pageTopRef = useRef(null)
     // Extract unique categories
     const categories = [...new Set(products.map((product) => product.category))]
@@ -49,6 +70,7 @@ const AllProductsPage = () => {
     useEffect(() => {
         let result = [...products]
 
+        console.log(result)
         if (searchTerm) {
             result = result.filter((product) => product.name.toLowerCase().includes(searchTerm.toLowerCase()))
         }
@@ -60,20 +82,20 @@ const AllProductsPage = () => {
             setSelectedCategories([categoryParam])
         }
 
-        result = result.filter((product) => product.price >= priceRange[0] && product.price <= priceRange[1])
+        // result = result.filter((product) => product.price >= priceRange[0] && product.price <= priceRange[1])
 
-        result.sort((a, b) => {
-            switch (sortBy) {
-                case "price-asc":
-                    return a.price - b.price
-                case "price-desc":
-                    return b.price - a.price
-                case "name-desc":
-                    return b.name.localeCompare(a.name)
-                default:
-                    return a.name.localeCompare(b.name)
-            }
-        })
+        // result.sort((a, b) => {
+        //     switch (sortBy) {
+        //         case "price-asc":
+        //             return a.price - b.price
+        //         case "price-desc":
+        //             return b.price - a.price
+        //         case "name-desc":
+        //             return b.name.localeCompare(a.name)
+        //         default:
+        //             return a.name.localeCompare(b.name)
+        //     }
+        // })
 
         setFilteredProducts(result)
     }, [searchTerm, selectedCategories, priceRange, sortBy])
@@ -248,6 +270,7 @@ const AllProductsPage = () => {
                             transition={{ delay: 0.2 }}
                             className="lg:col-span-3"
                         >
+                            {/* <ProductGrid showAll={true} products={filteredProducts} /> */}
                             <ProductGrid showAll={true} products={filteredProducts} />
                         </motion.div>
                     </div>

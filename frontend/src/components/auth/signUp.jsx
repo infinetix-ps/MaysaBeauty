@@ -4,8 +4,8 @@ import { toast } from "react-toastify"
 import StepIndicator from "../uiAuth/stepIndicator.jsx"
 import "./auth.css"
 
-
 function SignUp() {
+    const [userName, setUserName] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [errors, setErrors] = useState({})
@@ -25,6 +25,12 @@ function SignUp() {
         e.preventDefault()
         setErrors({})
 
+        if (!userName.trim()) {
+            setErrors((prev) => ({ ...prev, userName: "User name is required" }))
+            toast.error("User name is required")
+            return
+        }
+
         if (!email || !validateEmail(email)) {
             setErrors((prev) => ({ ...prev, email: "Please enter a valid email address" }))
             toast.error("Please enter a valid email address")
@@ -42,10 +48,20 @@ function SignUp() {
         }
 
         try {
-            // TODO: Implement account creation and email sending logic here
-            console.log("Creating account for:", email)
-            toast.success("Verification email sent successfully!")
-            navigate(`/verify?email=${encodeURIComponent(email)}`)
+            const response = await fetch("http://localhost:4000/auth/register", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ userName, email, password })
+            })
+            
+            const data = await response.json()
+            if (response.ok) {
+                toast.success("Verification email sent successfully!")
+                // Pass email via state
+                navigate("/verify", { state: { email } })
+            } else {
+                throw new Error(data.message || "Failed to create account")
+            }
         } catch (error) {
             console.error("Error creating account:", error)
             toast.error("Failed to create account. Please try again.")
@@ -59,22 +75,26 @@ function SignUp() {
                     <div className="auth-card-left bg-secondary">
                         <h2 className="auth-title text-button">Join Us</h2>
                         <p className="auth-subtitle text-button">Experience the future of online shopping.</p>
-                        <div className="auth-icon-container">
-                            <div className="auth-icon bg-main">
-                                <i className="fas fa-user text-button text-xl"></i>
-                            </div>
-                            <div className="auth-icon bg-main">
-                                <i className="fas fa-envelope text-button text-xl"></i>
-                            </div>
-                            <div className="auth-icon bg-main">
-                                <i className="fas fa-lock text-button text-xl"></i>
-                            </div>
-                        </div>
                     </div>
                     <div className="auth-card-right">
                         <StepIndicator steps={["Account", "Verify", "Complete"]} currentStep={0} />
                         <h1 className="auth-title text-button">Create Account</h1>
                         <form onSubmit={handleSubmit} className="auth-form">
+                            <div>
+                                <div className="auth-input-container">
+                                    <input
+                                        id="userName"
+                                        type="text"
+                                        value={userName}
+                                        onChange={(e) => setUserName(e.target.value)}
+                                        className="auth-input text-tertiary"
+                                        placeholder="User Name"
+                                        required
+                                    />
+                                    <i className="fas fa-user auth-input-icon"></i>
+                                </div>
+                                {errors.userName && <p className="mt-2 text-sm text-red-600 break-words">{errors.userName}</p>}
+                            </div>
                             <div>
                                 <div className="auth-input-container">
                                     <input
@@ -123,5 +143,3 @@ function SignUp() {
 }
 
 export default SignUp
-
-

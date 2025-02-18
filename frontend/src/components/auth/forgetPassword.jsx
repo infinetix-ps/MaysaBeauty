@@ -1,13 +1,12 @@
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
+import axios from "axios"  // Import axios for making requests
 import StepIndicator from "../uiAuth/stepIndicator.jsx"
 import "./auth.css"
 
-
-
 function ForgotPassword() {
-    const [email, setEmail] = useState("")
+    const [email, setEmail] = useState("")  // Email state
     const [errors, setErrors] = useState({})
     const navigate = useNavigate()
 
@@ -20,6 +19,7 @@ function ForgotPassword() {
         e.preventDefault()
         setErrors({})
 
+        // Validate the email format
         if (!email || !validateEmail(email)) {
             setErrors({ email: "Please enter a valid email address" })
             toast.error("Please enter a valid email address")
@@ -27,11 +27,17 @@ function ForgotPassword() {
         }
 
         try {
-            // TODO: Implement password reset email sending logic here
-            console.log("Sending password reset email to:", email)
-            toast.success("Password reset email sent successfully!")
-            navigate(`/reset-password?email=${encodeURIComponent(email)}`)
+            // Send PATCH request to the backend
+            const response = await axios.patch("http://localhost:4000/auth/sendCode", { email })
+            
+            if (response.status === 200) {
+                // If the request is successful, show a success message
+                toast.success("Password reset email sent successfully!")
+                // Pass the email in the state when navigating to reset-password page
+                navigate(`/reset-password`, { state: { email } })
+            }
         } catch (error) {
+            // If an error occurs, show an error message
             console.error("Error sending password reset email:", error)
             toast.error("Failed to send password reset email. Please try again.")
         }
@@ -44,7 +50,7 @@ function ForgotPassword() {
                     <div className="auth-card-left bg-secondary">
                         <h2 className="auth-title text-button">Forgot Password?</h2>
                         <p className="auth-subtitle text-button">Don't worry, we've got you covered.</p>
-                        <div className="auth-icon-container">
+                        {/* <div className="auth-icon-container">
                             <div className="auth-icon bg-main">
                                 <i className="fas fa-lock text-button text-xl"></i>
                             </div>
@@ -54,12 +60,12 @@ function ForgotPassword() {
                             <div className="auth-icon bg-main">
                                 <i className="fas fa-key text-button text-xl"></i>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                     <div className="auth-card-right">
                         <StepIndicator steps={["Request", "Reset", "Complete"]} currentStep={0} />
                         <h1 className="auth-title text-button">Reset Your Password</h1>
-                        <p className="text-white mb-6">
+                        <p className="text-tertiary mb-6">
                             Enter your email address and we'll send you instructions to reset your password.
                         </p>
                         <form onSubmit={handleSubmit} className="auth-form">
@@ -96,4 +102,3 @@ function ForgotPassword() {
 }
 
 export default ForgotPassword
-

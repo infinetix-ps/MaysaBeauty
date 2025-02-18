@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { useNavigate, useLocation } from "react-router-dom"
 import { toast } from "react-toastify"
+import axios from "axios"  // Import axios for making requests
 import StepIndicator from "../uiAuth/stepIndicator.jsx"
 import OtpInput from "../uiAuth/OTPinput.jsx"
 import "./auth.css"
@@ -13,7 +14,7 @@ function ResetPassword() {
     const [errors, setErrors] = useState({})
     const navigate = useNavigate()
     const location = useLocation()
-    const email = new URLSearchParams(location.search).get("email")
+    const email = location.state?.email
 
     const validatePassword = (password) => {
         const re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
@@ -41,8 +42,7 @@ function ResetPassword() {
         }
 
         try {
-            // TODO: Implement password validation and proceed to verification
-            console.log("Password validated, proceeding to verification for:", email)
+            // Proceed to verification step after validating password
             setStep(2)
         } catch (error) {
             console.error("Error validating password:", error)
@@ -61,10 +61,17 @@ function ResetPassword() {
         }
 
         try {
-            // TODO: Implement password reset logic here
-            console.log("Resetting password for:", email, "with code:", verificationCode)
-            toast.success("Password reset successfully!")
-            navigate("/signin")
+            // Send PATCH request to reset password
+            const response = await axios.patch("http://localhost:4000/auth/forgetPassword", {
+                email,
+                password: newPassword,
+                code: verificationCode,
+            })
+
+            if (response.status === 200) {
+                toast.success("Password reset successfully!")
+                navigate("/signin")
+            }
         } catch (error) {
             console.error("Error resetting password:", error)
             toast.error("Failed to reset password. Please try again.")
@@ -82,7 +89,7 @@ function ResetPassword() {
                                 ? "Choose a new secure password for your account."
                                 : "Enter the verification code sent to your email."}
                         </p>
-                        <div className="auth-icon-container">
+                        {/* <div className="auth-icon-container">
                             <div className="auth-icon bg-main">
                                 <i className="fas fa-lock text-button text-xl"></i>
                             </div>
@@ -92,7 +99,7 @@ function ResetPassword() {
                             <div className="auth-icon bg-main">
                                 <i className="fas fa-check-circle text-button text-xl"></i>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                     <div className="auth-card-right">
                         <StepIndicator steps={["Request", "Reset", "Complete"]} currentStep={step} />
@@ -140,10 +147,10 @@ function ResetPassword() {
                         ) : (
                             <form onSubmit={handleVerificationSubmit} className="auth-form">
                                 <div>
-                                    <label htmlFor="verificationCode" className="block text-m font-medium text-text mb-1">
+                                    <label htmlFor="verificationCode" className="block text-sm font-medium text-text mb-1">
                                         Verification Code
                                     </label>
-                                    <p className="text-white  mb-4">Enter the 6-digit code sent to {email}</p>
+                                    <p className="text-text-light mb-4">Enter the 6-digit code sent to {email}</p>
                                     <OtpInput value={verificationCode} valueLength={6} onChange={setVerificationCode} />
                                     {errors.verificationCode && (
                                         <p className="mt-2 text-sm text-red-600 break-words">{errors.verificationCode}</p>
@@ -163,4 +170,3 @@ function ResetPassword() {
 }
 
 export default ResetPassword
-

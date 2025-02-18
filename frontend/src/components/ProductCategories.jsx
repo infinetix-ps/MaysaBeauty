@@ -1,50 +1,63 @@
 import { motion } from "framer-motion"
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"
 
-const categories = [
-    {
-        name: "Slimming",
-        image: "https://images.unsplash.com/photo-1518310383802-640c2de311b2?auto=format&fit=crop&q=80&w=1000",
-        color: "bg-blue-100 dark:bg-blue-900",
-    },
-    {
-        name: "Fattening",
-        image: "https://images.unsplash.com/photo-1565895405140-6b9830a88c19?auto=format&fit=crop&q=80&w=1000",
-        color: "bg-pink-100 dark:bg-pink-900",
-    },
-    {
-        name: "Skin Care",
-        image: "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&q=80&w=1000",
-        color: "bg-green-100 dark:bg-green-900",
-    },
-    {
-        name: "Body Sculpting",
-        image: "https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&q=80&w=1000",
-        color: "bg-purple-100 dark:bg-purple-900",
-    },
-    {
-        name: "Cellulite Treatment",
-        image: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&q=80&w=1000",
-        color: "bg-yellow-100 dark:bg-yellow-900",
-    },
-    {
-        name: "Stretch Mark Care",
-        image: "https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&q=80&w=1000",
-        color: "bg-red-100 dark:bg-red-900",
-    },
-    {
-        name: "Breast Enhancement",
-        image: "https://images.unsplash.com/photo-1566616213894-2d4e1baee5d8?auto=format&fit=crop&q=80&w=1000",
-        color: "bg-indigo-100 dark:bg-indigo-900",
-    },
-    {
-        name: "Anti-Aging",
-        image: "https://images.unsplash.com/photo-1505944270255-72b8c68c6a70?auto=format&fit=crop&q=80&w=1000",
-        color: "bg-teal-100 dark:bg-teal-900",
-    },
-]
+// const categories = [
+//     {
+//         name: "Slimming",
+//         image: "https://images.unsplash.com/photo-1518310383802-640c2de311b2?auto=format&fit=crop&q=80&w=1000",
+//         color: "bg-blue-100 dark:bg-blue-900",
+//     },
+//     {
+//         name: "Fattening",
+//         image: "https://images.unsplash.com/photo-1565895405140-6b9830a88c19?auto=format&fit=crop&q=80&w=1000",
+//         color: "bg-pink-100 dark:bg-pink-900",
+//     },
+//     {
+//         name: "Skin Care",
+//         image: "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&q=80&w=1000",
+//         color: "bg-green-100 dark:bg-green-900",
+//     },
+//     {
+//         name: "Body Sculpting",
+//         image: "https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&q=80&w=1000",
+//         color: "bg-purple-100 dark:bg-purple-900",
+//     },
+//     {
+//         name: "Cellulite Treatment",
+//         image: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&q=80&w=1000",
+//         color: "bg-yellow-100 dark:bg-yellow-900",
+//     },
+//     {
+//         name: "Stretch Mark Care",
+//         image: "https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&q=80&w=1000",
+//         color: "bg-red-100 dark:bg-red-900",
+//     },
+//     {
+//         name: "Breast Enhancement",
+//         image: "https://images.unsplash.com/photo-1566616213894-2d4e1baee5d8?auto=format&fit=crop&q=80&w=1000",
+//         color: "bg-indigo-100 dark:bg-indigo-900",
+//     },
+//     {
+//         name: "Anti-Aging",
+//         image: "https://images.unsplash.com/photo-1505944270255-72b8c68c6a70?auto=format&fit=crop&q=80&w=1000",
+//         color: "bg-teal-100 dark:bg-teal-900",
+//     },
+// ]
 
 const ProductCategories = () => {
+    const [categories, setCategories] = useState([]);
+
+     useEffect(() => {
+        fetch("http://localhost:4000/categories")
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.message === "success") {
+              setCategories(data.categorise);
+            }
+          })
+          .catch((error) => console.error("Error fetching categories:", error));
+      }, []);
     const navigate = useNavigate()
     return (
         <section className="py-16 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 transition-colors duration-300">
@@ -66,7 +79,7 @@ const ProductCategories = () => {
                             transition={{ duration: 0.6, delay: index * 0.1 }}
                         >
                             <div
-                                onClick={() => navigate(`/all-products?category=${encodeURIComponent(category.name)}`)}
+                                onClick={() => navigate(`/products?categoryName=${encodeURIComponent(category.name)}`)}
                                 className="cursor-pointer"
                             >
                                 <motion.div
@@ -76,7 +89,7 @@ const ProductCategories = () => {
                                 >
                                     <div className="absolute inset-0 w-full h-full">
                                         <img
-                                            src={category.image || "/placeholder.svg"}
+                                            src={category.image?.secure_url || "/placeholder.svg"}
                                             alt={category.name}
                                             className="transition-transform duration-300 hover:scale-110 w-full h-full object-cover"
                                         />

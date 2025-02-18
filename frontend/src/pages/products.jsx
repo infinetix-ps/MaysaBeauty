@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react"
 import { useParams } from "react-router-dom"
 import { motion, AnimatePresence } from "framer-motion"
-import { getProduct } from "../App.js"
 import { Button } from "../components/ui/button.jsx"
 import Header from "../components/Header.jsx"
 import { ChevronLeft, ChevronRight, Star } from "lucide-react"
@@ -11,6 +10,7 @@ import { toast } from "react-toastify"
 import WhatsAppButton from "../components/ui/whatsappButton.jsx"
 import ReviewList from "../components/reviewList.jsx"
 import ReviewForm from "../components/reviewForm.jsx"
+import axios from "axios"
 
 const StarRating = ({ rating, size = 20 }) => {
     return (
@@ -34,18 +34,23 @@ export default function ProductPage() {
     const [currentImageIndex, setCurrentImageIndex] = useState(0)
     const { addToCart } = useCart()
 
-    useEffect(() => {
-        const fetchProduct = async () => {
-            setLoading(true)
-            const fetchedProduct = getProduct(Number(id))
-            if (fetchedProduct) {
-                setProduct(fetchedProduct)
-            }
-            setLoading(false)
-        }
-
-        fetchProduct()
-    }, [id])
+       
+     // Fetch products and orders from backend
+     useEffect(() => {
+       const fetchData = async () => {
+         try {
+           // Fetch products from the backend API
+           const productResponse = await axios.get(`http://localhost:4000/products/${id}`);
+           setProduct(productResponse.data.product);
+           setLoading(false);
+           
+         } catch (error) {
+           console.error("Error fetching data", error);
+         }
+       };
+   
+       fetchData();
+     }, []); // Empty dependency array ensures this runs only once on mount
 
     const nextImage = () => {
         setCurrentImageIndex((prevIndex) => (prevIndex + 1) % product.images.length)
@@ -57,10 +62,10 @@ export default function ProductPage() {
 
     const handleAddToCart = () => {
         const cartItem = {
-            id: product.id,
+            id: product._id,
             name: product.name,
-            price: product.price,
-            image: product.images[0],
+            price: product?.price,
+            image: product?.images[0] || null,
             quantity,
         }
         addToCart(cartItem)
@@ -131,13 +136,13 @@ export default function ProductPage() {
                                             className="relative w-full h-full"
                                         >
                                             <img
-                                                src={product.images[currentImageIndex] || "/placeholder.svg"}
+                                                src={product?.images ? product?.images[currentImageIndex] : "/placeholder.svg"}
                                                 alt={product.name}
                                                 className="w-full h-full object-cover rounded-lg"
                                             />
                                         </motion.div>
                                     </AnimatePresence>
-                                    {product.images.length > 1 && (
+                                    {product?.images?.length > 1 && (
                                         <>
                                             <motion.button
                                                 whileHover={{ scale: 1.1 }}
@@ -159,7 +164,7 @@ export default function ProductPage() {
                                     )}
                                 </div>
                                 <div className="flex gap-4 overflow-x-auto pb-2">
-                                    {product.images.map((image, index) => (
+                                    {product?.images?.map((image, index) => (
                                         <motion.button
                                             key={index}
                                             whileHover={{ scale: 1.05 }}
@@ -202,7 +207,7 @@ export default function ProductPage() {
                                     transition={{ duration: 0.6, delay: 0.3 }}
                                     className="text-3xl font-bold text-[#C17F82] dark:text-[#e5ddd3]"
                                 >
-                                    ${product.price.toFixed(2)}
+                                    ${product.price?.toFixed(2)}
                                 </motion.div>
 
                                 <div className="flex items-center space-x-2">
@@ -302,12 +307,12 @@ export default function ProductPage() {
                             <div className="flex items-center mb-6">
                                 <StarRating rating={product.rating} size={24} />
                                 <span className="ml-2 text-lg text-gray-600 dark:text-gray-400">
-                                    {product.rating.toFixed(1)} out of 5
+                                    {product.rating?.toFixed(1)} out of 5
                                 </span>
                             </div>
                             <ReviewForm productId={product.id} onSubmit={handleReviewSubmit} />
                             <div className="mt-8">
-                                <ReviewList reviews={product.reviews} />
+                                {/* <ReviewList reviews={product.reviews} /> */}
                             </div>
                         </div>
                     </motion.div>

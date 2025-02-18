@@ -72,10 +72,10 @@ function Footer() {
               transition={{ duration: 0.5, delay: 0.4 }}
               className="space-y-2"
             >
-              {["Home", "Products", "About Us", "Contact"].map((item, index) => (
+              {["Home", "Products"].map((item, index) => (
                 <li key={item}>
                   <Link
-                    to={`/${item.toLowerCase().replace(" ", "-")}`}
+                    to={`/${item=="Home"? "":item.toLowerCase().replace(" ", "-")}`}
                     className="text-[#e5ddd3] hover:text-white transition-colors"
                   >
                     {item}

@@ -6,49 +6,64 @@ import { useCart } from "../pages/contexts/cartContext";
 import ThemeToggle from "./themeProvider.jsx";
 import WhatsAppButton from "./ui/whatsappButton.jsx";
 
-const categories = [
-  {
-    name: "Slimming",
-    icon: Ruler,
-    subcategories: ["Body Wraps", "Weight Management", "Fitness Supplements"],
-    description: "Achieve your ideal figure with our slimming solutions",
-  },
-  {
-    name: "Fattening",
-    icon: Weight,
-    subcategories: ["Curves Enhancement", "Weight Gain", "Natural Supplements"],
-    description: "Enhance your curves naturally and safely",
-  },
-  {
-    name: "Hair Care",
-    icon: Scissors,
-    subcategories: ["Shampoo & Conditioner", "Styling Products", "Hair Treatments"],
-    description: "Transform your hair with premium care products",
-  },
-  {
-    name: "Makeup",
-    icon: Palette,
-    subcategories: ["Face", "Eyes", "Lips", "Nails"],
-    description: "Express yourself with quality cosmetics",
-  },
-  {
-    name: "Skin Care",
-    icon: Sparkles,
-    subcategories: ["Face Care", "Body Care", "Anti-Aging"],
-    description: "Reveal your natural radiance",
-  },
-  {
-    name: "Body Sculpting",
-    icon: Heart,
-    subcategories: ["Cellulite Treatment", "Firming Solutions", "Body Contouring"],
-    description: "Shape and tone your body effectively",
-  },
-  {
-    name: "Fragrance",
-    icon: Droplet,
-    subcategories: ["Perfumes", "Body Mists", "Essential Oils"],
-    description: "Discover your signature scent",
-  },
+// const categories = [
+//   {
+//     name: "Slimming",
+//     icon: Ruler,
+//     subcategories: ["Body Wraps", "Weight Management", "Fitness Supplements"],
+//     description: "Achieve your ideal figure with our slimming solutions",
+//   },
+//   {
+//     name: "Fattening",
+//     icon: Weight,
+//     subcategories: ["Curves Enhancement", "Weight Gain", "Natural Supplements"],
+//     description: "Enhance your curves naturally and safely",
+//   },
+//   {
+//     name: "Hair Care",
+//     icon: Scissors,
+//     subcategories: ["Shampoo & Conditioner", "Styling Products", "Hair Treatments"],
+//     description: "Transform your hair with premium care products",
+//   },
+//   {
+//     name: "Makeup",
+//     icon: Palette,
+//     subcategories: ["Face", "Eyes", "Lips", "Nails"],
+//     description: "Express yourself with quality cosmetics",
+//   },
+//   {
+//     name: "Skin Care",
+//     icon: Sparkles,
+//     subcategories: ["Face Care", "Body Care", "Anti-Aging"],
+//     description: "Reveal your natural radiance",
+//   },
+//   {
+//     name: "Body Sculpting",
+//     icon: Heart,
+//     subcategories: ["Cellulite Treatment", "Firming Solutions", "Body Contouring"],
+//     description: "Shape and tone your body effectively",
+//   },
+//   {
+//     name: "Fragrance",
+//     icon: Droplet,
+//     subcategories: ["Perfumes", "Body Mists", "Essential Oils"],
+//     description: "Discover your signature scent",
+//   },
+// ];
+
+const icons = [
+
+    Ruler,
+  Weight,
+  
+   Scissors,
+   Palette,
+
+ Sparkles,
+
+ Heart,
+Droplet,
+
 ];
 
 const mobileMenuItemVariants = {
@@ -69,6 +84,17 @@ const Header = () => {
   const { cart } = useCart();
   const cartItemCount = cart.reduce((total, item) => total + item.quantity, 0);
   const { scrollY } = useScroll();
+  const [categories, setCategories] = useState([]);
+  useEffect(() => {
+    fetch("http://localhost:4000/categories")
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.message === "success") {
+          setCategories(data.categorise);
+        }
+      })
+      .catch((error) => console.error("Error fetching categories:", error));
+  }, []);
 
   const headerBackground = useTransform(
     scrollY,
@@ -112,7 +138,7 @@ const Header = () => {
                 Home
               </Link>
 
-              <Link to="/all-products" className="hover:text-pink-400 transition-colors relative group">
+              <Link to="/products" className="hover:text-pink-400 transition-colors relative group">
                 All Products
               </Link>
 
@@ -131,8 +157,10 @@ const Header = () => {
                 {isCategoryMenuOpen && (
                   <div className="absolute top-full left-1/2 -translate-x-1/2 w-[800px] bg-white shadow-xl rounded-lg overflow-hidden border border-gray-200">
                     <div className="grid grid-cols-2 gap-6 p-6">
-                      {categories.map((category, index) => {
-                        const Icon = category.icon;
+                      {categories?.map((category, index) => {
+                         const randomIndex = Math.floor(Math.random() * 5) ;
+                       
+                         const Icon= icons[randomIndex];
                         return (
                           <div
                             key={category.name}
@@ -144,24 +172,10 @@ const Header = () => {
                                 <Icon className="w-6 h-6 text-pink-500" />
                               </div>
                               <div className="flex-1">
-                                <h3 className="text-lg font-semibold text-gray-800 mb-1">
+                              <Link  to={`/products?categoryName=${category.name}`}  className="text-lg font-semibold text-gray-800 mb-1">
                                   {category.name}
-                                </h3>
-                                <p className="text-sm text-gray-500 mb-2">{category.description}</p>
-                                <ul className="space-y-1">
-                                  {category.subcategories.map((subcategory) => (
-                                    <li key={subcategory}>
-                                      <Link
-                                        to={`/category/${category.name.toLowerCase()}/${subcategory
-                                          .toLowerCase()
-                                          .replace(/\s+/g, "-")}`}
-                                        className="text-sm text-gray-600 hover:text-pink-500 transition-colors flex items-center space-x-1"
-                                      >
-                                        <span>{subcategory}</span>
-                                      </Link>
-                                    </li>
-                                  ))}
-                                </ul>
+                                </Link>
+                        
                               </div>
                             </div>
                           </div>
@@ -172,9 +186,9 @@ const Header = () => {
                 )}
               </div>
 
-              <Link to="/about-us" className="hover:text-pink-400 transition-colors relative group">
+              {/* <Link to="/about-us" className="hover:text-pink-400 transition-colors relative group">
                 About Us
-              </Link>
+              </Link> */}
             </nav>
 
             <div className="flex items-center space-x-4">
@@ -187,7 +201,7 @@ const Header = () => {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: index * 0.1 }}
                 >
-                  <Link to={index === 0 ? "/search" : index === 1 ? "/cart" : "/account"}>
+                  <Link to={index === 0 ? "/search" : index === 1 ? "/cart" : "/signin"}>
                     {index === 1 ? (
                       <div className="relative">
                         <ShoppingBag className="h-6 w-6 cursor-pointer" />
@@ -203,7 +217,7 @@ const Header = () => {
                   </Link>
                 </motion.div>
               ))}
-              <ThemeToggle />
+              {/* <ThemeToggle /> */}
             </div>
           </div>
         </div>
@@ -248,7 +262,7 @@ const Header = () => {
 
                 <motion.div variants={mobileMenuItemVariants} custom={1} initial="closed" animate="open">
                   <Link
-                    to="/all-products"
+                    to="/products"
                     className="flex items-center space-x-2 text-xl font-bold text-gray-800 hover:text-pink-600 transition-colors"
                     onClick={() => setIsMenuOpen(false)}
                   >
@@ -264,27 +278,39 @@ const Header = () => {
                       <span>Categories</span>
                     </h3>
                     <div className="grid gap-6">
-                      {categories.map((category, index) => {
-                        const Icon = category.icon;
+                    {categories?.map((category, index) => {
+                         const image= category.image?.secure_url;
                         return (
-                          <motion.div
+                          <div
                             key={category.name}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            className="bg-gray-50 p-4 rounded-lg transition-colors hover:bg-gray-100"
+                            className={`p-4 rounded-lg transition-colors hover:bg-gray-50 ${index % 2 === 0 ? "border-r border-gray-200" : ""
+                              }`}
                           >
-                            <div className="flex items-center space-x-4">
-                              <div className="p-2 bg-pink-100 rounded-lg">
-                                <Icon className="w-6 h-6 text-pink-500" />
-                              </div>
+                            <div className="flex items-start space-x-4">
+                                 <img src={image} alt={category.name}className="w-6 h-6 text-pink-500" /> 
+                              
                               <div className="flex-1">
-                                <h4 className="text-lg font-semibold text-gray-800">
+                                <Link to={`/products?categoryName=${category.name}`} className="text-lg font-semibold text-gray-800 mb-1">
                                   {category.name}
-                                </h4>
-                                <p className="text-sm text-gray-500">{category.description}</p>
+                                </Link>
+                                {/* <p className="text-sm text-gray-500 mb-2">{category.description}</p>
+                                <ul className="space-y-1">
+                                  {category.subcategories.map((subcategory) => (
+                                    <li key={subcategory}>
+                                      <Link
+                                        to={`/category/${category.name.toLowerCase()}/${subcategory
+                                          .toLowerCase()
+                                          .replace(/\s+/g, "-")}`}
+                                        className="text-sm text-gray-600 hover:text-pink-500 transition-colors flex items-center space-x-1"
+                                      >
+                                        <span>{subcategory}</span>
+                                      </Link>
+                                    </li>
+                                  ))}
+                                </ul> */}
                               </div>
                             </div>
-                          </motion.div>
+                          </div>
                         );
                       })}
                     </div>
@@ -292,14 +318,14 @@ const Header = () => {
                 </motion.div>
 
                 <motion.div variants={mobileMenuItemVariants} custom={3} initial="closed" animate="open">
-                  <Link
+                  {/* <Link
                     to="/about-us"
                     className="flex items-center space-x-2 text-xl font-bold text-gray-800 hover:text-pink-600 transition-colors"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     <Heart className="w-5 h-5" />
                     <span>About Us</span>
-                  </Link>
+                  </Link> */}
                 </motion.div>
               </div>
             </div>

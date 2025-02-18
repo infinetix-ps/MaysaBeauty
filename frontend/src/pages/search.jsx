@@ -1,11 +1,29 @@
 import React, { useState } from "react";
-import { products } from "../App.js";
 import Header from "../components/Header.jsx";
 import { Link } from "react-router-dom";
 import { Input } from "../components/ui/input.jsx";
 import { motion } from "framer-motion";
 
 export default function SearchPage() {
+    const [products, setProducts] = useState([]);
+
+  // Fetch products and orders from backend
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Fetch products from the backend API
+        const productResponse = await axios.get("http://localhost:4000/products");
+        setProducts(productResponse.data.products);
+
+      } catch (error) {
+        console.error("Error fetching data", error);
+      }
+    };
+
+    fetchData();
+  }, []); // Empty dependency array ensures this runs only once on mount
+
+
     const [searchTerm, setSearchTerm] = useState("");
     const filteredProducts = products.filter((product) =>
         product.name.toLowerCase().includes(searchTerm.toLowerCase())
