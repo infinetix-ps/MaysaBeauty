@@ -40,7 +40,7 @@ export default function ProductPage() {
         const fetchData = async () => {
             try {
                 // Fetch products from the backend API
-                const productResponse = await axios.get(`http://147.93.127.60:4000/products/${id}`);
+                const productResponse = await axios.get(`https://api.maysabeauty.store/products/${id}`);
                 setProduct(productResponse.data.product);
                 setLoading(false);
 

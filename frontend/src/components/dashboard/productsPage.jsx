@@ -232,7 +232,7 @@ const ProductsPage = () => {
         const fetchData = async () => {
             try {
                 // Fetch products from the backend API
-                const productResponse = await axios.get(`http://147.93.127.60:4000/products`);
+                const productResponse = await axios.get(`https://api.maysabeauty.store/products`);
                 setProducts(productResponse.data.products);
 
 
@@ -246,7 +246,7 @@ const ProductsPage = () => {
 
     const [categories, setCategories] = useState([]);
     useEffect(() => {
-        fetch("http://147.93.127.60:4000/categories")
+        fetch("https://api.maysabeauty.store/categories")
             .then((response) => response.json())
             .then((data) => {
                 if (data.message === "success") {
@@ -358,7 +358,7 @@ const ProductsPage = () => {
             };
 
             // Send a POST request to the backend using Axios
-            const { data } = await axios.post("http://147.93.127.60:4000/products", productData, {
+            const { data } = await axios.post("https://api.maysabeauty.store/products", productData, {
                 headers: {
                     "Content-Type": "application/json",
                 },

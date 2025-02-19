@@ -48,7 +48,7 @@ function SignUp() {
         }
 
         try {
-            const response = await fetch("http://147.93.127.60:4000/auth/register", {
+            const response = await fetch("https://api.maysabeauty.store/auth/register", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ userName, email, password })

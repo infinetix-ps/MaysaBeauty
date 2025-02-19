@@ -49,7 +49,7 @@ const ProductCategories = () => {
     const [categories, setCategories] = useState([]);
 
     useEffect(() => {
-        fetch("http://147.93.127.60:4000/categories")
+        fetch("https://api.maysabeauty.store/categories")
             .then((response) => response.json())
             .then((data) => {
                 if (data.message === "success") {

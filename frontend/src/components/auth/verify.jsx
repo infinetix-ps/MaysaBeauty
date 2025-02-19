@@ -26,7 +26,7 @@ function Verify() {
         setLoading(true);
 
         try {
-            const response = await fetch("http://147.93.127.60:4000/auth/verify-email", {
+            const response = await fetch("https://api.maysabeauty.store/auth/verify-email", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, otpCode: verificationCode }),
@@ -49,7 +49,7 @@ function Verify() {
         setResendLoading(true);
 
         try {
-            const response = await fetch("http://147.93.127.60:4000/auth/resend-otp", {
+            const response = await fetch("https://api.maysabeauty.store/auth/resend-otp", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email }),

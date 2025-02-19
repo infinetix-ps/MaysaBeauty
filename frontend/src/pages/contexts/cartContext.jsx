@@ -96,7 +96,7 @@ export const CartProvider = ({ children }) => {
         } else {
             // If no cart in localStorage, fetch it from the backend
             axios
-                .get("http://147.93.127.60:4000/cart", {
+                .get("https://api.maysabeauty.store/cart", {
                     headers: {
                         Authorization: `Hossam__${localStorage.getItem('token')}`,
                     },
