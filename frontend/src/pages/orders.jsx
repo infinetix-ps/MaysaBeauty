@@ -1,11 +1,14 @@
+"use client"
+
 import { useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card.jsx"
 import { Input } from "../components/ui/input.jsx"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../components/ui/table.jsx"
 import { Button } from "../components/ui/button.jsx"
-import { Search, ArrowLeft, Filter } from "lucide-react"
+import { Search, ArrowLeft, Filter, X } from "lucide-react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select.jsx"
 import { OrderDetails } from "../components/dashboard/orderDetails.jsx"
+import { DatePicker } from "../components/ui/date-picker"
 
 const initialOrders = [
     {
@@ -28,11 +31,13 @@ function OrdersPage() {
     const [orders, setOrders] = useState(initialOrders)
     const [selectedOrder, setSelectedOrder] = useState(null)
     const [isDetailsOpen, setIsDetailsOpen] = useState(false)
+    const [selectedDate, setSelectedDate] = useState(null)
 
     const filteredOrders = orders.filter(
         (order) =>
-            order.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            order.customer.toLowerCase().includes(searchTerm.toLowerCase()),
+            (order.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                order.customer.toLowerCase().includes(searchTerm.toLowerCase())) &&
+            (!selectedDate || new Date(order.date).toDateString() === selectedDate.toDateString()),
     )
 
     const handleStatusChange = (orderId, newStatus) => {
@@ -66,8 +71,19 @@ function OrdersPage() {
                                 onChange={(e) => setSearchTerm(e.target.value)}
                             />
                         </div>
+                        <DatePicker selected={selectedDate} onSelect={setSelectedDate} className="w-full md:w-auto" />
                         <Button variant="outline" size="icon">
                             <Filter className="h-4 w-4" />
+                        </Button>
+                        <Button
+                            variant="outline"
+                            size="icon"
+                            onClick={() => {
+                                setSearchTerm("")
+                                setSelectedDate(null)
+                            }}
+                        >
+                            <X className="h-4 w-4" />
                         </Button>
                     </div>
                 </div>
@@ -76,8 +92,8 @@ function OrdersPage() {
                         <CardTitle>Recent Orders</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <div className="overflow-x-auto">
-                            <Table>
+                        <div className="overflow-x-auto relative">
+                            <Table className="w-full cursor-default">
                                 <TableHeader>
                                     <TableRow>
                                         <TableHead>Order ID</TableHead>

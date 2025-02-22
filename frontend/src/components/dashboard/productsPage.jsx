@@ -1,4 +1,6 @@
-import { useState, useCallback } from "react"
+"use client"
+
+import { useState, useCallback, useEffect } from "react"
 import { Link } from "react-router-dom"
 import { Card, CardContent } from "../uiDashboard/card.jsx"
 import { Input } from "../uiDashboard/input.jsx"
@@ -8,15 +10,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from ".
 import { Badge } from "../uiDashboard/badge.jsx"
 import { Button } from "../uiDashboard/button.jsx"
 import { PlusCircle, Search, Pencil, Trash2, MoreHorizontal, X, ArrowLeft } from "lucide-react"
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "../ui/dialog.jsx"
+import { Dialog, DialogContent, DialogFooter } from "../ui/dialog.jsx"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select.jsx"
 import { toast } from "../ui/useToast.js"
 import {
@@ -38,8 +32,20 @@ const initialProducts = [
         stock: 50,
         status: "In Stock",
         photos: [],
+        description: "A beautiful sparkly dress perfect for little princesses",
+        usage: "Machine wash cold, tumble dry low",
     },
-    { id: 2, name: "Unicorn T-Shirt", category: "Tops", price: 24.99, stock: 5, status: "Low Stock", photos: [] },
+    {
+        id: 2,
+        name: "Unicorn T-Shirt",
+        category: "Tops",
+        price: 24.99,
+        stock: 5,
+        status: "Low Stock",
+        photos: [],
+        description: "A cute unicorn t-shirt",
+        usage: "Machine wash cold",
+    },
     {
         id: 3,
         name: "Rainbow Tutu Skirt",
@@ -48,6 +54,8 @@ const initialProducts = [
         stock: 0,
         status: "Out of Stock",
         photos: [],
+        description: "A colorful rainbow tutu",
+        usage: "Hand wash only",
     },
     {
         id: 4,
@@ -57,8 +65,20 @@ const initialProducts = [
         stock: 200,
         status: "In Stock",
         photos: [],
+        description: "A set of butterfly hair clips",
+        usage: "Keep away from small children",
     },
-    { id: 5, name: "Glitter Sneakers", category: "Shoes", price: 39.99, stock: 8, status: "Low Stock", photos: [] },
+    {
+        id: 5,
+        name: "Glitter Sneakers",
+        category: "Shoes",
+        price: 39.99,
+        stock: 8,
+        status: "Low Stock",
+        photos: [],
+        description: "Sparkly glitter sneakers",
+        usage: "Spot clean only",
+    },
 ]
 
 const ProductCard = ({ product, onEdit, onDelete }) => {
@@ -87,14 +107,18 @@ const ProductCard = ({ product, onEdit, onDelete }) => {
                         </div>
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
-                                <Button variant="ghost" size="icon" className="text-gray-500 hover:text-gray-700">
+                                <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    className="text-gray-500 hover:text-gray-700 touch-manipulation min-h-[44px] min-w-[44px]"
+                                >
                                     <MoreHorizontal className="h-4 w-4" />
                                 </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end" className="bg-white border border-gray-200">
                                 <DropdownMenuLabel className="text-gray-700">Actions</DropdownMenuLabel>
-                                <DropdownMenuItem onClick={() => onEdit(product)} className="text-gray-700 hover:bg-gray-100">
-                                    <Pencil className="mr-2 h-4 w-4" />
+                                <DropdownMenuItem onClick={() => onEdit(product)} className="text-black hover:bg-gray-100">
+                                    <Pencil className="mr-2 h-4 w-4 stroke-black" />
                                     Edit
                                 </DropdownMenuItem>
                                 <DropdownMenuItem onClick={() => onDelete(product.id)} className="text-red-600 hover:bg-red-50">
@@ -185,8 +209,8 @@ const ProductTable = ({ products, onEdit, onDelete }) => {
                                     </DropdownMenuTrigger>
                                     <DropdownMenuContent align="end" className="bg-white border border-gray-200">
                                         <DropdownMenuLabel className="text-gray-700">Actions</DropdownMenuLabel>
-                                        <DropdownMenuItem onClick={() => onEdit(product)} className="text-gray-700 hover:bg-gray-100">
-                                            <Pencil className="mr-2 h-4 w-4" />
+                                        <DropdownMenuItem onClick={() => onEdit(product)} className="text-black hover:bg-gray-100">
+                                            <Pencil className="mr-2 h-4 w-4 stroke-black" />
                                             Edit
                                         </DropdownMenuItem>
                                         <DropdownMenuItem onClick={() => onDelete(product.id)} className="text-red-600 hover:bg-red-50">
@@ -223,48 +247,133 @@ const ProductsPage = () => {
         price: 0,
         stock: 0,
         photos: [],
+        description: "",
+        usage: "",
     })
     const [editingProduct, setEditingProduct] = useState(null)
     const [editDialogOpen, setEditDialogOpen] = useState(false)
+    const [addDialogOpen, setAddDialogOpen] = useState(false)
 
-    const onDrop = useCallback((acceptedFiles) => {
+    const onDrop = useCallback((acceptedFiles, mode = "add") => {
         const newPhotos = acceptedFiles.slice(0, 4).map((file) => URL.createObjectURL(file))
-        setNewProduct((prev) => ({
-            ...prev,
-            photos: [...prev.photos, ...newPhotos].slice(0, 4),
-        }))
+        if (mode === "add") {
+            setNewProduct((prev) => ({
+                ...prev,
+                photos: [...prev.photos, ...newPhotos].slice(0, 4),
+            }))
+        } else if (mode === "edit") {
+            setEditingProduct((prev) => ({
+                ...prev,
+                photos: [...prev.photos, ...newPhotos].slice(0, 4),
+            }))
+        }
     }, [])
 
-    const { getRootProps, getInputProps, isDragActive } = useDropzone({
-        onDrop,
+    const { getRootProps: getAddRootProps, getInputProps: getAddInputProps } = useDropzone({
+        onDrop: (files) => onDrop(files, "add"),
+        accept: {
+            "image/*": [".jpeg", ".png", ".jpg", ".gif"],
+        },
+        maxFiles: 4,
+        noClick: false,
+        noKeyboard: false,
+    })
+
+    const { getRootProps: getEditRootProps, getInputProps: getEditInputProps } = useDropzone({
+        onDrop: (files) => onDrop(files, "edit"),
         accept: {
             "image/*": [".jpeg", ".png", ".jpg", ".gif"],
         },
         maxFiles: 4,
     })
 
-    const removePhoto = (index) => {
-        setNewProduct((prev) => ({
-            ...prev,
-            photos: prev.photos.filter((_, i) => i !== index),
-        }))
+    const removePhoto = (index, mode = "add") => {
+        if (mode === "add") {
+            setNewProduct((prev) => ({
+                ...prev,
+                photos: prev.photos.filter((_, i) => i !== index),
+            }))
+        } else if (mode === "edit") {
+            setEditingProduct((prev) => ({
+                ...prev,
+                photos: prev.photos.filter((_, i) => i !== index),
+            }))
+        }
     }
 
     const filteredProducts = products.filter((product) => product.name.toLowerCase().includes(searchTerm.toLowerCase()))
 
     const handleAddProduct = () => {
-        const productStatus = newProduct.stock > 10 ? "In Stock" : newProduct.stock > 0 ? "Low Stock" : "Out of Stock"
-        const product = {
-            ...newProduct,
-            id: products.length + 1,
-            status: productStatus,
+        try {
+            // Validate required fields
+            if (!newProduct.name.trim()) {
+                throw new Error("Product name is required")
+            }
+            if (!newProduct.category) {
+                throw new Error("Please select a category")
+            }
+            if (!newProduct.price || newProduct.price <= 0) {
+                throw new Error("Please enter a valid price")
+            }
+            if (newProduct.stock < 0) {
+                throw new Error("Stock cannot be negative")
+            }
+
+            // Determine product status based on stock
+            const productStatus = newProduct.stock > 10 ? "In Stock" : newProduct.stock > 0 ? "Low Stock" : "Out of Stock"
+
+            // Create new product object
+            const product = {
+                ...newProduct,
+                id: Date.now(),
+                status: productStatus,
+                price: Number(newProduct.price),
+                stock: Number(newProduct.stock),
+            }
+
+            // Update products state
+            setProducts((prevProducts) => [...prevProducts, product])
+
+            // Show success message but don't close modal
+            toast({
+                title: "Success",
+                description: `${product.name} has been added successfully. You can add another product or close the modal.`,
+            })
+
+            // Reset form fields for next product but keep modal open
+            setNewProduct({
+                name: "",
+                category: "",
+                price: 0,
+                stock: 0,
+                photos: [],
+                description: "",
+                usage: "",
+            })
+        } catch (error) {
+            // Show error message
+            toast({
+                title: "Error",
+                description: error.message,
+                variant: "destructive",
+            })
         }
-        setProducts([...products, product])
-        setNewProduct({ name: "", category: "", price: 0, stock: 0, photos: [] })
-        toast({
-            title: "Product Added",
-            description: `${product.name} has been added to the inventory.`,
-        })
+    }
+
+    const handleCloseAddDialog = (open) => {
+        if (!open) {
+            // Only reset the form when explicitly closing the modal
+            setNewProduct({
+                name: "",
+                category: "",
+                price: 0,
+                stock: 0,
+                photos: [],
+                description: "",
+                usage: "",
+            })
+        }
+        setAddDialogOpen(open)
     }
 
     const handleEditProduct = (product) => {
@@ -303,6 +412,10 @@ const ProductsPage = () => {
         })
     }
 
+    useEffect(() => {
+        console.log("Products state updated:", products)
+    }, [products])
+
     return (
         <div className="flex-1 space-y-4 p-4 md:p-8 pt-6 bg-white">
             <div className="flex flex-col md:flex-row items-center justify-between space-y-2 md:space-y-0">
@@ -324,23 +437,17 @@ const ProductsPage = () => {
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
                     </div>
-                    <Dialog>
-                        <DialogTrigger asChild>
-                            <Button className="bg-black hover:bg-gray-800 text-white w-full sm:w-auto">
-                                <PlusCircle className="mr-2 h-4 w-4" />
-                                Add Product
-                            </Button>
-                        </DialogTrigger>
-                        <DialogContent className="max-w-4xl bg-white border-2 border-gray-200">
-                            <DialogHeader className="border-b border-gray-200 pb-4">
-                                <DialogTitle className="text-2xl font-bold tracking-tight text-black">Add New Product</DialogTitle>
-                                <DialogDescription className="text-base text-gray-600">
-                                    Fill in the product details below. All fields marked with <span className="text-red-500">*</span> are
-                                    required.
-                                </DialogDescription>
-                            </DialogHeader>
+                    <Dialog open={addDialogOpen} onOpenChange={setAddDialogOpen}>
+                        <Button
+                            onClick={() => setAddDialogOpen(true)}
+                            className="bg-black hover:bg-gray-800 text-white w-full sm:w-auto touch-manipulation"
+                        >
+                            <PlusCircle className="mr-2 h-4 w-4" />
+                            Add Product
+                        </Button>
+                        <DialogContent className="max-h-[90vh] overflow-y-auto w-[95vw] sm:max-w-[625px] md:max-w-[750px] lg:max-w-[900px] bg-white p-4 sm:p-6">
                             <div className="grid gap-6 py-4">
-                                <div className="grid gap-6 md:grid-cols-2">
+                                <div className="grid gap-6 sm:grid-cols-2">
                                     <div className="space-y-4">
                                         <div className="space-y-2">
                                             <Label htmlFor="name" className="text-sm font-medium text-gray-700">
@@ -350,34 +457,34 @@ const ProductsPage = () => {
                                                 id="name"
                                                 placeholder="Enter product name"
                                                 value={newProduct.name}
-                                                onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
+                                                onChange={(e) => {
+                                                    const value = e.target.value
+                                                    console.log("Name input changed:", value)
+                                                    setNewProduct((prev) => ({ ...prev, name: value }))
+                                                }}
                                                 className="border-gray-200 focus:border-black focus:ring-black"
+                                                required
                                             />
                                         </div>
                                         <div className="space-y-2">
                                             <Label htmlFor="category" className="text-sm font-medium text-gray-700">
                                                 Category <span className="text-red-500">*</span>
                                             </Label>
-                                            <Select onValueChange={(value) => setNewProduct({ ...newProduct, category: value })}>
+                                            <Select
+                                                onValueChange={(value) => {
+                                                    console.log("Category selected:", value)
+                                                    setNewProduct((prev) => ({ ...prev, category: value }))
+                                                }}
+                                            >
                                                 <SelectTrigger className="border-gray-200 focus:border-black focus:ring-black">
                                                     <SelectValue placeholder="Select a category" />
                                                 </SelectTrigger>
                                                 <SelectContent className="bg-white border border-gray-200">
-                                                    <SelectItem value="Dresses" className="text-gray-700 hover:bg-gray-100">
-                                                        Dresses
-                                                    </SelectItem>
-                                                    <SelectItem value="Tops" className="text-gray-700 hover:bg-gray-100">
-                                                        Tops
-                                                    </SelectItem>
-                                                    <SelectItem value="Bottoms" className="text-gray-700 hover:bg-gray-100">
-                                                        Bottoms
-                                                    </SelectItem>
-                                                    <SelectItem value="Accessories" className="text-gray-700 hover:bg-gray-100">
-                                                        Accessories
-                                                    </SelectItem>
-                                                    <SelectItem value="Shoes" className="text-gray-700 hover:bg-gray-100">
-                                                        Shoes
-                                                    </SelectItem>
+                                                    <SelectItem value="Dresses">Dresses</SelectItem>
+                                                    <SelectItem value="Tops">Tops</SelectItem>
+                                                    <SelectItem value="Bottoms">Bottoms</SelectItem>
+                                                    <SelectItem value="Accessories">Accessories</SelectItem>
+                                                    <SelectItem value="Shoes">Shoes</SelectItem>
                                                 </SelectContent>
                                             </Select>
                                         </div>
@@ -391,8 +498,13 @@ const ProductsPage = () => {
                                                     type="number"
                                                     placeholder="0.00"
                                                     value={newProduct.price}
-                                                    onChange={(e) => setNewProduct({ ...newProduct, price: Number.parseFloat(e.target.value) })}
+                                                    onChange={(e) => {
+                                                        const value = Number.parseFloat(e.target.value)
+                                                        console.log("Price input changed:", value)
+                                                        setNewProduct((prev) => ({ ...prev, price: value }))
+                                                    }}
                                                     className="border-gray-200 focus:border-black focus:ring-black"
+                                                    required
                                                 />
                                             </div>
                                             <div className="space-y-2">
@@ -404,27 +516,56 @@ const ProductsPage = () => {
                                                     type="number"
                                                     placeholder="0"
                                                     value={newProduct.stock}
-                                                    onChange={(e) => setNewProduct({ ...newProduct, stock: Number.parseInt(e.target.value) })}
+                                                    onChange={(e) => {
+                                                        const value = Number.parseInt(e.target.value)
+                                                        console.log("Stock input changed:", value)
+                                                        setNewProduct((prev) => ({ ...prev, stock: value }))
+                                                    }}
                                                     className="border-gray-200 focus:border-black focus:ring-black"
+                                                    required
                                                 />
                                             </div>
+                                        </div>
+                                        <div className="space-y-2">
+                                            <Label htmlFor="description" className="text-sm font-medium text-gray-700">
+                                                Product Description
+                                            </Label>
+                                            <Input
+                                                id="description"
+                                                placeholder="Enter product description"
+                                                value={newProduct.description}
+                                                onChange={(e) => setNewProduct((prev) => ({ ...prev, description: e.target.value }))}
+                                                className="border-gray-200 focus:border-black focus:ring-black"
+                                            />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <Label htmlFor="usage" className="text-sm font-medium text-gray-700">
+                                                Product Usage
+                                            </Label>
+                                            <Input
+                                                id="usage"
+                                                placeholder="Enter product usage instructions"
+                                                value={newProduct.usage}
+                                                onChange={(e) => setNewProduct((prev) => ({ ...prev, usage: e.target.value }))}
+                                                className="border-gray-200 focus:border-black focus:ring-black"
+                                            />
                                         </div>
                                     </div>
                                     <div className="space-y-4">
                                         <div className="space-y-2">
                                             <Label className="text-sm font-medium text-gray-700">Product Photos</Label>
                                             <div
-                                                {...getRootProps()}
-                                                className="border-2 border-dashed border-gray-200 rounded-lg p-6 hover:bg-gray-50 transition-colors duration-200 cursor-pointer"
+                                                {...getAddRootProps()}
+                                                className="border-2 border-dashed border-gray-200 rounded-lg p-6 hover:bg-gray-50 transition-colors duration-200 cursor-pointer touch-manipulation"
                                             >
-                                                <input {...getInputProps()} />
+                                                <input {...getAddInputProps()} />
                                                 <div className="flex flex-col items-center gap-2 text-center">
                                                     <div className="rounded-full bg-gray-100 p-3">
                                                         <PlusCircle className="h-6 w-6 text-gray-600" />
                                                     </div>
                                                     <div className="space-y-1">
                                                         <p className="text-sm font-medium text-gray-900">Upload product photos</p>
-                                                        <p className="text-xs text-gray-500">Drag and drop up to 4 photos, or click to browse</p>
+                                                        <p className="text-xs text-gray-500">Drag and drop up to 4 photos, or tap to browse</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -438,8 +579,12 @@ const ProductsPage = () => {
                                                                 className="w-full aspect-square object-cover rounded-lg border-2 border-gray-200"
                                                             />
                                                             <button
-                                                                onClick={() => removePhoto(index)}
-                                                                className="absolute top-2 right-2 p-1 rounded-full bg-white/80 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:bg-red-50"
+                                                                onClick={(e) => {
+                                                                    e.preventDefault()
+                                                                    e.stopPropagation()
+                                                                    removePhoto(index)
+                                                                }}
+                                                                className="absolute top-2 right-2 p-2 rounded-full bg-white/80 backdrop-blur-sm opacity-100 sm:opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:bg-red-50 touch-manipulation"
                                                             >
                                                                 <X className="h-4 w-4 text-red-500" />
                                                             </button>
@@ -451,20 +596,25 @@ const ProductsPage = () => {
                                     </div>
                                 </div>
                             </div>
-                            <DialogFooter className="border-t border-gray-200 pt-4">
+                            <DialogFooter className="flex flex-col sm:flex-row justify-end space-y-2 sm:space-y-0 sm:space-x-2">
+                                <Button
+                                    type="button"
+                                    onClick={() => {
+                                        console.log("Add Product button clicked")
+                                        handleAddProduct()
+                                        // Modal stays open as we're not calling setAddDialogOpen(false)
+                                    }}
+                                    className="bg-black hover:bg-gray-800 text-white w-full sm:w-auto"
+                                >
+                                    Add Product
+                                </Button>
                                 <Button
                                     type="button"
                                     variant="outline"
-                                    onClick={() => {
-                                        setNewProduct({ name: "", category: "", price: 0, stock: 0, photos: [] })
-                                        document.querySelector('[role="dialog"]')?.closest("button")?.click()
-                                    }}
-                                    className="border-gray-200 hover:bg-gray-50"
+                                    onClick={() => handleCloseAddDialog(false)}
+                                    className="border-gray-200 hover:bg-gray-50 w-full sm:w-auto"
                                 >
-                                    Cancel
-                                </Button>
-                                <Button type="submit" onClick={handleAddProduct} className="bg-black hover:bg-gray-800 text-white ml-2">
-                                    Save Product
+                                    Close
                                 </Button>
                             </DialogFooter>
                         </DialogContent>
@@ -562,75 +712,149 @@ const ProductsPage = () => {
                 </TabsContent>
             </Tabs>
             <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
-                <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-[625px] bg-white">
-                    <DialogHeader>
-                        <DialogTitle className="text-xl font-semibold text-black">Edit Product</DialogTitle>
-                        <DialogDescription className="text-gray-500">
-                            Make changes to the product here. Click save when you're done.
-                        </DialogDescription>
-                    </DialogHeader>
+                <DialogContent className="max-h-[90vh] overflow-y-auto w-[95vw] sm:max-w-[625px] md:max-w-[750px] lg:max-w-[900px] bg-white p-4 sm:p-6">
                     {editingProduct && (
                         <div className="grid gap-4 py-4">
-                            <div className="grid grid-cols-4 items-center gap-4">
-                                <Label htmlFor="edit-name" className="text-right">
-                                    Name
-                                </Label>
-                                <Input
-                                    id="edit-name"
-                                    value={editingProduct.name}
-                                    onChange={(e) => setEditingProduct({ ...editingProduct, name: e.target.value })}
-                                    className="col-span-3"
-                                />
-                            </div>
-                            <div className="grid grid-cols-4 items-center gap-4">
-                                <Label htmlFor="edit-category" className="text-right">
-                                    Category
-                                </Label>
-                                <Select
-                                    value={editingProduct.category}
-                                    onValueChange={(value) => setEditingProduct({ ...editingProduct, category: value })}
-                                >
-                                    <SelectTrigger className="col-span-3">
-                                        <SelectValue />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="Dresses">Dresses</SelectItem>
-                                        <SelectItem value="Tops">Tops</SelectItem>
-                                        <SelectItem value="Bottoms">Bottoms</SelectItem>
-                                        <SelectItem value="Accessories">Accessories</SelectItem>
-                                        <SelectItem value="Shoes">Shoes</SelectItem>
-                                    </SelectContent>
-                                </Select>
-                            </div>
-                            <div className="grid grid-cols-4 items-center gap-4">
-                                <Label htmlFor="edit-price" className="text-right">
-                                    Price
-                                </Label>
-                                <Input
-                                    id="edit-price"
-                                    type="number"
-                                    value={editingProduct.price}
-                                    onChange={(e) => setEditingProduct({ ...editingProduct, price: Number.parseFloat(e.target.value) })}
-                                    className="col-span-3"
-                                />
-                            </div>
-                            <div className="grid grid-cols-4 items-center gap-4">
-                                <Label htmlFor="edit-stock" className="text-right">
-                                    Stock
-                                </Label>
-                                <Input
-                                    id="edit-stock"
-                                    type="number"
-                                    value={editingProduct.stock}
-                                    onChange={(e) => setEditingProduct({ ...editingProduct, stock: Number.parseInt(e.target.value) })}
-                                    className="col-span-3"
-                                />
+                            <div className="grid gap-4">
+                                <div className="grid sm:grid-cols-4 items-center gap-4">
+                                    <Label htmlFor="edit-name" className="sm:text-right-black">
+                                        Name
+                                    </Label>
+                                    <Input
+                                        id="edit-name"
+                                        value={editingProduct.name}
+                                        onChange={(e) => setEditingProduct({ ...editingProduct, name: e.target.value })}
+                                        className="col-span-3"
+                                    />
+                                </div>
+                                <div className="grid sm:grid-cols-4 items-center gap-4">
+                                    <Label htmlFor="edit-category" className="sm:text-right-black">
+                                        Category
+                                    </Label>
+                                    <Select
+                                        value={editingProduct.category}
+                                        onValueChange={(value) => setEditingProduct({ ...editingProduct, category: value })}
+                                    >
+                                        <SelectTrigger className="col-span-3">
+                                            <SelectValue />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="Dresses">Dresses</SelectItem>
+                                            <SelectItem value="Tops">Tops</SelectItem>
+                                            <SelectItem value="Bottoms">Bottoms</SelectItem>
+                                            <SelectItem value="Accessories">Accessories</SelectItem>
+                                            <SelectItem value="Shoes">Shoes</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+                                <div className="  grid sm:grid-cols-4 items-center gap-4">
+                                    <Label htmlFor="edit-price" className=" sm:text-right-black">
+                                        Price
+                                    </Label>
+                                    <Input
+                                        id="edit-price"
+                                        type="number"
+                                        value={editingProduct.price}
+                                        onChange={(e) => setEditingProduct({ ...editingProduct, price: Number.parseFloat(e.target.value) })}
+                                        className="col-span-3"
+                                    />
+                                </div>
+                                <div className="grid sm:grid-cols-4 items-center gap-4">
+                                    <Label htmlFor="edit-stock" className="sm:text-right-black">
+                                        Stock
+                                    </Label>
+                                    <Input
+                                        id="edit-stock"
+                                        type="number"
+                                        value={editingProduct.stock}
+                                        onChange={(e) => setEditingProduct({ ...editingProduct, stock: Number.parseInt(e.target.value) })}
+                                        className="col-span-3"
+                                    />
+                                </div>
+                                <div className="grid sm:grid-cols-4 items-center gap-4">
+                                    <Label htmlFor="edit-description" className="sm:text-right-black">
+                                        Description
+                                    </Label>
+                                    <Input
+                                        id="edit-description"
+                                        value={editingProduct.description}
+                                        onChange={(e) => setEditingProduct({ ...editingProduct, description: e.target.value })}
+                                        className="col-span-3"
+                                    />
+                                </div>
+                                <div className="grid sm:grid-cols-4 items-center gap-4">
+                                    <Label htmlFor="edit-usage" className="sm:text-right-black">
+                                        Usage
+                                    </Label>
+                                    <Input
+                                        id="edit-usage"
+                                        value={editingProduct.usage}
+                                        onChange={(e) => setEditingProduct({ ...editingProduct, usage: e.target.value })}
+                                        className="col-span-3"
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <Label className="text-sm font-medium text-gray-700">Product Photos</Label>
+                                    <div
+                                        {...getEditRootProps()}
+                                        className="border-2 border-dashed border-gray-200 rounded-lg p-6 hover:bg-gray-50 transition-colors duration-200 cursor-pointer touch-manipulation"
+                                    >
+                                        <input {...getEditInputProps()} />
+                                        <div className="flex flex-col items-center gap-2 text-center">
+                                            <div className="rounded-full bg-gray-100 p-3">
+                                                <PlusCircle className="h-6 w-6 text-gray-600" />
+                                            </div>
+                                            <div className="space-y-1">
+                                                <p className="text-sm font-medium text-gray-900">Upload product photos</p>
+                                                <p className="text-xs text-gray-500">Drag and drop up to 4 photos, or tap to browse</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {editingProduct.photos.length > 0 && (
+                                        <div className="grid grid-cols-2 gap-4 mt-4">
+                                            {editingProduct.photos.map((photo, index) => (
+                                                <div key={index} className="relative group">
+                                                    <img
+                                                        src={photo || "/placeholder.svg"}
+                                                        alt={`Product ${index + 1}`}
+                                                        className="w-full aspect-square object-cover rounded-lg border-2 border-gray-200"
+                                                    />
+                                                    <button
+                                                        onClick={(e) => {
+                                                            e.preventDefault()
+                                                            e.stopPropagation()
+                                                            removePhoto(index, "edit")
+                                                        }}
+                                                        className="absolute top-2 right-2 p-2 rounded-full bg-white/80 backdrop-blur-sm opacity-100 sm:opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:bg-red-50 touch-manipulation"
+                                                    >
+                                                        <X className="h-4 w-4 text-red-500" />
+                                                    </button>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
                             </div>
                         </div>
                     )}
-                    <DialogFooter>
-                        <Button type="submit" onClick={handleUpdateProduct} className="bg-black hover:bg-gray-800 text-white">
+                    <DialogFooter className="flex flex-col sm:flex-row justify-end space-y-2 sm:space-y-0 sm:space-x-2">
+                        <Button
+                            type="submit"
+                            onClick={handleUpdateProduct}
+                            className="bg-black hover:bg-gray-800 text-white w-full sm:w-auto"
+                        >
                             Save Changes
+                        </Button>
+                        <Button
+                            type="button"
+                            variant="outline"
+                            onClick={() => {
+                                setEditingProduct(null)
+                                setEditDialogOpen(false)
+                            }}
+                            className="border-gray-200 hover:bg-gray-50 hidden sm:inline-flex"
+                        >
+                            Cancel
                         </Button>
                     </DialogFooter>
                 </DialogContent>

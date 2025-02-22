@@ -39,7 +39,7 @@ export default function CartPage() {
                             <ShoppingBag className="h-16 w-16 text-gray-400 dark:text-gray-600" />
                         </div>
                         <p className="text-xl mb-4 dark:text-gray-300">Your cart is empty</p>
-                        <Link to="/products">
+                        <Link to="/all-products">
                             <Button size="lg" className="font-semibold">
                                 Continue Shopping
                             </Button>
@@ -148,7 +148,7 @@ export default function CartPage() {
                         </motion.div>
                     </div>
                 )}
-                <WhatsAppButton/>
+                <WhatsAppButton />
             </main>
         </div>
     )

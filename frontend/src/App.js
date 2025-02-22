@@ -258,7 +258,7 @@ function App() {
           <RoyalSlimHome />
           <ProductGrid products={products} />
         </main>
-        <Footer />
+        {/* <Footer /> */}
       </div>
     </CartProvider>
   );

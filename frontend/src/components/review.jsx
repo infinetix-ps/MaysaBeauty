@@ -1,6 +1,6 @@
 import StarRating from "./starRating.jsx"
 
-const Review = ({ review }) => {
+  const Review = ({ review }) => {
   return (
     <div className="border-b border-gray-200 dark:border-gray-700 py-4">
       <div className="flex items-center mb-2">
