@@ -287,7 +287,7 @@ function App() {
     const fetchData = async () => {
       try {
         // Fetch products from the backend API
-        const productResponse = await axios.get("https://api.maysabeauty.store/products");
+        const productResponse = await axios.get("https://api.maysabeauty.store/products?limit=50");
         setProducts(productResponse.data.products);
 
         // Fetch orders from the backend API

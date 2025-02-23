@@ -46,13 +46,13 @@ export const create = async(req,res)=>{
         return res.status(409).json({message : "category already exists"});
     }
     req.body.slug = slugify(req.body.name);
-    const {secure_url,public_id}= await cloudinary.uploader.upload(req.file.path,{
-        folder : `${process.env.APPNAME}/categories`
-    });
-    req.body.image = {secure_url,public_id};
+    // const {secure_url,public_id}= await cloudinary.uploader.upload(req.file.path,{
+    //     folder : `${process.env.APPNAME}/categories`
+    // });
+    // req.body.image = {secure_url,public_id};
     
-    req.body.createdBy = req.user._id;
-    req.body.updatedBy = req.user._id;
+    // req.body.createdBy = req.user._id;
+    // req.body.updatedBy = req.user._id;
 
     const category = await categoryModel.create(req.body);
    return res.json({message :"success" , category });

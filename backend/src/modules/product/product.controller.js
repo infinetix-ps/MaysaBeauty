@@ -8,37 +8,48 @@ import { pagination } from '../../utlis/pagination.js';
 
 
 export const create = async (req, res) => {
-    const {name,price,discount,categoryId,subCategoryId}=req.body;
+    try {
+        const { name, price, discount, categoryId, subCategoryId } = req.body;
 
-    const checkCategory =await categoryModel.findById(categoryId);
-    if(!checkCategory){
-        return res.status(404).json({message:"Category not found"});
+        // Check if category exists
+        const checkCategory = await categoryModel.findById(categoryId);
+        if (!checkCategory) {
+            return res.status(404).json({ message: "Category not found" });
+        }
+
+        req.body.slug = slugify(name);
+        req.body.finalPrice = price - ((price * (discount || 0)) / 100);
+
+        // 🔹 Upload Main Image
+        if (!req.files || !req.files.mainImage) {
+            return res.status(400).json({ message: "Main image is required" });
+        }
+        const { secure_url, public_id } = await cloudinary.uploader.upload(req.files.mainImage[0].path, {
+            folder: `${process.env.APPNAME}/product/name`
+        });
+
+        req.body.mainImage = { secure_url, public_id };
+
+        // 🔹 Upload Sub Images
+        req.body.subImages = [];
+        if (req.files.subImages) {
+            for (const file of req.files.subImages) {
+                const { secure_url, public_id } = await cloudinary.uploader.upload(file.path, {
+                    folder: `${process.env.APPNAME}/product/subImages`
+                });
+                req.body.subImages.push({ secure_url, public_id });
+            }
+        }
+
+        // 🔹 Create Product
+        const product = await productModel.create(req.body);
+        return res.status(201).json({ message: "Success", product });
+
+    } catch (error) {
+        return res.status(500).json({ message: "Error creating product", error: error.message });
     }
+};
 
-    // const checkSubCategory =await subCategoryModel.findOne({_id:subCategoryId,categoryId:categoryId});
-    // if(!checkSubCategory){
-    //     return res.status(404).json({message:"Sub Category not found"});
-    // }
-
-    req.body.slug = slugify(name);
-    req.body.finalPrice = price - ((price * (discount || 0))/100);
-
-    const {secure_url,public_id}= await cloudinary.uploader.upload(req.files.mainImage[0].path,
-        {folder : `${process.env.APPNAME}/product/name`}
-    );
-
-    req.body.mainImage = {secure_url,public_id};
-    req.body.subImages = [];
-
-    for (const file of req.body.subImages){
-        const {secure_url,public_id}= await cloudinary.uploader.upload(file.path,
-            {folder : `${process.env.APPNAME}/product/subImages`}
-        );
-        req.body.subImages.push({secure_url,public_id});
-    }
-    const product = await productModel.create(req.body);
-    return res.status(201).json({message:"success",product});
-}
 
 // export const getProducts = async (req, res) => {
 //     const { skip, limit } = pagination(req.query.page, req.query.limit);
@@ -117,7 +128,7 @@ export const getProducts = async (req, res) => {
         // Fetch products and populate category name
         const products = await mongoseQuery
             .sort(req.query.sort)
-            .select('name price discount categoryId') // Ensure categoryId is selected
+            .select('name price discount categoryId mainImage stock') // Ensure categoryId is selected
             .populate({
                 path: 'categoryId', // Ensure you're populating categoryId
                 select: 'name'  // Select only the category name
@@ -133,7 +144,9 @@ export const getProducts = async (req, res) => {
             name: product.name,
             price: product.price,
             discount: product.discount,
-            category: product.categoryId.name // Extract the category name directly
+            category: product.categoryId.name ,// Extract the category name directly
+            mainImage :product.mainImage,
+            stock :product.stock
         }));
 
         return res.status(200).json({ message: "success", products: transformedProducts });

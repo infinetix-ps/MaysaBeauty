@@ -14,6 +14,9 @@ const productSchema = new Schema({
     description: {
         type:String,
     },
+    usage:{
+        type:String,
+    },
     stock:{
         type:Number,
         default:1
@@ -36,7 +39,7 @@ const productSchema = new Schema({
     },
     subImages:[{
         type:Object,
-        required: true,
+        required: false,
     }],
     status:{
         type:String,

@@ -12,7 +12,7 @@ const categorySchema = new Schema({
     },
     image:{
         type:Object,
-        required: true,
+        required: false,
     },
     status:{
         type:String,

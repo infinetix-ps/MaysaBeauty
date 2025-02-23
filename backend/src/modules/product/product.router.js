@@ -10,7 +10,7 @@ const router = Router();
 router.post('/', fileUpload(fileTypes.image).fields([
     { name: 'mainImage', maxCount: 1 },
     { name: 'subImages', maxCount: 5 },
-]), controller.create);
+]), asyncHandler(controller.create));
 
 // Get All Products
 router.get('/', controller.getProducts);
@@ -19,16 +19,16 @@ router.get('/', controller.getProducts);
 router.put('/:productId', fileUpload(fileTypes.image).fields([
     { name: 'mainImage', maxCount: 1 },
     { name: 'subImages', maxCount: 5 },
-]), controller.update);
+]), asyncHandler(controller.update));
 
 // Delete Product
-router.delete('/:productId', controller.deleteProduct);
+router.delete('/:productId', asyncHandler(controller.deleteProduct));
 
 // Get Products by Category Name
-router.get('/category', controller.getProductsByCategory);
+router.get('/category', asyncHandler(controller.getProductsByCategory));
 
 // Get Product
-router.get('/:id', controller.getProductsById);
+router.get('/:id', asyncHandler(controller.getProductsById));
 
 
 
