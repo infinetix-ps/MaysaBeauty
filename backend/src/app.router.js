@@ -16,7 +16,7 @@ const initApp = (app, express) => {
     app.use(cors());
     app.use(express.json());
     app.get('/', (req, res) => {
-        return res.status(200).json({ message: "Hello in H-Shop" });
+        return res.status(200).json({ message: "Hello in Maysaa-Shop" });
 
     })
     app.use('/auth', authRouter);
