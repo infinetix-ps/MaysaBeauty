@@ -14,68 +14,70 @@ import { CalendarDateRangePicker } from "./dateRangePicker.jsx"
 import { motion } from "framer-motion"
 
 
-const initialOrders = [
-    {
-        id: "ORD001",
-        customer: "Emma Thompson",
-        date: "2023-06-15",
-        total: 89.97,
-        status: "Shipped",
-        location: "New York, NY",
-        items: [
-            { name: "Sparkly Princess Dress", quantity: 1, price: 49.99 },
-            { name: "Unicorn Hair Clips", quantity: 2, price: 19.99 },
-        ],
-    },
-    {
-        id: "ORD002",
-        customer: "Sophia Chen",
-        date: "2023-06-14",
-        total: 124.5,
-        status: "Processing",
-        location: "San Francisco, CA",
-        items: [
-            { name: "Rainbow Tutu Skirt", quantity: 1, price: 34.99 },
-            { name: "Glitter Sneakers", quantity: 1, price: 39.99 },
-            { name: "Butterfly Wings", quantity: 1, price: 49.52 },
-        ],
-    },
-    {
-        id: "ORD003",
-        customer: "Olivia Brown",
-        date: "2023-06-13",
-        total: 75.0,
-        status: "Delivered",
-        location: "Chicago, IL",
-        items: [
-            { name: "Unicorn T-Shirt", quantity: 2, price: 24.99 },
-            { name: "Magic Wand", quantity: 1, price: 25.02 },
-        ],
-    },
-    {
-        id: "ORD004",
-        customer: "Ava Singh",
-        date: "2023-06-12",
-        total: 199.99,
-        status: "Shipped",
-        location: "Houston, TX",
-        items: [
-            { name: "Fairy Tale Costume Set", quantity: 1, price: 89.99 },
-            { name: "Tiara", quantity: 1, price: 29.99 },
-            { name: "Princess Shoes", quantity: 1, price: 80.01 },
-        ],
-    },
-    {
-        id: "ORD005",
-        customer: "Zoe Patel",
-        date: "2023-06-11",
-        total: 49.99,
-        status: "Processing",
-        location: "Miami, FL",
-        items: [{ name: "Mermaid Tail Blanket", quantity: 1, price: 49.99 }],
-    },
-]
+// const initialOrders = [
+//     {
+//         id: "ORD001",
+//         customer: "Emma Thompson",
+//         date: "2023-06-15",
+//         total: 89.97,
+//         status: "Shipped",
+//         location: "New York, NY",
+//         items: [
+//             { name: "Sparkly Princess Dress", quantity: 1, price: 49.99 },
+//             { name: "Unicorn Hair Clips", quantity: 2, price: 19.99 },
+//         ],
+//     },
+//     {
+//         id: "ORD002",
+//         customer: "Sophia Chen",
+//         date: "2023-06-14",
+//         total: 124.5,
+//         status: "Processing",
+//         location: "San Francisco, CA",
+//         items: [
+//             { name: "Rainbow Tutu Skirt", quantity: 1, price: 34.99 },
+//             { name: "Glitter Sneakers", quantity: 1, price: 39.99 },
+//             { name: "Butterfly Wings", quantity: 1, price: 49.52 },
+//         ],
+//     },
+//     {
+//         id: "ORD003",
+//         customer: "Olivia Brown",
+//         date: "2023-06-13",
+//         total: 75.0,
+//         status: "Delivered",
+//         location: "Chicago, IL",
+//         items: [
+//             { name: "Unicorn T-Shirt", quantity: 2, price: 24.99 },
+//             { name: "Magic Wand", quantity: 1, price: 25.02 },
+//         ],
+//     },
+//     {
+//         id: "ORD004",
+//         customer: "Ava Singh",
+//         date: "2023-06-12",
+//         total: 199.99,
+//         status: "Shipped",
+//         location: "Houston, TX",
+//         items: [
+//             { name: "Fairy Tale Costume Set", quantity: 1, price: 89.99 },
+//             { name: "Tiara", quantity: 1, price: 29.99 },
+//             { name: "Princess Shoes", quantity: 1, price: 80.01 },
+//         ],
+//     },
+//     {
+//         id: "ORD005",
+//         customer: "Zoe Patel",
+//         date: "2023-06-11",
+//         total: 49.99,
+//         status: "Processing",
+//         location: "Miami, FL",
+//         items: [{ name: "Mermaid Tail Blanket", quantity: 1, price: 49.99 }],
+//     },
+// ]
 
+
+const initialOrders = [];
 const OrdersPage = () => {
     const [searchTerm, setSearchTerm] = useState("")
     const [orders, setOrders] = useState(initialOrders)

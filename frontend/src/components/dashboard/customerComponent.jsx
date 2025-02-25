@@ -19,14 +19,14 @@ import {
 } from "../uiDashboard/alertDialog.jsx"
 import { motion, AnimatePresence } from "framer-motion"
 
-const initialCustomers = [
-    { id: 1, name: "Emma Thompson", email: "emma.thompson@email.com", orders: 5, totalSpent: 249.95 },
-    { id: 2, name: "Sophia Chen", email: "sophia.chen@email.com", orders: 3, totalSpent: 174.97 },
-    { id: 3, name: "Olivia Brown", email: "olivia.brown@email.com", orders: 7, totalSpent: 374.93 },
-    { id: 4, name: "Ava Singh", email: "ava.singh@email.com", orders: 2, totalSpent: 99.98 },
-    { id: 5, name: "Zoe Patel", email: "zoe.patel@email.com", orders: 4, totalSpent: 199.96 },
-]
-
+// const initialCustomers = [
+//     { id: 1, name: "Emma Thompson", email: "emma.thompson@email.com", orders: 5, totalSpent: 249.95 },
+//     { id: 2, name: "Sophia Chen", email: "sophia.chen@email.com", orders: 3, totalSpent: 174.97 },
+//     { id: 3, name: "Olivia Brown", email: "olivia.brown@email.com", orders: 7, totalSpent: 374.93 },
+//     { id: 4, name: "Ava Singh", email: "ava.singh@email.com", orders: 2, totalSpent: 99.98 },
+//     { id: 5, name: "Zoe Patel", email: "zoe.patel@email.com", orders: 4, totalSpent: 199.96 },
+// ]
+const initialCustomers = [];
 const CustomersPage = () => {
     const [searchTerm, setSearchTerm] = useState("")
     const [customers, setCustomers] = useState(initialCustomers)

@@ -26,7 +26,14 @@ import ForgotPassword from "./components/auth/forgetPassword.jsx";
 import ResetPassword from "./components/auth/resetPassword.jsx";
 import EnhancedSettingsPage from "./pages/setting.jsx";
 
+// Protect authenticated-only pages
 const ProtectedRoute = ({ element }) => {
+  const token = localStorage.getItem("token");
+  return token ? element : <Navigate to="/signin" />;
+};
+
+// Redirect authenticated users away from auth pages
+const AuthRoute = ({ element }) => {
   const token = localStorage.getItem("token");
   return token ? <Navigate to="/" /> : element;
 };
@@ -39,25 +46,30 @@ root.render(
       <CartProvider>
         <div className="min-h-screen bg-gray-100 dark:bg-gray-900 transition-colors duration-300">
           <Routes>
+            {/* Public Pages */}
             <Route path="/" element={<App />} />
-            <Route path="/signin" element={<ProtectedRoute element={<SignIn />} />} />
-            <Route path="/signup" element={<ProtectedRoute element={<SignUp />} />} />
-            <Route path="/verify" element={<ProtectedRoute element={<Verify />} />} />
-            <Route path="/signup-success" element={<ProtectedRoute element={<SignUpSuccess />} />} />
-            <Route path="/forgot-password" element={<ProtectedRoute element={<ForgotPassword />} />} />
-            <Route path="/reset-password" element={<ProtectedRoute element={<ResetPassword />} />} />
-            <Route path="/setting" element={<EnhancedSettingsPage />} />
             <Route path="/products/:id" element={<ProductPage />} />
             <Route path="/cart" element={<CartPage />} />
             <Route path="/checkout" element={<CheckoutPage />} />
-            <Route path="/orders" element={<OrdersPage />} />
             <Route path="/search" element={<SearchPage />} />
             <Route path="/products" element={<AllProductsPage />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/productsDash" element={<ProductsPage />} />
-            <Route path="/ordersDash" element={<OrdersPage />} />
-            <Route path="/customers" element={<CustomersPage />} />
-            <Route path="/analytics" element={<AnalyticsPage />} />
+            <Route path="/setting" element={<EnhancedSettingsPage />} />
+
+            {/* Authentication Pages (Redirect logged-in users) */}
+            <Route path="/signin" element={<AuthRoute element={<SignIn />} />} />
+            <Route path="/signup" element={<AuthRoute element={<SignUp />} />} />
+            <Route path="/verify" element={<AuthRoute element={<Verify />} />} />
+            <Route path="/signup-success" element={<AuthRoute element={<SignUpSuccess />} />} />
+            <Route path="/forgot-password" element={<AuthRoute element={<ForgotPassword />} />} />
+            <Route path="/reset-password" element={<AuthRoute element={<ResetPassword />} />} />
+
+            {/* Protected Routes (Require authentication) */}
+            <Route path="/orders" element={<ProtectedRoute element={<OrdersPage />} />} />
+            <Route path="/dashboard" element={<ProtectedRoute element={<Dashboard />} />} />
+            <Route path="/productsDash" element={<ProtectedRoute element={<ProductsPage />} />} />
+            <Route path="/ordersDash" element={<ProtectedRoute element={<OrdersPage />} />} />
+            <Route path="/customers" element={<ProtectedRoute element={<CustomersPage />} />} />
+            <Route path="/analytics" element={<ProtectedRoute element={<AnalyticsPage />} />} />
           </Routes>
           <Footer />
           <ToastContainer />
