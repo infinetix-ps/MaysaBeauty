@@ -41,12 +41,12 @@ const AnalyticsPage = () => {
                     <TabsTrigger value="sales" className="data-[state=active]:bg-blue-100">
                         Sales
                     </TabsTrigger>
-                    <TabsTrigger value="customers" className="data-[state=active]:bg-blue-100">
+                    {/* <TabsTrigger value="customers" className="data-[state=active]:bg-blue-100">
                         Customers
                     </TabsTrigger>
                     <TabsTrigger value="products" className="data-[state=active]:bg-blue-100">
                         Products
-                    </TabsTrigger>
+                    </TabsTrigger> */}
                 </TabsList>
                 <TabsContent value="overview" className="space-y-4">
                     <motion.div
@@ -72,8 +72,8 @@ const AnalyticsPage = () => {
                                 </svg>
                             </CardHeader>
                             <CardContent>
-                                <div className="text-2xl font-bold">$45,231.89</div>
-                                <p className="text-xs text-blue-100">+20.1% from last month</p>
+                                <div className="text-2xl font-bold">$0</div>
+                                <p className="text-xs text-blue-100">+0% from last month</p>
                             </CardContent>
                         </Card>
                         <Card className="bg-gradient-to-br from-indigo-400 to-purple-300 text-white">
@@ -94,8 +94,8 @@ const AnalyticsPage = () => {
                                 </svg>
                             </CardHeader>
                             <CardContent>
-                                <div className="text-2xl font-bold">+1,234</div>
-                                <p className="text-xs text-indigo-100">+19% from last month</p>
+                                <div className="text-2xl font-bold">+0</div>
+                                <p className="text-xs text-indigo-100">+0% from last month</p>
                             </CardContent>
                         </Card>
                         <Card className="bg-gradient-to-br from-purple-400 to-pink-300 text-white">
@@ -117,8 +117,8 @@ const AnalyticsPage = () => {
                                 </svg>
                             </CardHeader>
                             <CardContent>
-                                <div className="text-2xl font-bold">+573</div>
-                                <p className="text-xs text-purple-100">+201 since last hour</p>
+                                <div className="text-2xl font-bold">+</div>
+                                <p className="text-xs text-purple-100">+0 since last hour</p>
                             </CardContent>
                         </Card>
                         <Card className="bg-gradient-to-br from-pink-400 to-red-300 text-white">
@@ -138,8 +138,8 @@ const AnalyticsPage = () => {
                                 </svg>
                             </CardHeader>
                             <CardContent>
-                                <div className="text-2xl font-bold">86.3%</div>
-                                <p className="text-xs text-pink-100">+4.1% from last week</p>
+                                <div className="text-2xl font-bold">0%</div>
+                                <p className="text-xs text-pink-100">+0% from last week</p>
                             </CardContent>
                         </Card>
                     </motion.div>

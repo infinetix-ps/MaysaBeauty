@@ -223,11 +223,11 @@ const ProductTable = ({ products, onEdit, onDelete }) => {
                                     </DropdownMenuTrigger>
                                     <DropdownMenuContent align="end" className="bg-white border border-gray-200">
                                         <DropdownMenuLabel className="text-gray-700">Actions</DropdownMenuLabel>
-                                        <DropdownMenuItem onClick={() => onEdit(product)} className="text-black hover:bg-gray-100">
+                                        {/* <DropdownMenuItem onClick={() => onEdit(product)} className="text-black hover:bg-gray-100">
                                             <Pencil className="mr-2 h-4 w-4 stroke-black" />
                                             Edit
-                                        </DropdownMenuItem>
-                                        <DropdownMenuItem onClick={() => onDelete(product.id)} className="text-red-600 hover:bg-red-50">
+                                        </DropdownMenuItem> */}
+                                        <DropdownMenuItem onClick={() => onDelete(product._id)} className="text-red-600 hover:bg-red-50">
                                             <Trash2 className="mr-2 h-4 w-4" />
                                             Delete
                                         </DropdownMenuItem>

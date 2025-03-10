@@ -1,6 +1,7 @@
 import { motion } from "framer-motion"
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"
+import { ShoppingBag, Search, Menu, User, X, ChevronDown, Ruler, Weight, Scissors, Palette, Sparkles, Heart, Droplet, Home } from 'lucide-react';
 
 // const categories = [
 //     {
@@ -45,6 +46,21 @@ import { useNavigate } from "react-router-dom"
 //     },
 // ]
 
+const icons = [
+
+  Ruler,
+  Weight,
+
+  Scissors,
+  Palette,
+
+  Sparkles,
+
+  Heart,
+  Droplet,
+
+];
+
 const ProductCategories = () => {
     const [categories, setCategories] = useState([]);
 
@@ -71,42 +87,41 @@ const ProductCategories = () => {
                     Explore Our Categories
                 </motion.h2>
                 <div className="flex flex-wrap justify-center gap-8">
-                    {categories.map((category, index) => (
-                        <motion.div
-                            key={category.name}
-                            initial={{ opacity: 0, scale: 0.8 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ duration: 0.6, delay: index * 0.1 }}
-                        >
-                            <div
-                                onClick={() => navigate(`/products?categoryName=${encodeURIComponent(category.name)}`)}
-                                className="cursor-pointer"
-                            >
-                                <motion.div
-                                    whileHover={{ scale: 1.1 }}
-                                    whileTap={{ scale: 0.95 }}
-                                    className={`relative overflow-hidden rounded-full shadow-lg ${category.color} w-32 h-32 flex flex-col items-center justify-center`}
-                                >
-                                    <div className="absolute inset-0 w-full h-full">
-                                        <img
-                                            src={category.image?.secure_url || "/placeholder.svg"}
-                                            alt={category.name}
-                                            className="transition-transform duration-300 hover:scale-110 w-full h-full object-cover"
-                                        />
-                                        <div className="absolute inset-0 bg-black opacity-20 dark:opacity-40"></div>
-                                    </div>
-                                    <motion.div
-                                        initial={{ opacity: 0, y: 10 }}
-                                        whileHover={{ opacity: 1, y: 0 }}
-                                        transition={{ duration: 0.3 }}
-                                        className="relative z-10 text-center px-4"
-                                    >
-                                        <h3 className="text-sm font-semibold text-white drop-shadow-lg">{category.name}</h3>
-                                    </motion.div>
-                                </motion.div>
-                            </div>
-                        </motion.div>
-                    ))}
+                {categories.map((category, index) => {
+    const randomIndex = Math.floor(Math.random() * 5);
+    const Icon = icons[randomIndex];
+
+    return (
+        <motion.div
+            key={category.name}
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, delay: index * 0.1 }}
+        >
+            <div
+                onClick={() => navigate(`/products?categoryName=${encodeURIComponent(category.name)}`)}
+                className="cursor-pointer"
+            >
+                <motion.div
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.95 }}
+                    className={`relative overflow-hidden rounded-full shadow-lg ${category.color} w-32 h-32 flex flex-col items-center justify-center`}
+                >
+                    <Icon className="w-6 h-6 text-pink-500" />
+                    <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        whileHover={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="relative z-10 text-center px-4"
+                    >
+                        <h3 className="text-sm font-semibold text-white drop-shadow-lg">{category.name}</h3>
+                    </motion.div>
+                </motion.div>
+            </div>
+        </motion.div>
+    );
+})}
+
                 </div>
             </div>
         </section>

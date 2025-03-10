@@ -39,18 +39,25 @@ export default function ProductPage() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                // Fetch products from the backend API
                 const productResponse = await axios.get(`https://api.maysabeauty.store/products/${id}`);
-                setProduct(productResponse.data.product);
+                const productData = productResponse.data.product;
+                
+                // Convert API response to match expected structure
+                const images = [
+                    productData.mainImage?.secure_url, // Main image first
+                    ...(productData.subImages?.map(img => img.secure_url) || []) // Then sub-images
+                ].filter(Boolean); // Remove any undefined/null values
+    
+                setProduct({ ...productData, images });
                 setLoading(false);
-
             } catch (error) {
                 console.error("Error fetching data", error);
             }
         };
-
+    
         fetchData();
-    }, []); // Empty dependency array ensures this runs only once on mount
+    }, [id]); // Ensure this runs when `id` changes
+    
 
     const nextImage = () => {
         setCurrentImageIndex((prevIndex) => (prevIndex + 1) % product.images.length)
@@ -301,7 +308,7 @@ export default function ProductPage() {
                             </motion.div>
                         </div>
 
-                        {/* Review Section */}
+                        {/* Review Section
                         <div className="mt-12 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
                             <h2 className="text-2xl font-bold text-[#402e20] dark:text-gray-100 mb-6">Customer Reviews</h2>
                             <div className="flex items-center mb-6">
@@ -312,9 +319,9 @@ export default function ProductPage() {
                             </div>
                             <ReviewForm productId={product.id} onSubmit={handleReviewSubmit} />
                             <div className="mt-8">
-                                {/* <ReviewList reviews={product.reviews} /> */}
+                                * <ReviewList reviews={product.reviews} /> 
                             </div>
-                        </div>
+                        </div> */}
                     </motion.div>
                 )}
                 <WhatsAppButton />

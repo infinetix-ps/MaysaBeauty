@@ -1,10 +1,10 @@
 import { motion } from "framer-motion"
 
 const trendingProducts = [
-    { id: 1, name: "Unicorn Princess Dress", sales: 1234, image: "/placeholder.svg?height=50&width=50" },
-    { id: 2, name: "Sparkly Tutu Skirt", sales: 987, image: "/placeholder.svg?height=50&width=50" },
-    { id: 3, name: "Butterfly Hair Clips Set", sales: 876, image: "/placeholder.svg?height=50&width=50" },
-    { id: 4, name: "Rainbow Sneakers", sales: 765, image: "/placeholder.svg?height=50&width=50" },
+    // { id: 1, name: "Unicorn Princess Dress", sales: 1234, image: "/placeholder.svg?height=50&width=50" },
+    // { id: 2, name: "Sparkly Tutu Skirt", sales: 987, image: "/placeholder.svg?height=50&width=50" },
+    // { id: 3, name: "Butterfly Hair Clips Set", sales: 876, image: "/placeholder.svg?height=50&width=50" },
+    // { id: 4, name: "Rainbow Sneakers", sales: 765, image: "/placeholder.svg?height=50&width=50" },
 ]
 
 export const TrendingProducts = () => {

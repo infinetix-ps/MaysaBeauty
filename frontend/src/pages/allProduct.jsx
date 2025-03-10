@@ -47,8 +47,9 @@ const AllProductsPage = () => {
     const pageTopRef = useRef(null)
     // Extract unique categories
     const categories = [...new Set(products.map((product) => product.category))]
-    const maxPrice = Math.max(...products.map((product) => product.price))
-    const minPrice = Math.min(...products.map((product) => product.price))
+    const maxPrice = Math.max(...products.map((product) => product.price), 100.00);
+    const minPrice = Math.min(...products.map((product) => product.price), 1.00);
+    
 
     // States
     const [searchParams] = useSearchParams()
@@ -67,39 +68,84 @@ const AllProductsPage = () => {
         [],
     )
 
+    // useEffect(() => {
+    //     let result = [...products]
+
+    //     console.log(result)
+    //     if (searchTerm) {
+    //         result = result.filter((product) => product.name.toLowerCase().includes(searchTerm.toLowerCase()))
+    //     }
+
+    //     if (selectedCategories.length > 0) {
+    //         result = result.filter((product) => selectedCategories.includes(product.category))
+    //     } else if (categoryParam) {
+    //         result = result.filter((product) => product.category === categoryParam)
+    //         setSelectedCategories([categoryParam])
+    //     }
+
+    //     // result = result.filter((product) => product.price >= priceRange[0] && product.price <= priceRange[1])
+
+    //     // result.sort((a, b) => {
+    //     //     switch (sortBy) {
+    //     //         case "price-asc":
+    //     //             return a.price - b.price
+    //     //         case "price-desc":
+    //     //             return b.price - a.price
+    //     //         case "name-desc":
+    //     //             return b.name.localeCompare(a.name)
+    //     //         default:
+    //     //             return a.name.localeCompare(b.name)
+    //     //     }
+    //     // })
+
+    //     setFilteredProducts(result)
+    // }, [searchTerm, selectedCategories, priceRange, sortBy])
+
+
     useEffect(() => {
-        let result = [...products]
-
-        console.log(result)
+        let result = [...products];
+    
+        // Filter by search term
         if (searchTerm) {
-            result = result.filter((product) => product.name.toLowerCase().includes(searchTerm.toLowerCase()))
+            result = result.filter((product) =>
+                product.name.toLowerCase().includes(searchTerm.toLowerCase())
+            );
         }
-
+    
+        // Filter by selected categories
         if (selectedCategories.length > 0) {
-            result = result.filter((product) => selectedCategories.includes(product.category))
+            result = result.filter((product) =>
+                selectedCategories.includes(product.category)
+            );
         } else if (categoryParam) {
-            result = result.filter((product) => product.category === categoryParam)
-            setSelectedCategories([categoryParam])
+            result = result.filter((product) => product.category === categoryParam);
+            setSelectedCategories([categoryParam]);
         }
+    
+        // Filter by price range
+        result = result.filter(
+            (product) => product.price >= priceRange[0] && product.price <= priceRange[1]
+        );
+    
+        // Apply sorting
+        result.sort((a, b) => {
+            switch (sortBy) {
+                case "price-asc":
+                    return a.price - b.price;
+                case "price-desc":
+                    return b.price - a.price;
+                case "name-desc":
+                    return b.name.localeCompare(a.name);
+                case "name-asc":
+                default:
+                    return a.name.localeCompare(b.name);
+            }
+        });
+    
+        setFilteredProducts(result);
+    }, [searchTerm, selectedCategories, priceRange, sortBy, products]);
 
-        // result = result.filter((product) => product.price >= priceRange[0] && product.price <= priceRange[1])
-
-        // result.sort((a, b) => {
-        //     switch (sortBy) {
-        //         case "price-asc":
-        //             return a.price - b.price
-        //         case "price-desc":
-        //             return b.price - a.price
-        //         case "name-desc":
-        //             return b.name.localeCompare(a.name)
-        //         default:
-        //             return a.name.localeCompare(b.name)
-        //     }
-        // })
-
-        setFilteredProducts(result)
-    }, [searchTerm, selectedCategories, priceRange, sortBy])
-
+    
     // Scroll to top when component mounts or URL parameters change
     useEffect(() => {
         pageTopRef.current?.scrollIntoView({ behavior: "smooth" })

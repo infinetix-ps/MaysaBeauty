@@ -4,7 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "../uiDashboard/avatar.jsx"
 export const RecentSales = () => {
     return (
         <div className="space-y-8">
-            <div className="flex items-center">
+            {/* <div className="flex items-center">
                 <Avatar className="h-9 w-9">
                     <AvatarImage src="/placeholder.svg?height=36&width=36" alt="Avatar" />
                     <AvatarFallback>EM</AvatarFallback>
@@ -58,7 +58,7 @@ export const RecentSales = () => {
                     <p className="text-sm text-muted-foreground">zoe.patel@email.com</p>
                 </div>
                 <div className="ml-auto font-medium">+$79.00</div>
-            </div>
+            </div> */}
         </div>
     )
 }

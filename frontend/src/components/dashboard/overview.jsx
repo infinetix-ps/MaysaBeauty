@@ -3,45 +3,45 @@ import { Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "rec
 import { motion } from "framer-motion"
 
 const data = [
+    // {
+    //     revenue: 10400,
+    //     dresses: 240,
+    //     accessories: 180,
+    // },
+    // {
+    //     revenue: 14405,
+    //     dresses: 300,
+    //     accessories: 250,
+    // },
+    // {
+    //     revenue: 9400,
+    //     dresses: 200,
+    //     accessories: 220,
+    // },
+    // {
+    //     revenue: 12000,
+    //     dresses: 280,
+    //     accessories: 230,
+    // },
+    // {
+    //     revenue: 11000,
+    //     dresses: 220,
+    //     accessories: 260,
+    // },
+    // {
+    //     revenue: 16780,
+    //     dresses: 340,
+    //     accessories: 310,
+    // },
+    // {
+    //     revenue: 13890,
+    //     dresses: 280,
+    //     accessories: 290,
+    // },
     {
-        revenue: 10400,
-        dresses: 240,
-        accessories: 180,
-    },
-    {
-        revenue: 14405,
-        dresses: 300,
-        accessories: 250,
-    },
-    {
-        revenue: 9400,
-        dresses: 200,
-        accessories: 220,
-    },
-    {
-        revenue: 12000,
-        dresses: 280,
-        accessories: 230,
-    },
-    {
-        revenue: 11000,
-        dresses: 220,
-        accessories: 260,
-    },
-    {
-        revenue: 16780,
-        dresses: 340,
-        accessories: 310,
-    },
-    {
-        revenue: 13890,
-        dresses: 280,
-        accessories: 290,
-    },
-    {
-        revenue: 18000,
-        dresses: 360,
-        accessories: 340,
+        revenue: 0,
+        dresses: 0,
+        accessories: 0,
     },
 ]
 

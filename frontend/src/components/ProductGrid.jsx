@@ -18,44 +18,56 @@ const ProductGrid = ({ showAll = false, products = [], limit = 8 }) => {
         setDisplayedProducts(slicedProducts)
     }, [products, page, showAll, limit])
 
-    const handleAddToCart = async (product) => {
-        try {
-            const token = localStorage.getItem("token"); // Assuming token is stored in localStorage
-            console.log(product._id);
-            await axios.post("https://api.maysabeauty.store/cart", {
-                productId: product._id
-            }, {
-                headers: {
-                    "Content-Type": "application/json",
-                    "authorisation": `Hossam__${token}`
-                }
-            });
-            const cartItem = {
-                id: product._id,
-                name: product.name,
-                price: product.price,
-                image: null,
-                quantity: 1,
-            }
-            addToCart(cartItem)
+    // const handleAddToCart = async (product) => {
+    //     try {
+    //         const token = localStorage.getItem("token"); // Assuming token is stored in localStorage
+    //         console.log(product._id);
+    //         await axios.post("https://api.maysabeauty.store/cart", {
+    //             productId: product._id
+    //         }, {
+    //             headers: {
+    //                 "Content-Type": "application/json",
+    //                 "authorisation": `Hossam__${token}`
+    //             }
+    //         });
+    //         const cartItem = {
+    //             id: product._id,
+    //             name: product.name,
+    //             price: product.price,
+    //             image: product.mainImage?.secure_url,
+    //             quantity: 1,
+    //         }
+    //         addToCart(cartItem)
 
-            console.log(cartItem);
-            toast.success("Added to cart!", {
-                position: "bottom-right",
-                autoClose: 2000,
-            });
+    //         toast.success("Added to cart!", {
+    //             position: "bottom-right",
+    //             autoClose: 2000,
+    //         });
 
 
-        } catch (error) {
-            console.log(5666);
-            toast.error(error.response?.data?.message || "Something went wrong", {
-                position: "bottom-right",
-                autoClose: 2000,
-            });
+    //     } catch (error) {
+    //         console.log(5666);
+    //         toast.error(error.response?.data?.message || "Something went wrong", {
+    //             position: "bottom-right",
+    //             autoClose: 2000,
+    //         });
+    //     }
+    // };
+
+    const handleAddToCart = (product) => {
+        const cartItem = {
+            id: product._id,
+            name: product.name,
+            price: product?.price,
+            image: product?.mainImage?.secure_url || null,
+            quantity:1,
         }
-    };
-
-
+        addToCart(cartItem)
+        toast.success("Added to cart!", {
+            position: "bottom-right",
+            autoClose: 2000,
+        })
+    }
 
     const loadMore = () => {
         setPage((prev) => prev + 1)
@@ -101,7 +113,7 @@ const ProductGrid = ({ showAll = false, products = [], limit = 8 }) => {
                                     <div className="relative w-full h-full transform transition-transform duration-700 group-hover:scale-105">
                                         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/5 group-hover:opacity-0 transition-opacity duration-500" />
                                         <img
-                                            src={product.images ? product.images[0] : "/placeholder.svg"}
+                                            src={product?.mainImage?.secure_url }
                                             alt={product.name}
                                             className="w-full h-full object-cover"
                                             loading="lazy"

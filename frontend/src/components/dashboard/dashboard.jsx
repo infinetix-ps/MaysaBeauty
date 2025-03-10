@@ -119,7 +119,7 @@ const Dashboard = () => {
                     >
                         <StatCard
                             title="Total Revenue"
-                            value="$45,231.89"
+                            value="$0"
                             change="+20.1% from last month"
                             icon={DollarSign}
                             gradient="bg-gradient-to-br from-pink-500 via-pink-600 to-purple-700"
@@ -127,7 +127,7 @@ const Dashboard = () => {
 
                         <StatCard
                             title="New Customers"
-                            value="+2350"
+                            value="+0"
                             change="+180.1% from last month"
                             icon={Users}
                             gradient="bg-gradient-to-br from-purple-500 via-purple-600 to-indigo-700"
@@ -135,7 +135,7 @@ const Dashboard = () => {
 
                         <StatCard
                             title="Sales"
-                            value="+12,234"
+                            value="+0"
                             change="+19% from last month"
                             icon={ShoppingBag}
                             gradient="bg-gradient-to-br from-indigo-500 via-blue-600 to-blue-700"
@@ -143,7 +143,7 @@ const Dashboard = () => {
 
                         <StatCard
                             title="Active Now"
-                            value="+573"
+                            value="+0"
                             change="+201 since last hour"
                             icon={Activity}
                             gradient="bg-gradient-to-br from-blue-500 via-cyan-600 to-cyan-700"
@@ -192,31 +192,6 @@ const Dashboard = () => {
                                     <TrendingProducts />
                                 </CardContent>
                             </Card>
-                            <Card className="lg:col-span-4">
-                                <CardHeader>
-                                    <CardTitle className="text-xl sm:text-2xl font-bold text-gray-900">Age Distribution</CardTitle>
-                                </CardHeader>
-                                <CardContent>
-                                    <AgeGroupDistribution />
-                                </CardContent>
-                            </Card>
-                        </motion.div>
-
-                        {/* Seasonal Trends and Notifications */}
-                        <motion.div
-                            className="grid gap-4 grid-cols-1 lg:grid-cols-7"
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5, delay: 0.8 }}
-                        >
-                            <Card className="lg:col-span-4">
-                                <CardHeader>
-                                    <CardTitle className="text-xl sm:text-2xl font-bold text-gray-900">Seasonal Trends</CardTitle>
-                                </CardHeader>
-                                <CardContent>
-                                    <SeasonalTrends />
-                                </CardContent>
-                            </Card>
                             <Card className="lg:col-span-3">
                                 <CardHeader>
                                     <CardTitle className="text-xl sm:text-2xl font-bold text-gray-900">Notifications</CardTitle>
@@ -234,6 +209,32 @@ const Dashboard = () => {
                                     </div>
                                 </CardContent>
                             </Card>
+                          
+                        </motion.div>
+
+                        {/* Seasonal Trends and Notifications */}
+                        <motion.div
+                            className="grid gap-4 grid-cols-1 lg:grid-cols-7"
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5, delay: 0.8 }}
+                        >
+                            {/* <Card className="lg:col-span-4">
+                                <CardHeader>
+                                    <CardTitle className="text-xl sm:text-2xl font-bold text-gray-900">Seasonal Trends</CardTitle>
+                                </CardHeader>
+                                <CardContent>
+                                    <SeasonalTrends />
+                                </CardContent>
+                            </Card> */}
+                            {/* <Card className="lg:col-span-4">
+                                <CardHeader>
+                                    <CardTitle className="text-xl sm:text-2xl font-bold text-gray-900">Age Distribution</CardTitle>
+                                </CardHeader>
+                                <CardContent>
+                                    <AgeGroupDistribution />
+                                </CardContent>
+                            </Card> */}
                         </motion.div>
                     </div>
                 </div>
