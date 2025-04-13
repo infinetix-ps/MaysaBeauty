@@ -137,9 +137,14 @@ export default function CartPage() {
                                     </div>
                                 </div>
                                 <div className="space-y-3">
-                                    <Link to="/checkout" className="w-full">
+                                    <Link
+                                        to="/checkout"
+                                        state={{ cart, totalPrice }}
+                                        className="w-full"
+                                    >
                                         <Button className="w-full font-medium">Proceed to Checkout</Button>
                                     </Link>
+
                                     <Button variant="outline" onClick={clearCart} className="w-full">
                                         Clear Cart
                                     </Button>
@@ -148,7 +153,7 @@ export default function CartPage() {
                         </motion.div>
                     </div>
                 )}
-                <WhatsAppButton/>
+                <WhatsAppButton />
             </main>
         </div>
     )

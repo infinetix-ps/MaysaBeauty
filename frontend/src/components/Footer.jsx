@@ -1,19 +1,25 @@
-import { useState } from "react"
-import { motion } from "framer-motion"
-import { Instagram, Facebook, Twitter } from "lucide-react"
-import { Input } from "../components/ui/input.jsx"
-import { Button } from "../components/ui/button.jsx"
-import { Link } from "react-router-dom"
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { Instagram, Facebook, Twitter } from "lucide-react";
+import { Input } from "../components/ui/input.jsx";
+import { Button } from "../components/ui/button.jsx";
+import { Link } from "react-router-dom";
 
 function Footer() {
-  const [email, setEmail] = useState("")
+  const [email, setEmail] = useState("");
 
   const handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     // TODO: Implement newsletter signup logic
-    console.log("Newsletter signup:", email)
-    setEmail("")
-  }
+    console.log("Newsletter signup:", email);
+    setEmail("");
+  };
+  const navLinks = [
+    { name: "Home", link: "/" },
+    { name: "Products", link: "/products" },
+    { name: "Return & Exchange Policy", link: "/return-and-exchange-policy" },
+    { name: "Privacy Policy", link: "/privacy-policy" },
+  ];
 
   return (
     <footer className="bg-[#a67c7c] text-white">
@@ -34,10 +40,9 @@ function Footer() {
               transition={{ duration: 0.5, delay: 0.1 }}
               className="mb-4 text-[#e5ddd3]"
             >
-              Discover your perfect beauty routine and embrace your unique charm with our curated collection of
-              slimming, fattening, and skincare products.
+              Discover your perfect beauty routine and embrace your unique charm with our curated collection of slimming, fattening, and skincare products.
             </motion.p>
-            <motion.form
+            {/* <motion.form
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
@@ -55,8 +60,9 @@ function Footer() {
               <Button type="submit" className="bg-[#6d4c41] hover:bg-[#5d3f35] text-white">
                 Subscribe
               </Button>
-            </motion.form>
+            </motion.form> */}
           </div>
+
           <div>
             <motion.h4
               initial={{ opacity: 0, y: 20 }}
@@ -72,18 +78,19 @@ function Footer() {
               transition={{ duration: 0.5, delay: 0.4 }}
               className="space-y-2"
             >
-              {["Home", "Products"].map((item, index) => (
-                <li key={item}>
+              {navLinks.map(({ name, link }) => (
+                <li key={name}>
                   <Link
-                    to={`/${item=="Home"? "":item.toLowerCase().replace(" ", "-")}`}
+                    to={link}
                     className="text-[#e5ddd3] hover:text-white transition-colors"
                   >
-                    {item}
+                    {name}
                   </Link>
                 </li>
               ))}
             </motion.ul>
           </div>
+
           <div>
             <motion.h4
               initial={{ opacity: 0, y: 20 }}
@@ -113,6 +120,7 @@ function Footer() {
             </motion.div>
           </div>
         </div>
+
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -121,10 +129,43 @@ function Footer() {
         >
           <p>&copy; {new Date().getFullYear()} Maysa Beauty Brands. All rights reserved.</p>
         </motion.div>
+
+        {/* Visa and MasterCard logos */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.8 }}
+          className="mt-4 flex justify-center gap-4"
+        >
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/0/04/Visa.svg"
+            alt="Visa"
+            className="w-12"
+          />
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg"
+            alt="MasterCard"
+            className="w-12"
+          />
+
+        </motion.div>
+
+
+
+        {/* Contact Information */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 1 }}
+          className="mt-8 text-center text-[#e5ddd3]"
+        >
+          <p>Email: <a href="mailto:maysastore10@gmail.com">maysastore10@gmail.com</a></p>
+          <p>Phone: +972 59-9259881</p>
+          <p>Address: Ramallah, Palestine</p>
+        </motion.div>
       </div>
     </footer>
-  )
+  );
 }
 
-export default Footer
-
+export default Footer;

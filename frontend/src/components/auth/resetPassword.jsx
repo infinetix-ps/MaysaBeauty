@@ -62,7 +62,7 @@ function ResetPassword() {
 
         try {
             // Send PATCH request to reset password
-            const response = await axios.patch("https://api.maysabeauty.store/auth/forgetPassword", {
+            const response = await axios.patch(`${process.env.REACT_APP_API_BASE_URL}/auth/forgetPassword`, {
                 email,
                 password: newPassword,
                 code: verificationCode,

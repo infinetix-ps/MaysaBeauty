@@ -71,7 +71,7 @@ function RoyalSlimHome() {
                     transition={{ duration: 0.8, delay: 0.4 }}
                 >
                     <img
-                        src="https://cdn-bjpdk.nitrocdn.com/dyjDRTumiVVFLKEpXMADzKdEUUbypNrL/assets/images/optimized/rev-ab4f880/www.visualeducation.com/wp-content/uploads/2019/09/Clinique_Advert_Karl_Taylor-1.jpg"
+                        src="https://image.made-in-china.com/202f0j00pyvcSdjhdNoF/Herbal-Home-Royal-Slim-40-Gel-Capsules.webp"
                         alt="Royal Slim Product"
                         className="royal-slim-product-image"
                     />

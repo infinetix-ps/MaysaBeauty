@@ -31,7 +31,7 @@ const AllProductsPage = () => {
         const fetchData = async () => {
             try {
                 // Fetch products from the backend API
-                const productResponse = location.search ? await axios.get(`https://api.maysabeauty.store/products/category${location.search}`) : await axios.get("https://api.maysabeauty.store/products?limit=50");
+                const productResponse = location.search ? await axios.get(`${process.env.REACT_APP_API_BASE_URL}/products/category${location.search}`) : await axios.get(`${process.env.REACT_APP_API_BASE_URL}/products?limit=50`);
 
                 setProducts(productResponse.data.products);
                 console.log(productResponse.data.products);

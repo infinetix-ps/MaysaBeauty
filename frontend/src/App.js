@@ -287,11 +287,11 @@ function App() {
     const fetchData = async () => {
       try {
         // Fetch products from the backend API
-        const productResponse = await axios.get("https://api.maysabeauty.store/products?limit=50");
+        const productResponse = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/products?limit=50`);
         setProducts(productResponse.data.products);
 
         // Fetch orders from the backend API
-        const orderResponse = await axios.get("https://api.maysabeauty.store/orders");
+        const orderResponse = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/orders`);
         setOrders(orderResponse.data);
       } catch (error) {
         console.error("Error fetching data", error);
@@ -311,7 +311,7 @@ function App() {
           <IphonePage />
           <RoyalSlimHome />
           <ProductGrid products={products} />
-          <WhatsAppButton />
+          <WhatsAppButton  />
         </main>
       </div>
     </CartProvider>

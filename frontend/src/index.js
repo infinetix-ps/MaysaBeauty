@@ -25,6 +25,8 @@ import SignUpSuccess from "./components/auth/signUpSuccess.jsx";
 import ForgotPassword from "./components/auth/forgetPassword.jsx";
 import ResetPassword from "./components/auth/resetPassword.jsx";
 import EnhancedSettingsPage from "./pages/setting.jsx";
+import ReturnAndExchangePolicy from "./pages/return-and-exchange-policy.jsx";
+import PrivacyPolicy from "./pages/privacy-policy.jsx";
 
 // Protect authenticated-only pages
 const ProtectedRoute = ({ element }) => {
@@ -54,6 +56,9 @@ root.render(
             <Route path="/search" element={<SearchPage />} />
             <Route path="/products" element={<AllProductsPage />} />
             <Route path="/setting" element={<EnhancedSettingsPage />} />
+
+            <Route path="/return-and-exchange-policy" element={<ReturnAndExchangePolicy />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
 
             {/* Authentication Pages (Redirect logged-in users) */}
             <Route path="/signin" element={<AuthRoute element={<SignIn />} />} />

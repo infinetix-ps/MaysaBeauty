@@ -271,7 +271,7 @@ const ProductsPage = () => {
     const fetchData = async () => {
         try {
             // Fetch products from the backend API
-            const productResponse = await axios.get(`https://api.maysabeauty.store/products?limit=50`);
+            const productResponse = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/products?limit=50`);
             setProducts(productResponse.data.products);
 
 
@@ -584,7 +584,7 @@ const ProductsPage = () => {
             //console.log([...formData]); // Debugging: Check FormData before sending
 
             // Send API request with multipart/form-data
-            const { data } = await axios.post("https://api.maysabeauty.store/products", formData, {
+            const { data } = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/products`, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
@@ -626,7 +626,7 @@ const ProductsPage = () => {
     const [selectedCategory, setSelectedCategory] = useState("");
 
     const fetchCategories = async () => {
-        await axios.get("https://api.maysabeauty.store/categories")
+        await axios.get(`${process.env.REACT_APP_API_BASE_URL}/categories`)
             .then((response) => {
                 if (response.data.message === "success") {
                     setCategories(response.data.categorise);
@@ -649,7 +649,7 @@ const ProductsPage = () => {
             if (!newCategory) return;
 
             try {
-                const response = await axios.post("https://api.maysabeauty.store/categories", { name: newCategory });
+                const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/categories`, { name: newCategory });
                 if (response.data && response.data._id) {
                     const newCat = { _id: response.data._id, name: newCategory };
                     setCategories([...categories, newCat]);
@@ -807,7 +807,7 @@ const ProductsPage = () => {
     const handleUpdateProduct = async () => {
         try {
             // Fetch the current product data by its ID from the API
-            const { data: fetchedProduct } = await axios.get(`https://api.maysabeauty.store/products/${editingProduct._id}`);
+            const { data: fetchedProduct } = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/products/${editingProduct._id}`);
 
             // Validate fetched product data
             if (!fetchedProduct) throw new Error("Product not found");
@@ -864,7 +864,7 @@ const ProductsPage = () => {
             subImages.forEach((image) => formData.append("subImages", image));
 
             // Send API request to update the product using PUT
-            const { data } = await axios.put(`https://api.maysabeauty.store/products/${fetchedProduct._id}`, formData, {
+            const { data } = await axios.put(`${process.env.REACT_APP_API_BASE_URL}/products/${fetchedProduct._id}`, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
@@ -895,7 +895,7 @@ const ProductsPage = () => {
 
     const handleDeleteProduct = async (id) => {
         try {
-            const response = await axios.delete(`https://api.maysabeauty.store/products/${id}`);
+            const response = await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/products/${id}`);
 
             if (response.status === 200) {
                 const updatedProducts = products.filter((p) => p.id !== id);

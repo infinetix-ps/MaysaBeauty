@@ -13,7 +13,7 @@ export default function SearchPage() {
         const fetchData = async () => {
             try {
                 // Fetch products from the backend API
-                const productResponse = await axios.get("https://api.maysabeauty.store/products");
+                const productResponse = await axios.get(    `${process.env.REACT_APP_API_BASE_URL}/products`);
                 setProducts(productResponse.data.products);
 
             } catch (error) {

@@ -39,7 +39,7 @@ export default function ProductPage() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const productResponse = await axios.get(`https://api.maysabeauty.store/products/${id}`);
+                const productResponse = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/products/${id}`);
                 const productData = productResponse.data.product;
                 
                 // Convert API response to match expected structure
@@ -76,10 +76,10 @@ export default function ProductPage() {
             quantity,
         }
         addToCart(cartItem)
-        toast.success("Added to cart!", {
-            position: "bottom-right",
-            autoClose: 2000,
-        })
+        // toast.success("Added to cart!", {
+        //     position: "bottom-right",
+        //     autoClose: 2000,
+        // })
     }
 
     const handleReviewSubmit = async (reviewData) => {

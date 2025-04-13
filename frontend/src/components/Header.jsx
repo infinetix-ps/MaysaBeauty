@@ -86,7 +86,7 @@ const Header = () => {
   const { scrollY } = useScroll();
   const [categories, setCategories] = useState([]);
   useEffect(() => {
-    fetch("https://api.maysabeauty.store/categories")
+    fetch( `${process.env.REACT_APP_API_BASE_URL}/categories` )
       .then((response) => response.json())
       .then((data) => {
         if (data.message === "success") {

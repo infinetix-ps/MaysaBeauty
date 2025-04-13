@@ -203,7 +203,7 @@ function SignIn() {
         }
 
         try {
-            const response = await axios.post("https://api.maysabeauty.store/auth/login", { email, password });
+            const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/auth/login`, { email, password });
             localStorage.setItem("token", response.data.token);
             toast.success("Sign in successful!");
             navigate("/dashboard");
@@ -219,7 +219,7 @@ function SignIn() {
             const { email, name, sub: googleId } = decodedToken;
 
             // Send the Google login data to your backend for verification
-            const response = await axios.post("https://api.maysabeauty.store/auth/google-login", {
+            const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/auth/google-login`, {
                 email,
                 name,
                 googleId

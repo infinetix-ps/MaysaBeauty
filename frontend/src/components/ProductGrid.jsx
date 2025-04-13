@@ -22,7 +22,7 @@ const ProductGrid = ({ showAll = false, products = [], limit = 8 }) => {
     //     try {
     //         const token = localStorage.getItem("token"); // Assuming token is stored in localStorage
     //         console.log(product._id);
-    //         await axios.post("https://api.maysabeauty.store/cart", {
+    //         await axios.post(`${process.env.REACT_APP_API_BASE_URL}/cart`, {
     //             productId: product._id
     //         }, {
     //             headers: {

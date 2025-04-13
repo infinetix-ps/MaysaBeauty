@@ -28,7 +28,7 @@ function ForgotPassword() {
 
         try {
             // Send PATCH request to the backend
-            const response = await axios.patch("https://api.maysabeauty.store/auth/sendCode", { email })
+            const response = await axios.patch(`${process.env.REACT_APP_API_BASE_URL}/auth/sendCode`, { email })
 
             if (response.status === 200) {
                 // If the request is successful, show a success message

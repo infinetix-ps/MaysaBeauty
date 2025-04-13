@@ -96,7 +96,7 @@ export const CartProvider = ({ children }) => {
         } else {
             // If no cart in localStorage, fetch it from the backend
             axios
-                .get("https://api.maysabeauty.store/cart", {
+                .get("h${process.env.REACT_APP_API_BASE_URL}/cart", {
                     headers: {
                         Authorization: `Hossam__${localStorage.getItem('token')}`,
                     },
@@ -139,10 +139,10 @@ export const CartProvider = ({ children }) => {
             }
             return [...prevCart, item];
         });
-        toast.success(`Added ${item.name} to cart!`, {
-            position: "bottom-right",
-            autoClose: 2000,
-        });
+        // toast.success(`Added ${item.name} to cart!`, {
+        //     position: "bottom-right",
+        //     autoClose: 2000,
+        // });
     };
 
     const removeFromCart = (id) => {
