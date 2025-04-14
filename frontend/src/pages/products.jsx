@@ -76,10 +76,10 @@ export default function ProductPage() {
             quantity,
         }
         addToCart(cartItem)
-        // toast.success("Added to cart!", {
-        //     position: "bottom-right",
-        //     autoClose: 2000,
-        // })
+        toast.success("Added to cart!", {
+            position: "bottom-right",
+            autoClose: 2000,
+        })
     }
 
     const handleReviewSubmit = async (reviewData) => {
