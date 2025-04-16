@@ -302,7 +302,6 @@ function App() {
   }, []); // Empty dependency array ensures this runs only once on mount
 
   return (
-    <CartProvider>
       <div className="min-h-screen bg-gray-100 dark:bg-gray-900 transition-colors duration-300">
         <Header />
         <DynamicHeader />
@@ -314,7 +313,6 @@ function App() {
           <WhatsAppButton  />
         </main>
       </div>
-    </CartProvider>
   );
 }
 
