@@ -1,15 +1,22 @@
 import React from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Header from "../components/Header.jsx";
-import { CheckCircle } from 'lucide-react';
+import { CheckCircle } from "lucide-react";
 
 const PaymentSuccess = () => {
     const navigate = useNavigate();
+    const location = useLocation();
+
+    // Extract the query parameters from the URL
+    const queryParams = new URLSearchParams(location.search);
+    const trxref = queryParams.get("trxref");
+    const reference = queryParams.get("reference");
+    const totalPrice = queryParams.get("totalPrice");
 
     // Simple payment details
     const paymentDetails = {
-        orderId: "ORD-" + Math.floor(100000 + Math.random() * 900000),
-        amount: "450.00 ريال",
+        orderId: trxref || "ORD-" + Math.floor(100000 + Math.random() * 900000),
+        amount: totalPrice ? `${totalPrice} شيقل` : "N/A",
     };
 
     // Navigation handlers
@@ -69,8 +76,6 @@ const PaymentSuccess = () => {
                             العودة للصفحة الرئيسية
                         </button>
                     </div>
-
-                    
                 </div>
             </div>
 
@@ -79,11 +84,11 @@ const PaymentSuccess = () => {
         :root {
           --primary: #B78283;
         }
-        
+
         body {
           font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         }
-        
+
         /* Enhance Arabic text readability */
         [dir="rtl"] {
           letter-spacing: 0;

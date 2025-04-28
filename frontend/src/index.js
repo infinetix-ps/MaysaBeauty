@@ -57,7 +57,7 @@ root.render(
             <Route path="/search" element={<SearchPage />} />
             <Route path="/products" element={<AllProductsPage />} />
             <Route path="/setting" element={<EnhancedSettingsPage />} />
-            <Route path="payment-success" element={<PaymentSuccess />} />
+            <Route path="/payment-success" element={<PaymentSuccess />} />
 
             <Route
               path="/return-and-exchange-policy"
