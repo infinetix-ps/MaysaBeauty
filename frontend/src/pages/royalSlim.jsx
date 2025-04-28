@@ -22,7 +22,7 @@ const faqData = [
         icon: <FaExclamationTriangle />,
     },
     {
-        question: "لمين ممنوووووع ياخدو الدوا ؟",
+        question: "لمين ممنوووع ياخدو الدوا ؟",
         answer:
             "الي معهم ضغط وسكري، مرضعات لاطفال دون ٦ شهور، حوامل، اصحاب الامراض المزمنه والقلب والشرايين، الاشخاص اقل من ١٥ سنه، الي بياخدو ادويه اعصاب او عندهم شقيقه",
         icon: <FaBan />,
@@ -119,15 +119,7 @@ function RoyalSlimHome() {
                 </div>
             </section>
 
-            <section className="royal-slim-cta-section">
-                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-                    <h2>ابدأ رحلتك نحو الرشاقة اليوم</h2>
-                    <motion.button className="royal-slim-order-button" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                        <FaShoppingCart /> اطلب الآن
-                    </motion.button>
-                </motion.div>
-            </section>
-
+           
             <footer className="royal-slim-footer">
                 <p>خدمة التوصيل متاحة لكافة مناطق الضفة والقدس ٢٠-٣٠ شيقل ورام الله البلد مجانا بمحل متفق عليه ❤🚗</p>
             </footer>

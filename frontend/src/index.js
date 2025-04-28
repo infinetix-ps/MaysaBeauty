@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"; 
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
@@ -27,6 +27,7 @@ import ResetPassword from "./components/auth/resetPassword.jsx";
 import EnhancedSettingsPage from "./pages/setting.jsx";
 import ReturnAndExchangePolicy from "./pages/return-and-exchange-policy.jsx";
 import PrivacyPolicy from "./pages/privacy-policy.jsx";
+import PaymentSuccess from "./pages/paymentSuccess.jsx";
 
 // Protect authenticated-only pages
 const ProtectedRoute = ({ element }) => {
@@ -56,25 +57,65 @@ root.render(
             <Route path="/search" element={<SearchPage />} />
             <Route path="/products" element={<AllProductsPage />} />
             <Route path="/setting" element={<EnhancedSettingsPage />} />
+            <Route path="payment-success" element={<PaymentSuccess />} />
 
-            <Route path="/return-and-exchange-policy" element={<ReturnAndExchangePolicy />} />
+            <Route
+              path="/return-and-exchange-policy"
+              element={<ReturnAndExchangePolicy />}
+            />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
 
             {/* Authentication Pages (Redirect logged-in users) */}
-            <Route path="/signin" element={<AuthRoute element={<SignIn />} />} />
-            <Route path="/signup" element={<AuthRoute element={<SignUp />} />} />
-            <Route path="/verify" element={<AuthRoute element={<Verify />} />} />
-            <Route path="/signup-success" element={<AuthRoute element={<SignUpSuccess />} />} />
-            <Route path="/forgot-password" element={<AuthRoute element={<ForgotPassword />} />} />
-            <Route path="/reset-password" element={<AuthRoute element={<ResetPassword />} />} />
+            <Route
+              path="/signin"
+              element={<AuthRoute element={<SignIn />} />}
+            />
+            <Route
+              path="/signup"
+              element={<AuthRoute element={<SignUp />} />}
+            />
+            <Route
+              path="/verify"
+              element={<AuthRoute element={<Verify />} />}
+            />
+            <Route
+              path="/signup-success"
+              element={<AuthRoute element={<SignUpSuccess />} />}
+            />
+            <Route
+              path="/forgot-password"
+              element={<AuthRoute element={<ForgotPassword />} />}
+            />
+            <Route
+              path="/reset-password"
+              element={<AuthRoute element={<ResetPassword />} />}
+            />
 
             {/* Protected Routes (Require authentication) */}
-            <Route path="/orders" element={<ProtectedRoute element={<OrdersPage />} />} />
-            <Route path="/dashboard" element={<ProtectedRoute element={<Dashboard />} />} />
-            <Route path="/productsDash" element={<ProtectedRoute element={<ProductsPage />} />} />
-            <Route path="/ordersDash" element={<ProtectedRoute element={<OrdersPage />} />} />
-            <Route path="/customers" element={<ProtectedRoute element={<CustomersPage />} />} />
-            <Route path="/analytics" element={<ProtectedRoute element={<AnalyticsPage />} />} />
+            <Route
+              path="/orders"
+              element={<ProtectedRoute element={<OrdersPage />} />}
+            />
+            <Route
+              path="/dashboard"
+              element={<ProtectedRoute element={<Dashboard />} />}
+            />
+            <Route
+              path="/productsDash"
+              element={<ProtectedRoute element={<ProductsPage />} />}
+            />
+            <Route
+              path="/ordersDash"
+              element={<ProtectedRoute element={<OrdersPage />} />}
+            />
+            <Route
+              path="/customers"
+              element={<ProtectedRoute element={<CustomersPage />} />}
+            />
+            <Route
+              path="/analytics"
+              element={<ProtectedRoute element={<AnalyticsPage />} />}
+            />
           </Routes>
           <Footer />
           <ToastContainer />
