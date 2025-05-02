@@ -58,13 +58,11 @@ root.render(
             <Route path="/products" element={<AllProductsPage />} />
             <Route path="/setting" element={<EnhancedSettingsPage />} />
             <Route path="/payment-success" element={<PaymentSuccess />} />
-
             <Route
               path="/return-and-exchange-policy"
               element={<ReturnAndExchangePolicy />}
             />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-
             {/* Authentication Pages (Redirect logged-in users) */}
             <Route
               path="/signin"
@@ -90,20 +88,14 @@ root.render(
               path="/reset-password"
               element={<AuthRoute element={<ResetPassword />} />}
             />
-
             {/* Protected Routes (Require authentication) */}
             <Route
               path="/orders"
               element={<ProtectedRoute element={<OrdersPage />} />}
             />
-            <Route
-              path="/dashboard"
-              element={<ProtectedRoute element={<Dashboard />} />}
-            />
-            <Route
-              path="/productsDash"
-              element={<ProtectedRoute element={<ProductsPage />} />}
-            />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/productsDash" element={<ProductsPage />} />
+            
             <Route
               path="/ordersDash"
               element={<ProtectedRoute element={<OrdersPage />} />}
