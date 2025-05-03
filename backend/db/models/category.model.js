@@ -22,7 +22,7 @@ const categorySchema = new Schema({
     index: {
         type: Number,
         required: true,  // If you want the index to be mandatory
-        unique: true,    // If the index should be unique
+        unique: false,    // If the index should be unique
         default: 0,      // Optional: Set a default value if desired
     },
     createdBy: { type: Types.ObjectId, ref: 'User' },

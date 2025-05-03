@@ -93,8 +93,14 @@ root.render(
               path="/orders"
               element={<ProtectedRoute element={<OrdersPage />} />}
             />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/productsDash" element={<ProductsPage />} />
+            <Route
+              path="/dashboard"
+              element={<ProtectedRoute element={<Dashboard />} />}
+            />
+            <Route
+              path="/productsDash"
+              element={<ProtectedRoute element={<ProductsPage />} />}
+            />
             
             <Route
               path="/ordersDash"

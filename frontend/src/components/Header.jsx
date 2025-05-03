@@ -3,7 +3,16 @@ import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion"
 import { Link } from "react-router-dom";
 import { ShoppingBag, Search, Menu, User, X, ChevronDown, Ruler, Weight, Scissors, Palette, Sparkles, Heart, Droplet, Home } from 'lucide-react';
 import { useCart } from "../pages/contexts/cartContext";
-import ThemeToggle from "./themeProvider.jsx";
+import {
+  Snowflake,
+  Waves,
+  SprayCanIcon as Spray,
+  Flower,
+  Leaf,
+  Sun,
+  Gem,
+  Shirt,
+} from "lucide-react";
 import WhatsAppButton from "./ui/whatsappButton.jsx";
 
 // const categories = [
@@ -52,19 +61,30 @@ import WhatsAppButton from "./ui/whatsappButton.jsx";
 // ];
 
 const icons = [
+  // Skin Care
+  Droplet,
+  Snowflake,
+  Waves,
+  Sparkles,
 
-  Ruler,
-  Weight,
-
+  // Hair Care
+  Waves,
   Scissors,
   Palette,
 
-  Sparkles,
-
+  // Body Care
+  Flower,
   Heart,
-  Droplet,
+  Leaf,
+  Sun,
 
-];
+  // Accessories
+  Gem,
+  Spray,
+  Shirt,
+  ShoppingBag,
+]
+
 
 const mobileMenuItemVariants = {
   closed: { opacity: 0, x: 50 },
@@ -160,7 +180,7 @@ const Header = () => {
                       {categories?.map((category, index) => {
                         const randomIndex = Math.floor(Math.random() * 5);
 
-                        const Icon = icons[randomIndex];
+                        const Icon = icons[category.index];
                         return (
                           <div
                             key={category.name}
