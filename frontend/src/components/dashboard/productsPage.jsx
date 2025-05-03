@@ -1,5 +1,7 @@
 "use client"
 
+import React from "react"
+
 import { useState, useCallback, useEffect } from "react"
 import { Link } from "react-router-dom"
 import { Card, CardContent } from "../uiDashboard/card.jsx"
@@ -9,7 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "../uiDashboard/tabs.js
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../uiDashboard/table.jsx"
 import { Badge } from "../uiDashboard/badge.jsx"
 import { Button } from "../uiDashboard/button.jsx"
-import { PlusCircle, Search, Pencil, Trash2, MoreHorizontal, X, ArrowLeft } from "lucide-react"
+import { PlusCircle, Search, Trash2, MoreHorizontal, X, ArrowLeft } from "lucide-react"
 import { Dialog, DialogContent, DialogFooter } from "../ui/dialog.jsx"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select.jsx"
 import { toast } from "../ui/useToast.js"
@@ -22,7 +24,52 @@ import {
 } from "../ui/dropDownMenu.jsx"
 import { useDropzone } from "react-dropzone"
 import { ScrollArea, ScrollBar } from "../ui/scrollArea.jsx"
-import axios from 'axios';
+import axios from "axios"
+import {
+    Sparkles,
+    Heart,
+    Droplet,
+    Scissors,
+    Palette,
+    Flower,
+    Leaf,
+    Sun,
+    SprayCanIcon as Spray,
+    Gem,
+    Snowflake,
+    Waves,
+    Shirt,
+    ShoppingBag,
+} from "lucide-react"
+
+// Icon names in Arabic with their corresponding Lucide React components
+const icons = {
+    // Skin Care
+    "كريم الوجه": Droplet,
+    مرطب: Snowflake,
+    منظف: Waves,
+    سيروم: Sparkles,
+
+    // Hair Care
+    شامبو: Spray,
+    بلسم: Waves,
+    "تصفيف الشعر": Scissors,
+    "صبغة شعر": Palette,
+
+    // Body Care
+    "لوشن الجسم": Flower,
+    "كريم اليدين": Heart,
+    "العناية بالقدم": Leaf,
+    "واقي شمس": Sun,
+
+    // Accessories
+    مكياج: Gem,
+    عطر: Spray,
+    ملابس: Shirt,
+    إكسسوارات: ShoppingBag,
+}
+
+
 
 // const [] = [
 //     {
@@ -83,7 +130,6 @@ import axios from 'axios';
 // ]
 
 const ProductCard = ({ product, onEdit, onDelete }) => {
-
     return (
         <Card className="h-full bg-white border border-gray-200 shadow-md hover:shadow-lg transition-shadow duration-300">
             <CardContent className="p-4">
@@ -93,11 +139,10 @@ const ProductCard = ({ product, onEdit, onDelete }) => {
                             // product.photos.map((photo, index) => (
                             <img
                                 // key={index}
-                                src={product.mainImage.secure_url}
+                                src={product.mainImage.secure_url || "/placeholder.svg"}
                                 alt={`${product.name} `}
                                 className="h-20 w-20 rounded-md object-cover border border-gray-200"
                             />
-
                         ) : (
                             <div className="h-20 w-20 rounded-md bg-gray-100" />
                         )}
@@ -105,7 +150,13 @@ const ProductCard = ({ product, onEdit, onDelete }) => {
                     <div className="flex items-start justify-between">
                         <div>
                             <h3 className="font-semibold text-gray-900">{product.name}</h3>
-                            <p className="text-sm text-gray-600">${product.price.toFixed(2)}</p>
+                            {product.categoryIcon && icons[product.categoryIcon] && (
+                                <div className="flex items-center gap-1 text-pink-600 mt-1">
+                                    {React.createElement(icons[product.categoryIcon], { className: "h-4 w-4" })}
+                                    <span className="text-xs font-medium">{product.categoryIcon}</span>
+                                </div>
+                            )}
+                            <p className="text-sm text-gray-600 mt-1">${product.price.toFixed(2)}</p>
                         </div>
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
@@ -170,7 +221,13 @@ const ProductTable = ({ products, onEdit, onDelete }) => {
                         <TableRow key={product.id} className="hover:bg-gray-50">
                             <TableCell className="font-medium text-gray-900">{product.name}</TableCell>
                             <TableCell>
-                                <Badge variant="outline" className="bg-gray-100 text-gray-800 border-gray-200">
+                                <Badge
+                                    variant="outline"
+                                    className="bg-pink-50 text-pink-800 border-pink-200 flex items-center gap-1 px-2 py-1"
+                                >
+                                    {product.categoryIcon &&
+                                        icons[product.categoryIcon] &&
+                                        React.createElement(icons[product.categoryIcon], { className: "h-4 w-4 mr-1" })}
                                     {product.category}
                                 </Badge>
                             </TableCell>
@@ -204,11 +261,10 @@ const ProductTable = ({ products, onEdit, onDelete }) => {
                                         // product.photos.map((photo, index) => (
                                         <img
                                             // key={index}
-                                            src={product.mainImage.secure_url}
+                                            src={product.mainImage.secure_url || "/placeholder.svg"}
                                             alt={`${product.name} `}
                                             className="h-10 w-10 rounded-md object-cover border border-gray-200"
                                         />
-
                                     ) : (
                                         <div className="h-10 w-10 rounded-md object-cover border border-gray-200" />
                                     )}
@@ -258,6 +314,7 @@ const ProductsPage = () => {
     const [newProduct, setNewProduct] = useState({
         name: "",
         category: "",
+        categoryIcon: "", // Add this line
         price: 0,
         stock: 0,
         photos: [],
@@ -271,20 +328,17 @@ const ProductsPage = () => {
     const fetchData = async () => {
         try {
             // Fetch products from the backend API
-            const productResponse = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/products?limit=50`);
-            setProducts(productResponse.data.products);
-
-
+            const productResponse = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/products?limit=50`)
+            setProducts(productResponse.data.products)
         } catch (error) {
-            console.error("Error fetching data", error);
+            console.error("Error fetching data", error)
         }
-    };
+    }
 
     // Fetch products and orders from backend
     useEffect(() => {
-
-        fetchData();
-    }, []); // Empty dependency array ensures this runs only once on mount
+        fetchData()
+    }, []) // Empty dependency array ensures this runs only once on mount
     const onDrop = useCallback((acceptedFiles, mode = "add") => {
         const newPhotos = acceptedFiles.slice(0, 4).map((file) => URL.createObjectURL(file))
         if (mode === "add") {
@@ -332,7 +386,9 @@ const ProductsPage = () => {
         }
     }
 
-    const filteredProducts = products.filter((product) => product?.name?.toLowerCase().includes(searchTerm?.toLowerCase()))
+    const filteredProducts = products.filter((product) =>
+        product?.name?.toLowerCase().includes(searchTerm?.toLowerCase()),
+    )
 
     // const handleAddProduct = () => {
     //     try {
@@ -414,7 +470,6 @@ const ProductsPage = () => {
     //         const mainImage = newProduct.photos.length > 0 ? newProduct.photos[0] : null;
     //         const subImages = newProduct.photos.slice(1);
 
-
     //         // Create new product object
     //         const product = {
     //             name: newProduct.name,
@@ -428,7 +483,6 @@ const ProductsPage = () => {
     //             usage: newProduct.usage,
     //         };
     //         console.log(product);
-
 
     //         // Send API request using Axios
     //         const { data } = await axios.post("https://api.maysabeauty.store/products", product);
@@ -531,55 +585,56 @@ const ProductsPage = () => {
     const handleAddProduct = async () => {
         try {
             // Validate required fields
-            if (!newProduct.name.trim()) throw new Error("Product name is required");
-            if (!newProduct.category) throw new Error("Please select a category");
-            if (!newProduct.price || newProduct.price <= 0) throw new Error("Please enter a valid price");
-            if (newProduct.stock < 0) throw new Error("Stock cannot be negative");
+            if (!newProduct.name.trim()) throw new Error("Product name is required")
+            if (!newProduct.category) throw new Error("Please select a category")
+            if (!newProduct.price || newProduct.price <= 0) throw new Error("Please enter a valid price")
+            if (newProduct.stock < 0) throw new Error("Stock cannot be negative")
 
             // Determine product status
-            const productStatus = newProduct.stock > 10 ? "In Stock" : newProduct.stock > 0 ? "Low Stock" : "Out of Stock";
+            const productStatus = newProduct.stock > 10 ? "In Stock" : newProduct.stock > 0 ? "Low Stock" : "Out of Stock"
 
             // Convert blob URL to File (if needed)
             const convertBlobToFile = async (blobUrl, filename) => {
-                const response = await fetch(blobUrl);
-                const blob = await response.blob();
-                return new File([blob], filename, { type: blob.type });
-            };
+                const response = await fetch(blobUrl)
+                const blob = await response.blob()
+                return new File([blob], filename, { type: blob.type })
+            }
 
             // Ensure photos are File objects
-            let mainImage = null;
-            let subImages = [];
+            let mainImage = null
+            const subImages = []
 
             if (newProduct.photos.length > 0) {
                 if (typeof newProduct.photos[0] === "string") {
-                    mainImage = await convertBlobToFile(newProduct.photos[0], "mainImage.jpg");
+                    mainImage = await convertBlobToFile(newProduct.photos[0], "mainImage.jpg")
                 } else {
-                    mainImage = newProduct.photos[0];
+                    mainImage = newProduct.photos[0]
                 }
 
                 for (let i = 1; i < newProduct.photos.length; i++) {
                     if (typeof newProduct.photos[i] === "string") {
-                        const file = await convertBlobToFile(newProduct.photos[i], `subImage${i}.jpg`);
-                        subImages.push(file);
+                        const file = await convertBlobToFile(newProduct.photos[i], `subImage${i}.jpg`)
+                        subImages.push(file)
                     } else {
-                        subImages.push(newProduct.photos[i]);
+                        subImages.push(newProduct.photos[i])
                     }
                 }
             }
 
             // Create FormData
-            const formData = new FormData();
-            formData.append("name", newProduct.name);
-            formData.append("categoryId", newProduct.category);
-            formData.append("price", Number(newProduct.price));
-            formData.append("stock", Number(newProduct.stock));
+            const formData = new FormData()
+            formData.append("name", newProduct.name)
+            formData.append("categoryId", newProduct.category)
+            formData.append("price", Number(newProduct.price))
+            formData.append("stock", Number(newProduct.stock))
             // formData.append("status", productStatus);
-            formData.append("description", newProduct.description);
-            formData.append("usage", newProduct.usage);
+            formData.append("description", newProduct.description)
+            formData.append("usage", newProduct.usage)
+            formData.append("categoryIcon", newProduct.categoryIcon)
 
             // Append images to FormData
-            if (mainImage) formData.append("mainImage", mainImage);
-            subImages.forEach((image) => formData.append("subImages", image));
+            if (mainImage) formData.append("mainImage", mainImage)
+            subImages.forEach((image) => formData.append("subImages", image))
             //  formData.append("subImages", subImages)
             //console.log([...formData]); // Debugging: Check FormData before sending
 
@@ -588,83 +643,81 @@ const ProductsPage = () => {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
-            });
+            })
 
             // Update products state
-            setProducts((prevProducts) => [...prevProducts, data]);
+            setProducts((prevProducts) => [...prevProducts, data])
 
             // Show success message
             toast({
                 title: "Success",
                 description: `${data.name} has been added successfully.`,
-            });
+            })
 
             // Reset form fields
             setNewProduct({
                 name: "",
                 category: "",
+                categoryIcon: "", // Add this line
                 price: 0,
                 stock: 0,
                 photos: [],
                 description: "",
                 usage: "",
-            });
-            handleCloseAddDialog();
-            fetchData();
+            })
+            handleCloseAddDialog()
+            fetchData()
         } catch (error) {
             // Show error message
             toast({
                 title: "Error",
                 description: error.response?.data?.message || error.message,
                 variant: "destructive",
-            });
+            })
         }
-    };
+    }
 
-
-    const [categories, setCategories] = useState([]);
-    const [selectedCategory, setSelectedCategory] = useState("");
+    const [categories, setCategories] = useState([])
+    const [selectedCategory, setSelectedCategory] = useState("")
 
     const fetchCategories = async () => {
-        await axios.get(`${process.env.REACT_APP_API_BASE_URL}/categories`)
+        await axios
+            .get(`${process.env.REACT_APP_API_BASE_URL}/categories`)
             .then((response) => {
                 if (response.data.message === "success") {
-                    setCategories(response.data.categorise);
+                    setCategories(response.data.categorise)
                 }
             })
-            .catch((error) => console.error("Error fetching categories:", error));
+            .catch((error) => console.error("Error fetching categories:", error))
     }
     useEffect(() => {
-        fetchCategories();
-    }, []);
+        fetchCategories()
+    }, [])
 
     const handleCategoryChange = async (value) => {
-        setSelectedCategory(value);
-        setNewProduct((prev) => ({ ...prev, category: value }));
-    };
+        setSelectedCategory(value)
+        setNewProduct((prev) => ({ ...prev, category: value }))
+    }
 
     const handleKeyDown = async (event) => {
         if (event.key === "Enter" && !selectedCategory) {
-            const newCategory = event.target.value.trim();
-            if (!newCategory) return;
+            const newCategory = event.target.value.trim()
+            if (!newCategory) return
 
             try {
-                const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/categories`, { name: newCategory });
+                const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/categories`, { name: newCategory })
                 if (response.data && response.data._id) {
-                    const newCat = { _id: response.data._id, name: newCategory };
-                    setCategories([...categories, newCat]);
-                    setSelectedCategory(newCat._id);
-                    setNewProduct((prev) => ({ ...prev, category: newCat._id }));
-                    fetchCategories();
+                    const newCat = { _id: response.data._id, name: newCategory }
+                    setCategories([...categories, newCat])
+                    setSelectedCategory(newCat._id)
+                    setNewProduct((prev) => ({ ...prev, category: newCat._id }))
+                    fetchCategories()
                 }
-
             } catch (error) {
-                console.error("Error adding category:", error);
+                console.error("Error adding category:", error)
             }
         }
-    };
-
-
+    }
 
     const handleCloseAddDialog = (open) => {
         if (!open) {
@@ -672,6 +725,7 @@ const ProductsPage = () => {
             setNewProduct({
                 name: "",
                 category: "",
+                categoryIcon: "", // Add this line
                 price: 0,
                 stock: 0,
                 photos: [],
@@ -741,7 +795,6 @@ const ProductsPage = () => {
     //             let mainImage = null;
     //             let subImages = [];
 
-
     //             if (editingProduct?.photos?.length > 0) {
     //                 if (typeof editingProduct?.photos[0] === "string") {
     //                     mainImage = await convertBlobToFile(editingProduct.photos[0], "mainImage.jpg");
@@ -807,118 +860,124 @@ const ProductsPage = () => {
     const handleUpdateProduct = async () => {
         try {
             // Fetch the current product data by its ID from the API
-            const { data: fetchedProduct } = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/products/${editingProduct._id}`);
+            const { data: fetchedProduct } = await axios.get(
+                `${process.env.REACT_APP_API_BASE_URL}/products/${editingProduct._id}`,
+            )
 
             // Validate fetched product data
-            if (!fetchedProduct) throw new Error("Product not found");
+            if (!fetchedProduct) throw new Error("Product not found")
 
             // Validate required fields
-            if (!fetchedProduct.name.trim()) throw new Error("Product name is required");
-            if (!fetchedProduct.category) throw new Error("Please select a category");
-            if (!fetchedProduct.price || fetchedProduct.price <= 0) throw new Error("Please enter a valid price");
-            if (fetchedProduct.stock < 0) throw new Error("Stock cannot be negative");
+            if (!fetchedProduct.name.trim()) throw new Error("Product name is required")
+            if (!fetchedProduct.category) throw new Error("Please select a category")
+            if (!fetchedProduct.price || fetchedProduct.price <= 0) throw new Error("Please enter a valid price")
+            if (fetchedProduct.stock < 0) throw new Error("Stock cannot be negative")
 
             // Determine product status
-            const productStatus = fetchedProduct.stock > 10 ? "In Stock" : fetchedProduct.stock > 0 ? "Low Stock" : "Out of Stock";
+            const productStatus =
+                fetchedProduct.stock > 10 ? "In Stock" : fetchedProduct.stock > 0 ? "Low Stock" : "Out of Stock"
 
             // Convert blob URL to File (if needed)
             const convertBlobToFile = async (blobUrl, filename) => {
-                const response = await fetch(blobUrl);
-                const blob = await response.blob();
-                return new File([blob], filename, { type: blob.type });
-            };
+                const response = await fetch(blobUrl)
+                const blob = await response.blob()
+                return new File([blob], filename, { type: blob.type })
+            }
 
             // Ensure photos are File objects
-            let mainImage = null;
-            let subImages = [];
+            let mainImage = null
+            const subImages = []
 
             if (fetchedProduct.photos.length > 0) {
                 if (typeof fetchedProduct.photos[0] === "string") {
-                    mainImage = await convertBlobToFile(fetchedProduct.photos[0], "mainImage.jpg");
+                    mainImage = await convertBlobToFile(fetchedProduct.photos[0], "mainImage.jpg")
                 } else {
-                    mainImage = fetchedProduct.photos[0];
+                    mainImage = fetchedProduct.photos[0]
                 }
 
                 for (let i = 1; i < fetchedProduct.photos.length; i++) {
                     if (typeof fetchedProduct.photos[i] === "string") {
-                        const file = await convertBlobToFile(fetchedProduct.photos[i], `subImage${i}.jpg`);
-                        subImages.push(file);
+                        const file = await convertBlobToFile(fetchedProduct.photos[i], `subImage${i}.jpg`)
+                        subImages.push(file)
                     } else {
-                        subImages.push(fetchedProduct.photos[i]);
+                        subImages.push(fetchedProduct.photos[i])
                     }
                 }
             }
 
             // Create FormData for the update request
-            const formData = new FormData();
-            formData.append("name", fetchedProduct.name);
-            formData.append("categoryId", fetchedProduct.category);
-            formData.append("price", Number(fetchedProduct.price));
-            formData.append("stock", Number(fetchedProduct.stock));
-            formData.append("status", productStatus);
-            formData.append("description", fetchedProduct.description);
-            formData.append("usage", fetchedProduct.usage);
+            const formData = new FormData()
+            formData.append("name", fetchedProduct.name)
+            formData.append("categoryId", fetchedProduct.category)
+            formData.append("price", Number(fetchedProduct.price))
+            formData.append("stock", Number(fetchedProduct.stock))
+            formData.append("status", productStatus)
+            formData.append("description", fetchedProduct.description)
+            formData.append("usage", fetchedProduct.usage)
 
             // Append images to FormData
-            if (mainImage) formData.append("mainImage", mainImage);
-            subImages.forEach((image) => formData.append("subImages", image));
+            if (mainImage) formData.append("mainImage", mainImage)
+            subImages.forEach((image) => formData.append("subImages", image))
 
             // Send API request to update the product using PUT
-            const { data } = await axios.put(`${process.env.REACT_APP_API_BASE_URL}/products/${fetchedProduct._id}`, formData, {
-                headers: {
-                    "Content-Type": "multipart/form-data",
+            const { data } = await axios.put(
+                `${process.env.REACT_APP_API_BASE_URL}/products/${fetchedProduct._id}`,
+                formData,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
                 },
-            });
+            )
 
             // Update products state with updated product data
-            const updatedProducts = products.map((p) => (p._id === data._id ? data : p));
-            setProducts(updatedProducts);
+            const updatedProducts = products.map((p) => (p._id === data._id ? data : p))
+            setProducts(updatedProducts)
 
             // Reset editing state
-            setEditingProduct(null);
-            setEditDialogOpen(false);
+            setEditingProduct(null)
+            setEditDialogOpen(false)
 
             // Show success message
             toast({
                 title: "Product Updated",
                 description: `${data.name} has been updated successfully.`,
-            });
+            })
         } catch (error) {
             // Show error message
             toast({
                 title: "Error",
                 description: error.response?.data?.message || error.message,
                 variant: "destructive",
-            });
+            })
         }
-    };
+    }
 
     const handleDeleteProduct = async (id) => {
         try {
-            const response = await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/products/${id}`);
+            const response = await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/products/${id}`)
 
             if (response.status === 200) {
-                const updatedProducts = products.filter((p) => p.id !== id);
-                setProducts(updatedProducts);
+                const updatedProducts = products.filter((p) => p.id !== id)
+                setProducts(updatedProducts)
 
                 toast({
                     title: "Product Deleted",
                     description: "The product has been removed from the inventory.",
                     variant: "destructive",
-                });
+                })
             } else {
-                throw new Error("Failed to delete product");
+                throw new Error("Failed to delete product")
             }
         } catch (error) {
-            console.error("Error deleting product:", error);
+            console.error("Error deleting product:", error)
             toast({
                 title: "Error",
                 description: "Failed to delete the product. Please try again.",
                 variant: "danger",
-            });
+            })
         }
-    };
-
+    }
 
     useEffect(() => {
         console.log("Products state updated:", products)
@@ -1013,6 +1072,37 @@ const ProductsPage = () => {
                                                     className="mt-2 w-full p-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-black"
                                                 />
                                             </Select>
+                                        </div>
+
+                                        {/* Add the category icon selection field */}
+                                        <div className="space-y-2 mt-4">
+                                            <Label htmlFor="categoryIcon" className="text-sm font-medium text-gray-700">
+                                                Category Icon <span className="text-red-500">*</span>
+                                            </Label>
+                                            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                                                {Object.entries(icons).map(([name, Icon]) => (
+                                                    <div
+                                                        key={name}
+                                                        onClick={() => setNewProduct((prev) => ({ ...prev, categoryIcon: name }))}
+                                                        className={`flex flex-col items-center justify-center p-3 border rounded-md cursor-pointer transition-all ${newProduct.categoryIcon === name
+                                                            ? "border-pink-500 bg-pink-50 shadow-sm"
+                                                            : "border-gray-200 hover:border-pink-200 hover:bg-pink-50/30"
+                                                            }`}
+                                                    >
+                                                        <Icon
+                                                            className={`h-8 w-8 mb-2 ${newProduct.categoryIcon === name ? "text-pink-500" : "text-gray-600"}`}
+                                                        />
+                                                        <span
+                                                            className={`text-xs text-center ${newProduct.categoryIcon === name ? "font-medium text-pink-700" : "text-gray-600"}`}
+                                                        >
+                                                            {name}
+                                                        </span>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                            {!newProduct.categoryIcon && (
+                                                <p className="text-xs text-amber-600 mt-1">Please select an icon for the product category</p>
+                                            )}
                                         </div>
                                         <div className="grid gap-4 sm:grid-cols-2">
                                             <div className="space-y-2">
@@ -1273,7 +1363,6 @@ const ProductsPage = () => {
                         />
                     </TabsContent>
                 ))}
-
             </Tabs>
             <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
                 <DialogContent className="max-h-[90vh] overflow-y-auto w-[95vw] sm:max-w-[625px] md:max-w-[750px] lg:max-w-[900px] bg-white p-4 sm:p-6">
@@ -1441,4 +1530,3 @@ function getStatusClassName(status) {
 }
 
 export default ProductsPage
-
