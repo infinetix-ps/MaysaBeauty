@@ -8,6 +8,7 @@ import Footer from "./components/Footer";
 import ProductPage from "./pages/products.jsx";
 import CartPage from "./pages/cart.jsx";
 import CheckoutPage from "./pages/checkout.jsx";
+import Order from "./pages/order.jsx";
 import OrdersPage from "./components/dashboard/orderPage.jsx";
 import SearchPage from "./pages/search.jsx";
 import AllProductsPage from "./pages/allProduct.jsx";
@@ -54,6 +55,8 @@ root.render(
             <Route path="/products/:id" element={<ProductPage />} />
             <Route path="/cart" element={<CartPage />} />
             <Route path="/checkout" element={<CheckoutPage />} />
+            <Route path="/order" element={<Order />} />
+
             <Route path="/search" element={<SearchPage />} />
             <Route path="/products" element={<AllProductsPage />} />
             <Route path="/setting" element={<EnhancedSettingsPage />} />
