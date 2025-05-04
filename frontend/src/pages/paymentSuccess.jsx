@@ -12,7 +12,7 @@ const PaymentSuccess = () => {
     const trxref = queryParams.get("trxref");
     const reference = queryParams.get("reference");
     const totalPrice = queryParams.get("totalPrice");
-
+    const method = queryParams.get("method");
     // Simple payment details
     const paymentDetails = {
         orderId: trxref || "ORD-" + Math.floor(100000 + Math.random() * 900000),
@@ -27,6 +27,8 @@ const PaymentSuccess = () => {
     const handleReturnHome = () => {
         navigate("/"); // Navigate to home page
     };
+
+
 
     return (
         <div className="min-h-screen bg-white">
@@ -43,7 +45,7 @@ const PaymentSuccess = () => {
                     </div>
 
                     {/* Success Message */}
-                    <h1 className="text-2xl font-bold text-gray-900 mb-2">تمت عملية الدفع بنجاح</h1>
+                    <h1 className="text-2xl font-bold text-gray-900 mb-2">تمت عملية بنجاح</h1>
                     <p className="text-gray-500 mb-6">
                         تم استلام طلبك وسيتم معالجته قريباً
                     </p>
@@ -55,9 +57,12 @@ const PaymentSuccess = () => {
                             <span className="font-medium">{paymentDetails.orderId}</span>
                         </div>
                         <div className="flex justify-between">
-                            <span className="text-gray-500">المبلغ المدفوع:</span>
+                            <span className="text-gray-500">
+                                {method == "cod" ? "المبلغ المطلوب:" : "المبلغ المدفوع:"}
+                            </span>
                             <span className="font-medium">{paymentDetails.amount}</span>
                         </div>
+
                     </div>
 
                     {/* Action Buttons with Navigation - Updated with website's color */}

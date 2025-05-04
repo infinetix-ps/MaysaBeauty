@@ -20,8 +20,8 @@ export default function CartPage() {
     }
 
     const subtotal = cart.reduce((total, item) => total + item.price * item.quantity, 0)
-    const shippingCost = 10
-    const totalPrice = subtotal + shippingCost
+    // const shippingCost = 10
+    const totalPrice = subtotal
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 transition-colors duration-300">
@@ -123,10 +123,10 @@ export default function CartPage() {
                                         <span className="text-gray-600 dark:text-gray-400">Subtotal</span>
                                         <span className="font-medium dark:text-gray-200">${subtotal.toFixed(2)}</span>
                                     </div>
-                                    <div className="flex justify-between text-sm">
+                                    {/* <div className="flex justify-between text-sm">
                                         <span className="text-gray-600 dark:text-gray-400">Shipping</span>
                                         <span className="font-medium dark:text-gray-200">${shippingCost.toFixed(2)}</span>
-                                    </div>
+                                    </div> */}
                                     <div className="border-t border-gray-100 dark:border-gray-700 pt-3">
                                         <div className="flex justify-between">
                                             <span className="font-medium dark:text-gray-100">Total</span>
