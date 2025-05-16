@@ -99,6 +99,7 @@ const initApp = (app, express) => {
             <h2 style="text-align: center; color: #4CAF50;">🛒 Maysaa-Shop Receipt</h2>
             <p style="font-size: 16px;">Thank you for your purchase! Here’s your order summary:</p>
 
+            <p><strong>Order ID:</strong> ${paymentDetails.orderId}</p>
             <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
                 <thead>
                     <tr style="background-color: #4CAF50; color: white;">
