@@ -39,6 +39,7 @@ const TransactionForm = () => {
     "الضفة": 20,
     "رام الله": 20,
     "القدس": 30,
+    "تجربة": 1,
   };
 
   const getDeliveryCost = () => deliveryFees[locationOption] || 0;
@@ -214,6 +215,7 @@ const TransactionForm = () => {
                   <option value="الضفة">الضفة</option>
                   <option value="رام الله">رام الله</option>
                   <option value="القدس">القدس</option>
+                  <option value="تجربة">تجربة</option>
                 </select>
               </div>
 
