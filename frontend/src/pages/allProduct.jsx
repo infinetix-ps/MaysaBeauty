@@ -47,7 +47,7 @@ const AllProductsPage = () => {
     const pageTopRef = useRef(null)
     // Extract unique categories
     const categories = [...new Set(products.map((product) => product.category))]
-    const maxPrice = Math.max(...products.map((product) => product.price), 100.00);
+    const maxPrice = Math.max(...products.map((product) => product.price), 250.00);
     const minPrice = Math.min(...products.map((product) => product.price), 1.00);
     
 
