@@ -40,7 +40,7 @@ router.post('/', verifyToken, async (req, res) => {
 });
 
 // ✅ Get All Orders (Admin)
-router.get('/', verifyToken, async (req, res) => {
+router.get('/', async (req, res) => {
     try {
         // Optionally restrict to admin only using req.user.role
         const orders = await orderModel.find()
