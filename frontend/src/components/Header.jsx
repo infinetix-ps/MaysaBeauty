@@ -9,6 +9,7 @@ import {
   X,
   ChevronDown,
   Droplet,
+  SprayCanIcon as Spray,
   Snowflake,
   Waves,
   Sparkles,
@@ -22,6 +23,7 @@ import {
   Shirt,
   Home,
 } from "lucide-react";
+
 import { useCart } from "../pages/contexts/cartContext";
 import WhatsAppButton from "./ui/whatsappButton.jsx";
 
@@ -30,14 +32,22 @@ const icons = [
   Snowflake,
   Waves,
   Sparkles,
+
+  // Hair Care
+  Spray,
   Waves,
   Scissors,
   Palette,
+
+  // Body Care
   Flower,
   Heart,
   Leaf,
   Sun,
+
+  // Accessories
   Gem,
+  Spray,
   Shirt,
   ShoppingBag,
 ];
