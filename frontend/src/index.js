@@ -29,14 +29,28 @@ import EnhancedSettingsPage from "./pages/setting.jsx";
 import ReturnAndExchangePolicy from "./pages/return-and-exchange-policy.jsx";
 import PrivacyPolicy from "./pages/privacy-policy.jsx";
 import PaymentSuccess from "./pages/paymentSuccess.jsx";
+import { jwtDecode } from "jwt-decode";
 
-// Protect authenticated-only pages
+// ✅ Protect admin-only dashboard routes
 const ProtectedRoute = ({ element }) => {
   const token = localStorage.getItem("token");
-  return token ? element : <Navigate to="/signin" />;
+
+  if (!token) return <Navigate to="/signin" />;
+
+  try {
+    const decoded = jwtDecode(token);
+    if (decoded.role === "Admin") {
+      return element; // ✅ Admin can access
+    } else {
+      return <Navigate to="/" />; // ❌ Not admin → redirect to homepage
+    }
+  } catch (err) {
+    console.error("Invalid token:", err);
+    return <Navigate to="/signin" />;
+  }
 };
 
-// Redirect authenticated users away from auth pages
+// ✅ Redirect already authenticated users away from sign in/up pages
 const AuthRoute = ({ element }) => {
   const token = localStorage.getItem("token");
   return token ? <Navigate to="/" /> : element;
@@ -56,7 +70,6 @@ root.render(
             <Route path="/cart" element={<CartPage />} />
             <Route path="/checkout" element={<CheckoutPage />} />
             <Route path="/order" element={<Order />} />
-
             <Route path="/search" element={<SearchPage />} />
             <Route path="/products" element={<AllProductsPage />} />
             <Route path="/setting" element={<EnhancedSettingsPage />} />
@@ -66,7 +79,8 @@ root.render(
               element={<ReturnAndExchangePolicy />}
             />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-            {/* Authentication Pages (Redirect logged-in users) */}
+
+            {/* Auth Pages */}
             <Route
               path="/signin"
               element={<AuthRoute element={<SignIn />} />}
@@ -91,11 +105,8 @@ root.render(
               path="/reset-password"
               element={<AuthRoute element={<ResetPassword />} />}
             />
-            {/* Protected Routes (Require authentication) */}
-            <Route
-              path="/orders"
-              element={<ProtectedRoute element={<OrdersPage />} />}
-            />
+
+            {/* 🔐 Admin-only Protected Dashboard Routes */}
             <Route
               path="/dashboard"
               element={<ProtectedRoute element={<Dashboard />} />}
@@ -104,7 +115,6 @@ root.render(
               path="/productsDash"
               element={<ProtectedRoute element={<ProductsPage />} />}
             />
-            
             <Route
               path="/ordersDash"
               element={<ProtectedRoute element={<OrdersPage />} />}
@@ -118,6 +128,7 @@ root.render(
               element={<ProtectedRoute element={<AnalyticsPage />} />}
             />
           </Routes>
+
           <Footer />
           <ToastContainer />
         </div>

@@ -41,23 +41,23 @@ export default function ProductPage() {
             try {
                 const productResponse = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/products/${id}`);
                 const productData = productResponse.data.product;
-                
+
                 // Convert API response to match expected structure
                 const images = [
                     productData.mainImage?.secure_url, // Main image first
                     ...(productData.subImages?.map(img => img.secure_url) || []) // Then sub-images
                 ].filter(Boolean); // Remove any undefined/null values
-    
+
                 setProduct({ ...productData, images });
                 setLoading(false);
             } catch (error) {
                 console.error("Error fetching data", error);
             }
         };
-    
+
         fetchData();
     }, [id]); // Ensure this runs when `id` changes
-    
+
 
     const nextImage = () => {
         setCurrentImageIndex((prevIndex) => (prevIndex + 1) % product.images.length)
@@ -214,7 +214,7 @@ export default function ProductPage() {
                                     transition={{ duration: 0.6, delay: 0.3 }}
                                     className="text-3xl font-bold text-[#C17F82] dark:text-[#e5ddd3]"
                                 >
-                                    ${product.price?.toFixed(2)}
+                                    ₪ {product.price?.toFixed(2)}
                                 </motion.div>
 
                                 <div className="flex items-center space-x-2">

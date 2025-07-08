@@ -105,11 +105,12 @@
   }
   
   .content-image,
-  .content-video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
+.content-video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
   
   .screen-reflection {
     position: absolute;

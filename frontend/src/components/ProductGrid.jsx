@@ -60,7 +60,7 @@ const ProductGrid = ({ showAll = false, products = [], limit = 8 }) => {
             name: product.name,
             price: product?.price,
             image: product?.mainImage?.secure_url || null,
-            quantity:1,
+            quantity: 1,
         }
         addToCart(cartItem)
         toast.success("Added to cart!", {
@@ -113,7 +113,7 @@ const ProductGrid = ({ showAll = false, products = [], limit = 8 }) => {
                                     <div className="relative w-full h-full transform transition-transform duration-700 group-hover:scale-105">
                                         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/5 group-hover:opacity-0 transition-opacity duration-500" />
                                         <img
-                                            src={product?.mainImage?.secure_url }
+                                            src={product?.mainImage?.secure_url}
                                             alt={product.name}
                                             className="w-full h-full object-cover"
                                             loading="lazy"
@@ -128,7 +128,7 @@ const ProductGrid = ({ showAll = false, products = [], limit = 8 }) => {
                                         </h3>
                                     </Link>
                                     <p className="text-sm sm:text-base md:text-lg lg:text-xl font-bold text-[#402e20] mb-2 sm:mb-3 md:mb-4">
-                                        ${product.price.toFixed(2)}
+                                        ₪ {product.price.toFixed(2)}
                                     </p>
                                     <div className="flex items-center mb-2 sm:mb-3 md:mb-4">
                                         <StarRating rating={product.rating} size={16} />
@@ -140,11 +140,11 @@ const ProductGrid = ({ showAll = false, products = [], limit = 8 }) => {
                                         <Button
                                             onClick={() => handleAddToCart(product)}
                                             className="w-full !bg-[#C17F82] hover:!bg-[#A66467] !text-white 
-                                                     transition-all duration-300 rounded-lg py-1 sm:py-2 md:py-3
-                                                     text-xs sm:text-sm md:text-base
-                                                     shadow-[0_4px_20px_rgb(193,127,130,0.2)]
-                                                     hover:shadow-[0_4px_20px_rgb(193,127,130,0.4)]
-                                                     transform hover:-translate-y-0.5"
+                                                        transition-all duration-300 rounded-lg py-1 sm:py-2 md:py-3
+                                                        text-xs sm:text-sm md:text-base
+                                                        shadow-[0_4px_20px_rgb(193,127,130,0.2)]
+                                                        hover:shadow-[0_4px_20px_rgb(193,127,130,0.4)]
+                                                        transform hover:-translate-y-0.5"
                                             style={{ backgroundColor: "#C17F82" }}
                                         >
                                             Add to Cart

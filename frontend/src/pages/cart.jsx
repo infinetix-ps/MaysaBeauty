@@ -79,7 +79,7 @@ export default function CartPage() {
                                                         {item.color && item.size && " | "}
                                                         {item.size && `Size: ${item.size}`}
                                                     </p>
-                                                    <p className="text-base font-semibold dark:text-gray-200">${item.price.toFixed(2)}</p>
+                                                    <p className="text-base font-semibold dark:text-gray-200">₪ {item.price.toFixed(2)}</p>
                                                 </div>
                                                 <div className="flex items-center justify-between sm:justify-end gap-4">
                                                     <div className="flex items-center border rounded-lg">
@@ -121,7 +121,7 @@ export default function CartPage() {
                                 <div className="space-y-3 mb-4">
                                     <div className="flex justify-between text-sm">
                                         <span className="text-gray-600 dark:text-gray-400">Subtotal</span>
-                                        <span className="font-medium dark:text-gray-200">${subtotal.toFixed(2)}</span>
+                                        <span className="font-medium dark:text-gray-200">₪ {subtotal.toFixed(2)}</span>
                                     </div>
                                     {/* <div className="flex justify-between text-sm">
                                         <span className="text-gray-600 dark:text-gray-400">Shipping</span>
@@ -131,7 +131,7 @@ export default function CartPage() {
                                         <div className="flex justify-between">
                                             <span className="font-medium dark:text-gray-100">Total</span>
                                             <span className="text-lg font-bold text-gray-800 dark:text-gray-100">
-                                                ${totalPrice.toFixed(2)}
+                                                ₪ {totalPrice.toFixed(2)}
                                             </span>
                                         </div>
                                     </div>

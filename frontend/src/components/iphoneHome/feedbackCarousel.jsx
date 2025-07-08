@@ -7,36 +7,29 @@ import ProductTag from "./productTag.jsx"
 import ProductIcon from "./productIcon.jsx"
 import { useInView } from "react-intersection-observer"
 import "./feedbackCarousel.css"
-
 const feedbacks = [
-    { id: 1, name: "Alice", comment: "Absolutely love this product! It's a game-changer.", productId: 1 },
-    { id: 2, name: "Bob", comment: "The user experience is top-notch. Highly recommended!", productId: 2 },
-    { id: 3, name: "Charlie", comment: "Great value for money. I use it every day.", productId: 3 },
-    { id: 4, name: "Diana", comment: "Customer support is excellent. They're always helpful.", productId: 1 },
+    { id: 1, name: "شهد", comment: "كنت مجربة منتجات كثيرة قبل بس رويال سليم عند ميساء  فعلاً فرق معي. بطني خف وبطلت أحس بجوع كثير", productId: 1 },
+    { id: 1, name: "شهد", comment: "ما في آثار جانبية، خفيف عالمعدة، وفعلاً حسّيت بفرق بعد أسبوع واحد.", productId: 1 },
+    { id: 3, name: "ضياء عليان", comment: "عندي حساسية من كتير منتجات، بس رويال سليم كان طبيعي وآمن عليّ.", productId: 1 },
+    { id: 4, name: "احمد", comment: "أنا شب كنت نحيف زيادة عن اللزوم، ما بلاقي اواعي ع مقاسي. بعد شهرين استخدام، صار في فرق كبير وكل اللي حواليا لاحظوا.", productId: 2 },
+    { id: 4, name: "محمد نبيل", comment: "كنت أعاني من النحافة، بس بعد استخدام المنتج زدت 5 كيلو بشهر، وشكلي صار أرتب، وثقتي بنفسي رجعت. المنتج فتحلي الشهية بدون أي أعراض جانبية. بنصح فيه من قلبي!", productId: 2 },
+
 ]
 
 const products = [
     {
         id: 1,
-        name: "Smart Watch Pro",
-        image: "https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=300&h=300&fit=crop",
-        price: "$199.99",
-        rating: 4,
-    },
-    {
-        id: 2,
-        name: "Wireless Earbuds",
-        image: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=300&h=300&fit=crop",
-        price: "$129.99",
+        name: "ٌRoyal Slim ",
+        image: "/images/royalTea.jpg",
         rating: 5,
     },
     {
-        id: 3,
-        name: "Fitness Tracker",
-        image: "https://images.unsplash.com/photo-1575311373937-040b8e3fd59f?w=300&h=300&fit=crop",
-        price: "$79.99",
-        rating: 3,
+        id: 2,
+        name: "Royal Gain",
+        image: "/images/RoyalU.png",
+        rating: 5,
     },
+
 ]
 
 const FeedbackCarousel = () => {

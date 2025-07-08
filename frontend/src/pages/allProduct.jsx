@@ -49,7 +49,7 @@ const AllProductsPage = () => {
     const categories = [...new Set(products.map((product) => product.category))]
     const maxPrice = Math.max(...products.map((product) => product.price), 250.00);
     const minPrice = Math.min(...products.map((product) => product.price), 1.00);
-    
+
 
     // States
     const [searchParams] = useSearchParams()
@@ -104,14 +104,14 @@ const AllProductsPage = () => {
 
     useEffect(() => {
         let result = [...products];
-    
+
         // Filter by search term
         if (searchTerm) {
             result = result.filter((product) =>
                 product.name.toLowerCase().includes(searchTerm.toLowerCase())
             );
         }
-    
+
         // Filter by selected categories
         if (selectedCategories.length > 0) {
             result = result.filter((product) =>
@@ -121,12 +121,12 @@ const AllProductsPage = () => {
             result = result.filter((product) => product.category === categoryParam);
             setSelectedCategories([categoryParam]);
         }
-    
+
         // Filter by price range
         result = result.filter(
             (product) => product.price >= priceRange[0] && product.price <= priceRange[1]
         );
-    
+
         // Apply sorting
         result.sort((a, b) => {
             switch (sortBy) {
@@ -141,11 +141,11 @@ const AllProductsPage = () => {
                     return a.name.localeCompare(b.name);
             }
         });
-    
+
         setFilteredProducts(result);
     }, [searchTerm, selectedCategories, priceRange, sortBy, products]);
 
-    
+
     // Scroll to top when component mounts or URL parameters change
     useEffect(() => {
         pageTopRef.current?.scrollIntoView({ behavior: "smooth" })
@@ -194,7 +194,7 @@ const AllProductsPage = () => {
             <div>
                 <Label className="text-[#402e20] dark:text-white">Price Range</Label>
                 <div className="pt-6 space-y-4">
-                    <Slider
+                    {/* <Slider
                         min={minPrice}
                         max={maxPrice}
                         step={(maxPrice - minPrice) / 100}
@@ -205,7 +205,7 @@ const AllProductsPage = () => {
                             debouncedSetPriceRange(newRange)
                         }}
                         className="mt-2"
-                    />
+                    /> */}
                     <div className="flex items-center gap-4">
                         <div className="flex-1">
                             <Label htmlFor="min-price" className="text-xs text-[#402e20] dark:text-gray-400">

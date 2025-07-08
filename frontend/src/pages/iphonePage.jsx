@@ -1,5 +1,5 @@
 import React from 'react'
-import { motion} from 'framer-motion';
+import { motion } from 'framer-motion';
 
 import DynamicBackground from '../components/iphoneHome/dynamicBG.jsx'
 import ParticleAnimation from '../components/iphoneHome/animation.jsx'
@@ -10,19 +10,56 @@ import FeedbackCarousel from '../components/iphoneHome/feedbackCarousel.jsx'
 const content = [
     {
         id: 1,
-        src: "https://images.unsplash.com/photo-1707343843437-caacff5cfa74?q=80&w=1000&h=2000&fit=crop",
+        src: "/images/RS1.jpg",
         alt: "Demo Content 1",
         type: "image",
     },
+
     {
         id: 2,
-        src: "https://images.unsplash.com/photo-1682687220198-88e9bdea9931?q=80&w=1000&h=2000&fit=crop",
+        src: "/images/RS2.jpg",
         alt: "Demo Content 2",
         type: "image",
     },
     {
         id: 3,
-        src: "https://images.unsplash.com/photo-1707345512638-997d31a10eaa?q=80&w=1000&h=2000&fit=crop",
+        src: "/images/RS3.jpg",
+        alt: "Demo Content 3",
+        type: "image",
+    },
+    {
+        id: 4,
+        src: "/images/RS4.jpg",
+        alt: "Demo Content 3",
+        type: "image",
+    },
+    {
+        id: 5,
+        src: "/images/RS5.jpg",
+        alt: "Demo Content 3",
+        type: "image",
+    },
+    {
+        id: 6,
+        src: "/images/RS7.jpg",
+        alt: "Demo Content 3",
+        type: "image",
+    },
+    {
+        id: 7,
+        src: "/images/RS8.jpg",
+        alt: "Demo Content 3",
+        type: "image",
+    },
+    {
+        id: 9,
+        src: "/images/RS9.jpg",
+        alt: "Demo Content 3",
+        type: "image",
+    },
+    {
+        id: 10,
+        src: "/images/RS10.jpg",
         alt: "Demo Content 3",
         type: "image",
     },

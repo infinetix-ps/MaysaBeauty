@@ -11,7 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "../uiDashboard/tabs.js
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../uiDashboard/table.jsx"
 import { Badge } from "../uiDashboard/badge.jsx"
 import { Button } from "../uiDashboard/button.jsx"
-import { PlusCircle, Search, Trash2, MoreHorizontal, X, ArrowLeft } from "lucide-react"
+import { PlusCircle, Search, Trash2, MoreHorizontal, X, ArrowLeft, Pencil } from "lucide-react"
 import { Dialog, DialogContent, DialogFooter } from "../ui/dialog.jsx"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select.jsx"
 import { toast } from "../ui/useToast.js"
@@ -88,6 +88,13 @@ const englishToArabic = {
   Clothing: "ملابس",
   Accessories: "إكسسوارات",
 }
+const getStatusFromStock = (stock) => {
+  if (stock > 10) return "In Stock";
+  if (stock > 0) return "Low Stock";
+  return "Out of Stock";
+};
+
+
 
 const ProductCard = ({ product, onEdit, onDelete }) => {
   return (
@@ -116,7 +123,7 @@ const ProductCard = ({ product, onEdit, onDelete }) => {
                   <span className="text-xs font-medium">{product.categoryIcon}</span>
                 </div>
               )}
-              <p className="text-sm text-gray-600 mt-1">${product.price.toFixed(2)}</p>
+              <p className="text-sm text-gray-600 mt-1">₪ {product.price.toFixed(2)}</p>
             </div>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -130,10 +137,10 @@ const ProductCard = ({ product, onEdit, onDelete }) => {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="bg-white border border-gray-200">
                 <DropdownMenuLabel className="text-gray-700">Actions</DropdownMenuLabel>
-                {/* <DropdownMenuItem onClick={() => onEdit(product)} className="text-black hover:bg-gray-100">
-                                    <Pencil className="mr-2 h-4 w-4 stroke-black" />
-                                    Edit
-                                </DropdownMenuItem> */}
+                <DropdownMenuItem onClick={() => onEdit(product)} className="text-black hover:bg-gray-100">
+                  <Pencil className="mr-2 h-4 w-4 stroke-black" />
+                  Edit
+                </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => onDelete(product._id)} className="text-red-600 hover:bg-red-50">
                   <Trash2 className="mr-2 h-4 w-4" />
                   Delete
@@ -178,6 +185,7 @@ const ProductTable = ({ products, onEdit, onDelete }) => {
         </TableHeader>
         <TableBody>
           {products.map((product) => (
+
             <TableRow key={product.id} className="hover:bg-gray-50">
               <TableCell className="font-medium text-gray-900">{product.name}</TableCell>
               <TableCell>
@@ -191,20 +199,30 @@ const ProductTable = ({ products, onEdit, onDelete }) => {
                   {product.category}
                 </Badge>
               </TableCell>
-              <TableCell>${product.price.toFixed(2)}</TableCell>
+              <TableCell>₪ {product.price.toFixed(2)}</TableCell>
               <TableCell>{product.stock}</TableCell>
               <TableCell>
                 <Badge
                   variant={
-                    product.status === "In Stock"
+                    product.stock > 10
                       ? "default"
-                      : product.status === "Low Stock"
+                      : product.stock > 0
                         ? "warning"
                         : "destructive"
                   }
-                  className={getStatusClassName(product.status)}
+                  className={getStatusClassName(
+                    product.stock > 10
+                      ? "In Stock"
+                      : product.stock > 0
+                        ? "Low Stock"
+                        : "Out of Stock"
+                  )}
                 >
-                  {product?.status}
+                  {product.stock > 10
+                    ? "In Stock"
+                    : product.stock > 0
+                      ? "Low Stock"
+                      : "Out of Stock"}
                 </Badge>
               </TableCell>
               <TableCell>
@@ -239,10 +257,10 @@ const ProductTable = ({ products, onEdit, onDelete }) => {
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="bg-white border border-gray-200">
                     <DropdownMenuLabel className="text-gray-700">Actions</DropdownMenuLabel>
-                    {/* <DropdownMenuItem onClick={() => onEdit(product)} className="text-black hover:bg-gray-100">
-                                            <Pencil className="mr-2 h-4 w-4 stroke-black" />
-                                            Edit
-                                        </DropdownMenuItem> */}
+                    <DropdownMenuItem onClick={() => onEdit(product)} className="text-black hover:bg-gray-100">
+                      <Pencil className="mr-2 h-4 w-4 stroke-black" />
+                      Edit
+                    </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => onDelete(product._id)} className="text-red-600 hover:bg-red-50">
                       <Trash2 className="mr-2 h-4 w-4" />
                       Delete
@@ -304,18 +322,20 @@ const ProductsPage = () => {
   }, []) // Empty dependency array ensures this runs only once on mount
   const onDrop = useCallback((acceptedFiles, mode = "add") => {
     const newPhotos = acceptedFiles.slice(0, 4).map((file) => URL.createObjectURL(file))
+
     if (mode === "add") {
       setNewProduct((prev) => ({
         ...prev,
-        photos: [...prev.photos, ...newPhotos].slice(0, 4),
+        photos: [...(prev.photos || []), ...newPhotos].slice(0, 4),
       }))
     } else if (mode === "edit") {
       setEditingProduct((prev) => ({
         ...prev,
-        photos: [...prev.photos, ...newPhotos].slice(0, 4),
+        photos: [...(prev?.photos || []), ...newPhotos].slice(0, 4),
       }))
     }
   }, [])
+
 
   const { getRootProps: getAddRootProps, getInputProps: getAddInputProps } = useDropzone({
     onDrop: (files) => onDrop(files, "add"),
@@ -406,7 +426,7 @@ const ProductsPage = () => {
       // Append images to FormData
       if (mainImage) formData.append("mainImage", mainImage)
       subImages.forEach((image) => formData.append("subImages", image))
-      //  formData.append("subImages", subImages)
+      formData.append("subImages", subImages)
       //console.log([...formData]); // Debugging: Check FormData before sending
 
       // Send API request with multipart/form-data
@@ -438,6 +458,8 @@ const ProductsPage = () => {
       })
       handleCloseAddDialog()
       fetchData()
+      window.location.reload();
+
     } catch (error) {
       // Show error message
       toast({
@@ -533,106 +555,143 @@ const ProductsPage = () => {
     setAddDialogOpen(open)
   }
 
-  const handleEditProduct = (product) => {
-    setEditingProduct(product)
-    setEditDialogOpen(true)
-  }
+  const handleEditProduct = async (product) => {
+    try {
+      const response = await fetch(`https://api.maysabeauty.store/products/${product._id}`);
+      const data = await response.json();
+
+      if (!response.ok || !data.product) {
+        throw new Error(data.message || "Failed to fetch product details");
+      }
+
+      const fetchedProduct = data.product;
+
+      const photos = [
+        ...(fetchedProduct.mainImage?.secure_url ? [fetchedProduct.mainImage.secure_url] : []),
+        ...((fetchedProduct.subImages || []).map(img => img.secure_url)),
+      ];
+
+
+      setEditingProduct({
+        _id: product._id,
+        name: fetchedProduct.name || "",
+        price: fetchedProduct.price || 0,
+        stock: fetchedProduct.stock || 0,
+        description: fetchedProduct.description || "",
+        usage: fetchedProduct.usage || "",
+        discount: fetchedProduct.discount || 0,
+        finalPrice: fetchedProduct.finalPrice || fetchedProduct.price || 0,
+        category: fetchedProduct.categoryId?.toString() || "", // ensure it's a string
+        categoryIcon: fetchedProduct.categoryIcon || "",
+        sizes: fetchedProduct.sizes || [],
+        colers: fetchedProduct.colers || [],
+        photos,
+      });
+
+      setEditDialogOpen(true);
+    } catch (error) {
+      console.error("Error fetching product:", error);
+      toast({
+        title: "خطأ في جلب بيانات المنتج",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
+
 
   const handleUpdateProduct = async () => {
     try {
-      // Fetch the current product data by its ID from the API
-      const { data: fetchedProduct } = await axios.get(
-        `${process.env.REACT_APP_API_BASE_URL}/products/${editingProduct._id}`,
-      )
+      const updated = editingProduct;
 
-      // Validate fetched product data
-      if (!fetchedProduct) throw new Error("Product not found")
+      // تحقق من الحقول المطلوبة
+      if (!updated.name.trim()) throw new Error("Product name is required");
+      if (!updated.category) throw new Error("Please select a category");
+      if (updated.price == null || updated.price <= 0) throw new Error("Please enter a valid price");
+      if (updated.stock < 0) throw new Error("Stock cannot be negative");
 
-      // Validate required fields
-      if (!fetchedProduct.name.trim()) throw new Error("Product name is required")
-      if (!fetchedProduct.category) throw new Error("Please select a category")
-      if (!fetchedProduct.price || fetchedProduct.price <= 0) throw new Error("Please enter a valid price")
-      if (fetchedProduct.stock < 0) throw new Error("Stock cannot be negative")
-
-      // Determine product status
+      // تحديد حالة المنتج
       const productStatus =
-        fetchedProduct.stock > 10 ? "In Stock" : fetchedProduct.stock > 0 ? "Low Stock" : "Out of Stock"
+        updated.stock > 10 ? "In Stock" : updated.stock > 0 ? "Low Stock" : "Out of Stock";
 
-      // Convert blob URL to File (if needed)
       const convertBlobToFile = async (blobUrl, filename) => {
-        const response = await fetch(blobUrl)
-        const blob = await response.blob()
-        return new File([blob], filename, { type: blob.type })
-      }
+        const response = await fetch(blobUrl);
+        const blob = await response.blob();
+        return new File([blob], filename, { type: blob.type });
+      };
 
-      // Ensure photos are File objects
-      let mainImage = null
-      const subImages = []
+      let mainImage = null;
+      const subImages = [];
 
-      if (fetchedProduct.photos.length > 0) {
-        if (typeof fetchedProduct.photos[0] === "string") {
-          mainImage = await convertBlobToFile(fetchedProduct.photos[0], "mainImage.jpg")
-        } else {
-          mainImage = fetchedProduct.photos[0]
-        }
+      if (updated.photos && updated.photos.length > 0) {
+        const isBlob = typeof updated.photos[0] === "string";
+        mainImage = isBlob
+          ? await convertBlobToFile(updated.photos[0], "mainImage.jpg")
+          : updated.photos[0];
 
-        for (let i = 1; i < fetchedProduct.photos.length; i++) {
-          if (typeof fetchedProduct.photos[i] === "string") {
-            const file = await convertBlobToFile(fetchedProduct.photos[i], `subImage${i}.jpg`)
-            subImages.push(file)
-          } else {
-            subImages.push(fetchedProduct.photos[i])
-          }
+        for (let i = 1; i < updated.photos.length; i++) {
+          const isBlob = typeof updated.photos[i] === "string";
+          const file = isBlob
+            ? await convertBlobToFile(updated.photos[i], `subImage${i}.jpg`)
+            : updated.photos[i];
+          subImages.push(file);
         }
       }
 
-      // Create FormData for the update request
-      const formData = new FormData()
-      formData.append("name", fetchedProduct.name)
-      formData.append("categoryId", fetchedProduct.category)
-      formData.append("price", Number(fetchedProduct.price))
-      formData.append("stock", Number(fetchedProduct.stock))
-      formData.append("status", productStatus)
-      formData.append("description", fetchedProduct.description)
-      formData.append("usage", fetchedProduct.usage)
+      // حساب الخصم والسعر النهائي
+      const discount = updated.discount || 0;
+      const finalPrice = updated.price - (updated.price * discount) / 100;
 
-      // Append images to FormData
-      if (mainImage) formData.append("mainImage", mainImage)
-      subImages.forEach((image) => formData.append("subImages", image))
+      // إنشاء FormData
+      const formData = new FormData();
+      formData.append("name", updated.name);
+      formData.append("categoryId", updated.category); // تأكد أن المفتاح هو categoryId
+      formData.append("price", Number(updated.price));
+      formData.append("stock", Number(updated.stock));
+      formData.append("status", productStatus);
+      formData.append("description", updated.description || "");
+      formData.append("usage", updated.usage || "");
+      formData.append("discount", discount);
+      formData.append("finalPrice", finalPrice);
+      formData.append("categoryIcon", updated.categoryIcon || "");
+      formData.append("sizes", JSON.stringify(updated.sizes || []));
+      formData.append("colers", JSON.stringify(updated.colers || []));
 
-      // Send API request to update the product using PUT
+      if (mainImage) formData.append("mainImage", mainImage);
+      subImages.forEach((img) => formData.append("subImages", img));
+
+      // إرسال الطلب للتحديث
       const { data } = await axios.put(
-        `${process.env.REACT_APP_API_BASE_URL}/products/${fetchedProduct._id}`,
+        `${process.env.REACT_APP_API_BASE_URL}/products/${updated._id}`,
         formData,
         {
           headers: {
             "Content-Type": "multipart/form-data",
           },
-        },
-      )
+        }
+      );
 
-      // Update products state with updated product data
-      const updatedProducts = products.map((p) => (p._id === data._id ? data : p))
-      setProducts(updatedProducts)
+      // تحديث المنتجات محليًا
+      setProducts((prev) => prev.map((p) => (p._id === data.updatedProduct._id ? data.updatedProduct : p)));
 
-      // Reset editing state
-      setEditingProduct(null)
-      setEditDialogOpen(false)
 
-      // Show success message
+      // إغلاق النافذة
+      setEditingProduct(null);
+      setEditDialogOpen(false);
+      window.location.reload();
       toast({
-        title: "Product Updated",
-        description: `${data.name} has been updated successfully.`,
-      })
+        title: "تم التحديث بنجاح",
+        description: `${data.updatedProduct.name} تم تحديثه بنجاح.`,
+      });
+
     } catch (error) {
-      // Show error message
       toast({
-        title: "Error",
+        title: "خطأ",
         description: error.response?.data?.message || error.message,
         variant: "destructive",
-      })
+      });
     }
-  }
+  };
 
   const handleDeleteProduct = async (id) => {
     try {
@@ -647,6 +706,8 @@ const ProductsPage = () => {
           description: "The product has been removed from the inventory.",
           variant: "destructive",
         })
+        window.location.reload();
+
       } else {
         throw new Error("Failed to delete product")
       }
@@ -764,11 +825,10 @@ const ProductsPage = () => {
                               setNewProduct((prev) => ({ ...prev, categoryIcon: name }))
                               handleCategoryIconSelect(name)
                             }}
-                            className={`flex flex-col items-center justify-center p-3 border rounded-md cursor-pointer transition-all ${
-                              newProduct.categoryIcon === name
-                                ? "border-pink-500 bg-pink-50 shadow-sm"
-                                : "border-gray-200 hover:border-pink-200 hover:bg-pink-50/30"
-                            }`}
+                            className={`flex flex-col items-center justify-center p-3 border rounded-md cursor-pointer transition-all ${newProduct.categoryIcon === name
+                              ? "border-pink-500 bg-pink-50 shadow-sm"
+                              : "border-gray-200 hover:border-pink-200 hover:bg-pink-50/30"
+                              }`}
                           >
                             <Icon
                               className={`h-8 w-8 mb-2 ${newProduct.categoryIcon === name ? "text-pink-500" : "text-gray-600"}`}
@@ -788,7 +848,7 @@ const ProductsPage = () => {
                     <div className="grid gap-4 sm:grid-cols-2">
                       <div className="space-y-2">
                         <Label htmlFor="price" className="text-sm font-medium text-gray-700">
-                          السعر ($) <span className="text-red-500">*</span>
+                          السعر (₪) <span className="text-red-500">*</span>
                         </Label>
                         <Input
                           id="price"
@@ -967,6 +1027,8 @@ const ProductsPage = () => {
             <div className="grid gap-4 py-4">
               <div className="grid gap-4">
                 <div className="grid sm:grid-cols-4 items-center gap-4">
+                  {console.log(editingProduct, 'mm')
+                  }
                   <Label htmlFor="edit-name" className="sm:text-right-black">
                     الاسم
                   </Label>

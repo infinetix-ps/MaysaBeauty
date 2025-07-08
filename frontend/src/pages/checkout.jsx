@@ -25,10 +25,16 @@ const TransactionForm = () => {
     email: "",
     address: "",
     city: "",
-    zipCode: "",
     country: "",
   });
-  const [currency, setCurrency] = useState("USD");
+
+  const [currency, setCurrency] = useState("ILS"); // Default to Shekel
+  const [currencyConversionRates, setCurrencyConversionRates] = useState({
+    USD: 1,
+    EUR: 0.9,
+    ILS: 3.5,
+  });
+
   const [paymentMethod, setPaymentMethod] = useState("Credit/Debit Card");
   const [loading, setLoading] = useState(false);
   const [recaptchaValue, setRecaptchaValue] = useState(null);
@@ -37,29 +43,20 @@ const TransactionForm = () => {
   const deliveryFees = {
     "الداخل": 65,
     "الضفة": 20,
-    "رام الله": 20,
+    "رام الله وسط البلد": 0,
     "القدس": 30,
-    "تجربة": 1,
   };
 
   const getDeliveryCost = () => deliveryFees[locationOption] || 0;
 
-  const currencyConversionRates = {
-    USD: 1,
-    EUR: 0.9,
-    ILS: 3.5,
-  };
-
-  const convertedTotalPrice = totalPrice * currencyConversionRates[currency];
-  const convertedDeliveryCost = getDeliveryCost() * currencyConversionRates[currency];
+  const convertedTotalPrice = totalPrice * (currencyConversionRates[currency] / currencyConversionRates["ILS"]);
+  const convertedDeliveryCost = getDeliveryCost() * (currencyConversionRates[currency] / currencyConversionRates["ILS"]);
   const finalTotalPrice = convertedTotalPrice + convertedDeliveryCost;
 
   const getCurrencySymbol = (currencyCode) => {
     switch (currencyCode) {
       case "USD":
         return "$";
-      // case "EUR":
-      //   return "€";
       case "ILS":
         return "₪";
       default:
@@ -78,50 +75,41 @@ const TransactionForm = () => {
   const handleProcess = async () => {
     if (!recaptchaValue) return toast.error("Please complete the reCAPTCHA.");
     if (Object.values(formData).some((field) => !field)) return toast.error("Please fill all fields.");
-    // if (!locationOption) return toast.error("Please select delivery location.");
 
     setLoading(true);
+
+    // حفظ البيانات المهمة في sessionStorage
+    sessionStorage.setItem("userEmail", formData.email);
+    sessionStorage.setItem("cart", JSON.stringify(cart));
+    sessionStorage.setItem("locationOption", locationOption);
+    sessionStorage.setItem("deliveryCost", convertedDeliveryCost.toString());
+
     try {
-      // await axios.post(`${process.env.REACT_APP_API_BASE_URL}/send-cart-email`, {
-      //   email: formData.email,
-      //   cart,
-      //   totalPrice: finalTotalPrice,
-      //   deliveryCost: convertedDeliveryCost,
-      //   location: locationOption,
-      //   paymentDetails: {
-      //     paymentMethod,
-      //     cardType: "VISA",
-      //     cardExpiry: "",
-      //     cardNumber: "",
-      //     paymentDate: new Date().toISOString(),
-      //   },
-      // });
-      sessionStorage.setItem("userEmail", formData.email);
-      sessionStorage.setItem("cart", JSON.stringify(cart));
-      sessionStorage.setItem("locationOption", locationOption);
-      sessionStorage.setItem("deliveryCost", convertedDeliveryCost.toString());
-
-
-      const res = await axios.post(
-        "https://api.lahza.io/transaction/initialize",
-        {
-          amount: finalTotalPrice * 100,
-          email: formData.email,
-          currency,
-          callback_url: `https://maysabeauty.store/payment-success?totalPrice=${finalTotalPrice}`,
-
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${SECRET_KEY}`,
-            "Content-Type": "application/json",
+      if (paymentMethod === "Cash on Delivery") {
+        // الدفع عند الاستلام: توجيه مباشر إلى صفحة الدفع الناجح
+        toast.success("Order placed successfully! Redirecting...");
+        window.location.href = `/payment-success?totalPrice=${finalTotalPrice.toFixed(2)}&method=cod`;
+      } else {
+        // الدفع ببطاقة الائتمان: تنفيذ طلب الدفع عبر API
+        const res = await axios.post(
+          "https://api.lahza.io/transaction/initialize",
+          {
+            amount: finalTotalPrice * 100,
+            email: formData.email,
+            currency,
+            callback_url: `http://maysabeauty.store/payment-success?totalPrice=${finalTotalPrice}`,
           },
-        }
-      );
+          {
+            headers: {
+              Authorization: `Bearer ${SECRET_KEY}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
-      toast.success("Redirecting to payment...");
-      // clearCart();
-      window.location.href = res.data.data.authorization_url;
+        toast.success("Redirecting to payment...");
+        window.location.href = res.data.data.authorization_url;
+      }
     } catch (error) {
       console.error("Transaction error:", error);
       toast.error("Something went wrong. Please try again.");
@@ -131,6 +119,36 @@ const TransactionForm = () => {
   };
 
   useEffect(() => {
+    const fetchRates = async () => {
+      try {
+        const apiKey = "2734515914ff45c6fbadcca5";
+        const res = await axios.get(`https://v6.exchangerate-api.com/v6/${apiKey}/latest/USD`);
+
+        if (res.data.result === "success") {
+          const rates = res.data.conversion_rates;
+          setCurrencyConversionRates({
+            USD: rates.USD,
+            EUR: rates.EUR,
+            ILS: rates.ILS,
+          });
+        } else {
+          console.warn("Exchange API error or quota reached. Using default rates.");
+          setCurrencyConversionRates({
+            USD: 1,
+            EUR: 0.9,
+            ILS: 3.5,
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching currency rates. Using defaults.", error);
+        setCurrencyConversionRates({
+          USD: 1,
+          EUR: 0.9,
+          ILS: 3.5,
+        });
+      }
+    };
+
     const fetchCurrency = async () => {
       try {
         const res = await axios.get("https://api.lahza.io/config", {
@@ -140,9 +158,11 @@ const TransactionForm = () => {
         });
         if (res.data?.currency) setCurrency(res.data.currency);
       } catch (error) {
-        console.error("Error fetching currency", error);
+        console.error("Error fetching currency setting:", error);
       }
     };
+
+    fetchRates();
     fetchCurrency();
   }, []);
 
@@ -165,14 +185,13 @@ const TransactionForm = () => {
               <Input name="fullName" placeholder="Full Name" onChange={handleInputChange} />
               <Input name="email" placeholder="Email" onChange={handleInputChange} />
               <Input name="address" placeholder="Address" onChange={handleInputChange} />
-              <div className="flex gap-4">
-                <Input name="city" placeholder="City" className="w-1/2" onChange={handleInputChange} />
-                <Input name="zipCode" placeholder="Zip Code" className="w-1/2" onChange={handleInputChange} />
-              </div>
+              <Input name="city" placeholder="City" onChange={handleInputChange} />
               <Input name="country" placeholder="Country" onChange={handleInputChange} />
 
               <div className="mb-6">
-                <Label htmlFor="currency" className="text-gray-800 dark:text-gray-200 mb-2 block">Choose Currency</Label>
+                <Label htmlFor="currency" className="text-gray-800 dark:text-gray-200 mb-2 block">
+                  Choose Currency
+                </Label>
                 <select
                   id="currency"
                   value={currency}
@@ -180,13 +199,12 @@ const TransactionForm = () => {
                   className="w-full p-2 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100"
                 >
                   <option value="USD">USD ($)</option>
-                  {/* <option value="EUR">EUR (€)</option> */}
                   <option value="ILS">ILS (₪)</option>
                 </select>
               </div>
 
               <h2 className="text-xl font-semibold my-4 dark:text-white">Payment Method</h2>
-              {/* <RadioGroup value={paymentMethod} onValueChange={setPaymentMethod} className="space-y-4 mb-4">
+              <RadioGroup value={paymentMethod} onValueChange={setPaymentMethod} className="space-y-4 mb-4">
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="Cash on Delivery" id="cod" />
                   <Label htmlFor="cod" className="flex items-center gap-2 dark:text-gray-300">
@@ -199,7 +217,8 @@ const TransactionForm = () => {
                     <CreditCard className="w-5 h-5" /> <span>Credit/Debit Card</span>
                   </Label>
                 </div>
-              </RadioGroup> */}
+              </RadioGroup>
+
               <div className="mb-6">
                 <Label htmlFor="deliveryLocation" className="text-gray-800 dark:text-gray-200 mb-2 block">
                   Select Delivery Location
@@ -213,12 +232,10 @@ const TransactionForm = () => {
                   <option value="">-- Choose Location --</option>
                   <option value="الداخل">الداخل</option>
                   <option value="الضفة">الضفة</option>
-                  <option value="رام الله">رام الله</option>
+                  <option value="رام الله وسط البلد">رام الله وسط البلد</option>
                   <option value="القدس">القدس</option>
-                  <option value="تجربة">تجربة</option>
                 </select>
               </div>
-
 
               <ReCAPTCHA sitekey={RECAPTCHA_SITE_KEY} onChange={setRecaptchaValue} />
               <Button disabled={loading} onClick={handleProcess} className="w-full">
@@ -226,13 +243,16 @@ const TransactionForm = () => {
               </Button>
             </div>
           </div>
+
           <div className="w-full md:w-1/2 pl-4">
             <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-100">Order Summary</h2>
             <ul className="space-y-2 text-sm bg-gray-50 dark:bg-gray-700 p-4 rounded-lg shadow-lg">
               {cart.map((item, idx) => (
                 <li key={idx} className="flex justify-between">
                   <span className="text-gray-800 dark:text-gray-200">{item.name} × {item.quantity}</span>
-                  <span className="text-gray-600 dark:text-gray-300">{getCurrencySymbol(currency)}{(item.price * item.quantity * currencyConversionRates[currency]).toFixed(2)}</span>
+                  <span className="text-gray-600 dark:text-gray-300">
+                    {getCurrencySymbol(currency)}{(item.price * item.quantity * (currencyConversionRates[currency] / currencyConversionRates["ILS"])).toFixed(2)}
+                  </span>
                 </li>
               ))}
               <li className="flex justify-between font-semibold">
