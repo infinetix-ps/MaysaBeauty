@@ -170,12 +170,12 @@ const Header = () => {
                 onMouseEnter={() => setIsCategoryMenuOpen(true)}
                 onMouseLeave={() => setIsCategoryMenuOpen(false)}
               >
-                <button
+                {/* <button
                   className="flex items-center space-x-1 hover:text-pink-400 transition-colors focus:outline-none"
                 >
                   <span>Categories</span>
                   <ChevronDown className="h-4 w-4" />
-                </button>
+                </button> */}
 
                 {isCategoryMenuOpen && (
                   <div className="absolute top-full left-1/2 -translate-x-1/2 w-[800px] bg-white shadow-xl rounded-lg overflow-hidden border border-gray-200">
