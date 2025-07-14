@@ -4,7 +4,7 @@ const orderSchema = new Schema({
     userId: {
         type: Types.ObjectId,
         ref: 'User',
-        required: true,
+        required: false,
     },
     products: [{
         productId: {
@@ -36,14 +36,14 @@ const orderSchema = new Schema({
         type: String,
         required: true,
     },
-    phoneNumber: {
+    email: {
         type: String,
         required: true,
 
     },
     paymentType: {
         type: String,
-        enum: ['cash', 'cart'],
+        enum: ['cash', 'visa'],
         default: 'cash',
     },
     couponId:{
