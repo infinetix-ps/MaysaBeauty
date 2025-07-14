@@ -12,7 +12,7 @@
 
 // routes/orders.routes.js
 import express from 'express';
-import Order from ''../../../db/models/order.model.js'';
+import Order from '../../../db/models/order.model.js';
 
 const router = express.Router();
 
