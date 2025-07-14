@@ -133,7 +133,7 @@ const handleProcess = async () => {
     const orderPayload = {
       userId: null,
       products: cart.map((item) => ({
-        productId: item._id,
+        productId: item.id,
         quantity: item.quantity,
         unitPrice: item.price,
         finalPrice: item.price * item.quantity,
