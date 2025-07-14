@@ -10,20 +10,20 @@ const orderSchema = new Schema({
         productId: {
             type: Types.ObjectId,
             ref: 'Product',
-            required: true,
+            required: false,
         },
         quantity: {
             type: Number,
             default: 1,
-            required: true,
+            required: false,
         },
         unitPrice: {
             type: Number,
-            required: true,
+            required: false,
         },
         finalPrice: {
             type: Number,
-            required: true,
+            required: false,
 
         }
     }],
