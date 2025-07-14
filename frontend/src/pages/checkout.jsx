@@ -124,26 +124,31 @@ const handleProcess = async () => {
 
   setLoading(true);
 
+  sessionStorage.setItem("userEmail", formData.email);
+  sessionStorage.setItem("cart", JSON.stringify(cart));
+  sessionStorage.setItem("locationOption", locationOption);
+  sessionStorage.setItem("deliveryCost", convertedDeliveryCost.toString());
+
   try {
     const orderPayload = {
       userId: null,
-      products: cart.map(item => ({
+      products: cart.map((item) => ({
         productId: item._id,
         quantity: item.quantity,
         unitPrice: item.price,
-        finalPrice: item.price * item.quantity
+        finalPrice: item.price * item.quantity,
       })),
       finalPrice: finalTotalPrice,
       address: `${formData.address}, ${formData.city}, ${formData.country}`,
       email: formData.email,
       paymentType: paymentMethod === "Cash on Delivery" ? "cash" : "visa",
-      notes: "",
-      updatedBy: null
+      status: paymentMethod === "Cash on Delivery" ? "pending" : "confirmed",
+      updatedBy: null,
     };
 
-    await axios.post(`${process.env.REACT_APP_API_BASE_URL}/order`, orderPayload);
-
     if (paymentMethod === "Cash on Delivery") {
+      await axios.post(`${process.env.REACT_APP_API_BASE_URL}/order`, orderPayload);
+
       toast.success("Order placed successfully! Redirecting...");
       window.location.href = `/payment-success?totalPrice=${finalTotalPrice.toFixed(2)}&method=cod`;
     } else {
@@ -162,17 +167,21 @@ const handleProcess = async () => {
           },
         }
       );
+
+      // Store order data temporarily to create after success
+      sessionStorage.setItem("orderPayload", JSON.stringify(orderPayload));
+
       toast.success("Redirecting to payment...");
       window.location.href = res.data.data.authorization_url;
     }
-
   } catch (error) {
-    console.error("Error processing order:", error);
-    toast.error("Failed to process order.");
+    console.error("Transaction error:", error);
+    toast.error("Something went wrong. Please try again.");
   } finally {
     setLoading(false);
   }
 };
+
 
 
   useEffect(() => {
