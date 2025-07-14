@@ -72,51 +72,108 @@ const TransactionForm = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleProcess = async () => {
-    if (!recaptchaValue) return toast.error("Please complete the reCAPTCHA.");
-    if (Object.values(formData).some((field) => !field)) return toast.error("Please fill all fields.");
+  // const handleProcess = async () => {
+  //   if (!recaptchaValue) return toast.error("Please complete the reCAPTCHA.");
+  //   if (Object.values(formData).some((field) => !field)) return toast.error("Please fill all fields.");
 
-    setLoading(true);
+  //   setLoading(true);
 
-    // حفظ البيانات المهمة في sessionStorage
-    sessionStorage.setItem("userEmail", formData.email);
-    sessionStorage.setItem("cart", JSON.stringify(cart));
-    sessionStorage.setItem("locationOption", locationOption);
-    sessionStorage.setItem("deliveryCost", convertedDeliveryCost.toString());
+  //   // حفظ البيانات المهمة في sessionStorage
+  //   sessionStorage.setItem("userEmail", formData.email);
+  //   sessionStorage.setItem("cart", JSON.stringify(cart));
+  //   sessionStorage.setItem("locationOption", locationOption);
+  //   sessionStorage.setItem("deliveryCost", convertedDeliveryCost.toString());
 
-    try {
-      if (paymentMethod === "Cash on Delivery") {
-        // الدفع عند الاستلام: توجيه مباشر إلى صفحة الدفع الناجح
-        toast.success("Order placed successfully! Redirecting...");
-        window.location.href = `/payment-success?totalPrice=${finalTotalPrice.toFixed(2)}&method=cod`;
-      } else {
-        // الدفع ببطاقة الائتمان: تنفيذ طلب الدفع عبر API
-        const res = await axios.post(
-          "https://api.lahza.io/transaction/initialize",
-          {
-            amount: finalTotalPrice * 100,
-            email: formData.email,
-            currency,
-            callback_url: `http://maysabeauty.store/payment-success?totalPrice=${finalTotalPrice}`,
+  //   try {
+  //     if (paymentMethod === "Cash on Delivery") {
+  //       // الدفع عند الاستلام: توجيه مباشر إلى صفحة الدفع الناجح
+  //       toast.success("Order placed successfully! Redirecting...");
+  //       window.location.href = `/payment-success?totalPrice=${finalTotalPrice.toFixed(2)}&method=cod`;
+  //     } else {
+  //       // الدفع ببطاقة الائتمان: تنفيذ طلب الدفع عبر API
+  //       const res = await axios.post(
+  //         "https://api.lahza.io/transaction/initialize",
+  //         {
+  //           amount: finalTotalPrice * 100,
+  //           email: formData.email,
+  //           currency,
+  //           callback_url: `http://maysabeauty.store/payment-success?totalPrice=${finalTotalPrice}`,
+  //         },
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${SECRET_KEY}`,
+  //             "Content-Type": "application/json",
+  //           },
+  //         }
+  //       );
+
+  //       toast.success("Redirecting to payment...");
+  //       window.location.href = res.data.data.authorization_url;
+  //     }
+  //   } catch (error) {
+  //     console.error("Transaction error:", error);
+  //     toast.error("Something went wrong. Please try again.");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
+const handleProcess = async () => {
+  if (!recaptchaValue) return toast.error("Please complete the reCAPTCHA.");
+  if (Object.values(formData).some((field) => !field)) return toast.error("Please fill all fields.");
+
+  setLoading(true);
+
+  try {
+    const orderPayload = {
+      userId: null,
+      products: cart.map(item => ({
+        productId: item._id,
+        quantity: item.quantity,
+        unitPrice: item.price,
+        finalPrice: item.price * item.quantity
+      })),
+      finalPrice: finalTotalPrice,
+      address: `${formData.address}, ${formData.city}, ${formData.country}`,
+      email: formData.email,
+      paymentType: paymentMethod === "Cash on Delivery" ? "cash" : "visa",
+      notes: "",
+      updatedBy: null
+    };
+
+    await axios.post("http://localhost:5000/api/orders", orderPayload);
+
+    if (paymentMethod === "Cash on Delivery") {
+      toast.success("Order placed successfully! Redirecting...");
+      window.location.href = `/payment-success?totalPrice=${finalTotalPrice.toFixed(2)}&method=cod`;
+    } else {
+      const res = await axios.post(
+        "https://api.lahza.io/transaction/initialize",
+        {
+          amount: finalTotalPrice * 100,
+          email: formData.email,
+          currency,
+          callback_url: `http://maysabeauty.store/payment-success?totalPrice=${finalTotalPrice}`,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${SECRET_KEY}`,
+            "Content-Type": "application/json",
           },
-          {
-            headers: {
-              Authorization: `Bearer ${SECRET_KEY}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        toast.success("Redirecting to payment...");
-        window.location.href = res.data.data.authorization_url;
-      }
-    } catch (error) {
-      console.error("Transaction error:", error);
-      toast.error("Something went wrong. Please try again.");
-    } finally {
-      setLoading(false);
+        }
+      );
+      toast.success("Redirecting to payment...");
+      window.location.href = res.data.data.authorization_url;
     }
-  };
+
+  } catch (error) {
+    console.error("Error processing order:", error);
+    toast.error("Failed to process order.");
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   useEffect(() => {
     const fetchRates = async () => {
