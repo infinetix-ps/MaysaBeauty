@@ -141,7 +141,7 @@ const handleProcess = async () => {
       updatedBy: null
     };
 
-    await axios.post(`{process.env.REACT_APP_API_BASE_URL}/order`, orderPayload);
+    await axios.post(`${process.env.REACT_APP_API_BASE_URL}/order`, orderPayload);
 
     if (paymentMethod === "Cash on Delivery") {
       toast.success("Order placed successfully! Redirecting...");
