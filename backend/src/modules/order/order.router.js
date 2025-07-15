@@ -59,6 +59,26 @@ router.put('/:id', async (req, res) => {
   }
 });
 
+
+router.patch('/:id/status', async (req, res) => {
+  try {
+    const { status } = req.body;
+    if (!status) return res.status(400).json({ error: 'Status is required' });
+
+    const order = await Order.findByIdAndUpdate(
+      req.params.id,
+      { status },
+      { new: true }
+    );
+    if (!order) return res.status(404).json({ error: 'Order not found' });
+
+    res.json({ message: 'Status updated successfully', order });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
 // DELETE Order
 router.delete('/:id', async (req, res) => {
   try {
