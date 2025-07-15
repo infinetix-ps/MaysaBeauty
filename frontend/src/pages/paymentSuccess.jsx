@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Header from "../components/Header.jsx";
 import { CheckCircle } from "lucide-react";
@@ -9,29 +9,43 @@ import { useCart } from "./contexts/cartContext.jsx";
 const PaymentSuccess = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const emailSentRef = useRef(false); // Prevent sending email twice
+  const emailSentRef = useRef(false);
+  const { clearCart } = useCart();
+  const [orderId, setOrderId] = useState("N/A");
+  const [paymentType, setPaymentType] = useState("visa");
 
   // Extract query parameters
   const queryParams = new URLSearchParams(location.search);
+  const orderIdFromQuery = queryParams.get("orderId");
+  const totalPrice = queryParams.get("totalPrice");
+  const paymentTypeFromQuery = queryParams.get("paymentType");
   const trxref = queryParams.get("trxref");
   const reference = queryParams.get("reference");
-  const totalPrice = queryParams.get("totalPrice");
-  const { clearCart } = useCart();
+
+  // Set orderId and paymentType, fallback to sessionStorage or defaults
+  useEffect(() => {
+    setPaymentType(paymentTypeFromQuery || sessionStorage.getItem("paymentType") || "visa");
+
+    if (paymentTypeFromQuery === "cash") {
+      setOrderId(orderIdFromQuery || sessionStorage.getItem("orderId") || "N/A");
+    } else {
+      // For card payment, use trxref or reference or fallback
+      setOrderId(trxref || reference || sessionStorage.getItem("orderId") || "N/A");
+    }
+  }, [orderIdFromQuery, paymentTypeFromQuery, trxref, reference]);
 
   const paymentDetails = {
-    orderId: trxref || "ORD-" + Math.floor(100000 + Math.random() * 900000),
+    orderId,
     amount: totalPrice ? `${totalPrice} شيقل` : "N/A",
-    paymentMethod: "Credit/Debit Card",
-    cardType: "VISA",
-    cardExpiry: "",
-    cardNumber: "",
+    paymentMethod: paymentType === "cash" ? "الدفع عند الاستلام" : "بطاقة الائتمان",
+    cardType: paymentType === "cash" ? "-" : "VISA",
     paymentDate: new Date().toISOString(),
   };
 
-  // Send email once on component mount
+  // Send confirmation email once
   useEffect(() => {
     const sendSuccessEmail = async () => {
-      if (emailSentRef.current) return; // Prevent double sending
+      if (emailSentRef.current) return;
       emailSentRef.current = true;
 
       try {
@@ -53,11 +67,14 @@ const PaymentSuccess = () => {
 
         toast.success("✅ تم إرسال الفاتورة إلى بريدك الإلكتروني");
 
-        // Clear sessionStorage
+        // Clear sessionStorage keys used for order
         sessionStorage.removeItem("userEmail");
         sessionStorage.removeItem("cart");
         sessionStorage.removeItem("locationOption");
         sessionStorage.removeItem("deliveryCost");
+        sessionStorage.removeItem("orderId");
+        sessionStorage.removeItem("orderPayload");
+        sessionStorage.removeItem("paymentType");
 
         clearCart();
       } catch (error) {
@@ -67,7 +84,7 @@ const PaymentSuccess = () => {
     };
 
     sendSuccessEmail();
-  }, [totalPrice, clearCart]);
+  }, [totalPrice, clearCart, paymentDetails]);
 
   const handleContinueShopping = () => {
     navigate("/products");
@@ -96,6 +113,10 @@ const PaymentSuccess = () => {
             <div className="flex justify-between mb-2">
               <span className="text-gray-500">رقم الطلب:</span>
               <span className="font-medium">{paymentDetails.orderId}</span>
+            </div>
+            <div className="flex justify-between mb-2">
+              <span className="text-gray-500">طريقة الدفع:</span>
+              <span className="font-medium">{paymentDetails.paymentMethod}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-gray-500">المبلغ المدفوع:</span>
