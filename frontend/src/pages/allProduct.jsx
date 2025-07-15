@@ -170,7 +170,7 @@ const AllProductsPage = () => {
                 </Select>
             </div>
 
-            <div>
+{/*             <div>
                 <Label className="text-[#402e20] dark:text-white">Categories</Label>
                 <div className="grid gap-2 mt-2">
                     {categories.map((category) => (
@@ -189,7 +189,7 @@ const AllProductsPage = () => {
                         </div>
                     ))}
                 </div>
-            </div>
+            </div> */}
 
             <div>
                 <Label className="text-[#402e20] dark:text-white">Price Range</Label>
