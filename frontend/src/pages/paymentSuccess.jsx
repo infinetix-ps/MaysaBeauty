@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header.jsx";
 import { CheckCircle } from "lucide-react";
@@ -11,7 +11,7 @@ const PaymentSuccess = () => {
   const emailSentRef = useRef(false);
   const { clearCart } = useCart();
 
-  // Read from sessionStorage
+  // Load values from sessionStorage
   const orderId = sessionStorage.getItem("orderId") || "N/A";
   const paymentType = sessionStorage.getItem("paymentType") || "visa";
   const totalPrice = sessionStorage.getItem("finalTotalPrice") || "N/A";
@@ -19,12 +19,14 @@ const PaymentSuccess = () => {
   const paymentDetails = {
     orderId,
     amount: `${totalPrice} شيقل`,
-    paymentMethod: paymentType === "cash" ? "الدفع عند الاستلام" : "بطاقة الائتمان",
+paymentMethod: paymentType === "cash" 
+  ? "الدفع عند الاستلام" 
+  : "بطاقة ائتمان أو خصم",
     cardType: paymentType === "cash" ? "-" : "VISA",
     paymentDate: new Date().toISOString(),
   };
 
-  // Send confirmation email once
+  // Send confirmation email
   useEffect(() => {
     const sendSuccessEmail = async () => {
       if (emailSentRef.current) return;
@@ -49,14 +51,11 @@ const PaymentSuccess = () => {
 
         toast.success("✅ تم إرسال الفاتورة إلى بريدك الإلكتروني");
 
-        // Clear all relevant sessionStorage
+        // DO NOT remove orderId, paymentType, or finalTotalPrice
         sessionStorage.removeItem("userEmail");
         sessionStorage.removeItem("cart");
         sessionStorage.removeItem("locationOption");
         sessionStorage.removeItem("deliveryCost");
-        sessionStorage.removeItem("orderId");
-        sessionStorage.removeItem("paymentType");
-        sessionStorage.removeItem("finalTotalPrice");
 
         clearCart();
       } catch (error) {
@@ -68,18 +67,12 @@ const PaymentSuccess = () => {
     sendSuccessEmail();
   }, [clearCart, totalPrice, paymentDetails]);
 
-  const handleContinueShopping = () => {
-    navigate("/products");
-  };
-
-  const handleReturnHome = () => {
-    navigate("/");
-  };
+  const handleContinueShopping = () => navigate("/products");
+  const handleReturnHome = () => navigate("/");
 
   return (
     <div className="min-h-screen bg-white">
       <Header />
-
       <div className="max-w-md mx-auto px-6 py-12">
         <div className="bg-white rounded-lg shadow-md border border-gray-200 p-8 text-center">
           <div className="flex justify-center mb-6">
@@ -128,11 +121,9 @@ const PaymentSuccess = () => {
         :root {
           --primary: #B78283;
         }
-
         body {
           font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         }
-
         [dir="rtl"] {
           letter-spacing: 0;
           line-height: 1.8;
