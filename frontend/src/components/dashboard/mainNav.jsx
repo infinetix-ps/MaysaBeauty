@@ -8,7 +8,7 @@ export const MainNav = ({ className, ...props }) => {
     const navItems = [
         { title: "Overview", path: "/" },
         { title: "Products", path: "/productsDash" },
-        { title: "Orders", path: "/orders" },
+        { title: "Orders", path: "/ordersDash" },
         { title: "Customers", path: "/customers" },
         { title: "Analytics", path: "/analytics" },
     ]
