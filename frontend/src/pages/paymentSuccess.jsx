@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Header from "../components/Header.jsx";
 import { CheckCircle } from "lucide-react";
 import axios from "axios";
@@ -8,35 +8,17 @@ import { useCart } from "./contexts/cartContext.jsx";
 
 const PaymentSuccess = () => {
   const navigate = useNavigate();
-  const location = useLocation();
   const emailSentRef = useRef(false);
   const { clearCart } = useCart();
-  const [orderId, setOrderId] = useState("N/A");
-  const [paymentType, setPaymentType] = useState("visa");
 
-  // Extract query parameters
-  const queryParams = new URLSearchParams(location.search);
-  const orderIdFromQuery = queryParams.get("orderId");
-  const totalPrice = queryParams.get("totalPrice");
-  const paymentTypeFromQuery = queryParams.get("paymentType");
-  const trxref = queryParams.get("trxref");
-  const reference = queryParams.get("reference");
-
-  // Set orderId and paymentType, fallback to sessionStorage or defaults
-  useEffect(() => {
-    setPaymentType(paymentTypeFromQuery || sessionStorage.getItem("paymentType") || "visa");
-
-    if (paymentTypeFromQuery === "cash") {
-      setOrderId(orderIdFromQuery || sessionStorage.getItem("orderId") || "N/A");
-    } else {
-      // For card payment, use trxref or reference or fallback
-      setOrderId(trxref || reference || sessionStorage.getItem("orderId") || "N/A");
-    }
-  }, [orderIdFromQuery, paymentTypeFromQuery, trxref, reference]);
+  // Read from sessionStorage
+  const orderId = sessionStorage.getItem("orderId") || "N/A";
+  const paymentType = sessionStorage.getItem("paymentType") || "visa";
+  const totalPrice = sessionStorage.getItem("finalTotalPrice") || "N/A";
 
   const paymentDetails = {
     orderId,
-    amount: totalPrice ? `${totalPrice} شيقل` : "N/A",
+    amount: `${totalPrice} شيقل`,
     paymentMethod: paymentType === "cash" ? "الدفع عند الاستلام" : "بطاقة الائتمان",
     cardType: paymentType === "cash" ? "-" : "VISA",
     paymentDate: new Date().toISOString(),
@@ -67,14 +49,14 @@ const PaymentSuccess = () => {
 
         toast.success("✅ تم إرسال الفاتورة إلى بريدك الإلكتروني");
 
-        // Clear sessionStorage keys used for order
+        // Clear all relevant sessionStorage
         sessionStorage.removeItem("userEmail");
         sessionStorage.removeItem("cart");
         sessionStorage.removeItem("locationOption");
         sessionStorage.removeItem("deliveryCost");
         sessionStorage.removeItem("orderId");
-        sessionStorage.removeItem("orderPayload");
         sessionStorage.removeItem("paymentType");
+        sessionStorage.removeItem("finalTotalPrice");
 
         clearCart();
       } catch (error) {
@@ -84,7 +66,7 @@ const PaymentSuccess = () => {
     };
 
     sendSuccessEmail();
-  }, [totalPrice, clearCart, paymentDetails]);
+  }, [clearCart, totalPrice, paymentDetails]);
 
   const handleContinueShopping = () => {
     navigate("/products");
