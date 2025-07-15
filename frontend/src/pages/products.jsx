@@ -217,10 +217,10 @@ export default function ProductPage() {
                                     ₪ {product.price?.toFixed(2)}
                                 </motion.div>
 
-                                <div className="flex items-center space-x-2">
+{/*                                 <div className="flex items-center space-x-2">
                                     <StarRating rating={product.rating} />
                                     <span className="text-sm text-gray-600 dark:text-gray-400">({product.numReviews} reviews)</span>
-                                </div>
+                                </div> */}
 
                                 <motion.div
                                     initial={{ y: 20, opacity: 0 }}
