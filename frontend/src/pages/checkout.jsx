@@ -147,10 +147,15 @@ const handleProcess = async () => {
     };
 
     if (paymentMethod === "Cash on Delivery") {
-      await axios.post(`${process.env.REACT_APP_API_BASE_URL}/order`, orderPayload);
+      const res = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/order`, orderPayload);
+
+      // Save order id and payment type for success page
+      sessionStorage.setItem("orderId", res.data._id);
+      sessionStorage.setItem("paymentType", orderPayload.paymentType);
 
       toast.success("Order placed successfully! Redirecting...");
-      window.location.href = `/payment-success?totalPrice=${finalTotalPrice.toFixed(2)}&method=cod`;
+
+      window.location.href = `/payment-success?orderId=${res.data._id}&paymentType=${orderPayload.paymentType}&totalPrice=${finalTotalPrice.toFixed(2)}`;
     } else {
       const res = await axios.post(
         "https://api.lahza.io/transaction/initialize",
@@ -158,7 +163,7 @@ const handleProcess = async () => {
           amount: finalTotalPrice * 100,
           email: formData.email,
           currency,
-          callback_url: `http://maysabeauty.store/payment-success?totalPrice=${finalTotalPrice}`,
+          callback_url: `http://maysabeauty.store/payment-success?paymentType=visa&totalPrice=${finalTotalPrice.toFixed(2)}`,
         },
         {
           headers: {
@@ -168,8 +173,8 @@ const handleProcess = async () => {
         }
       );
 
-      // Store order data temporarily to create after success
       sessionStorage.setItem("orderPayload", JSON.stringify(orderPayload));
+      sessionStorage.setItem("paymentType", orderPayload.paymentType);
 
       toast.success("Redirecting to payment...");
       window.location.href = res.data.data.authorization_url;
