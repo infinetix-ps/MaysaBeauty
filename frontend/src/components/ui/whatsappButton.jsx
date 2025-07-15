@@ -2,7 +2,7 @@ import "./whatsappButton.css";
 
 const WhatsAppButton = () => {
   const handleClick = () => {
-    const phoneNumber = "+972599259881"; // Static phone number
+    const phoneNumber = "+972597259881"; // Static phone number
     const url = `https://wa.me/${phoneNumber}`;
     window.open(url, "_blank");
   };

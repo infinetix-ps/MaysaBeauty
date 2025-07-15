@@ -14,7 +14,7 @@ const IPhoneTemplate = ({ content }) => {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prevSlide) => (prevSlide + 1) % content.length)
-    }, 3000)
+    }, 5000)
 
     return () => clearInterval(timer)
   }, [content.length])
