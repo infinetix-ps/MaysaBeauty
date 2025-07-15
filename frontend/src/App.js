@@ -310,7 +310,7 @@ function App() {
       <Header />
       <DynamicHeader />
       <main>
-        {/* <ProductCategories /> */}
+        <ProductCategories />
         <IphonePage />
         <RoyalSlimHome />
         <ProductGrid products={products} />

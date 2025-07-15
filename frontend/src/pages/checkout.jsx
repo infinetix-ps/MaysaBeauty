@@ -26,6 +26,7 @@ const TransactionForm = () => {
     address: "",
     city: "",
     country: "",
+    phone: "",
   });
 
   const [currency, setCurrency] = useState("ILS"); // Default to Shekel
@@ -118,76 +119,77 @@ const TransactionForm = () => {
   //   }
   // };
 
-const handleProcess = async () => {
-  if (!recaptchaValue) return toast.error("Please complete the reCAPTCHA.");
-  if (Object.values(formData).some((field) => !field)) return toast.error("Please fill all fields.");
+  const handleProcess = async () => {
+    if (!recaptchaValue) return toast.error("Please complete the reCAPTCHA.");
+    if (Object.values(formData).some((field) => !field)) return toast.error("Please fill all fields.");
 
-  setLoading(true);
+    setLoading(true);
 
-  sessionStorage.setItem("userEmail", formData.email);
-  sessionStorage.setItem("cart", JSON.stringify(cart));
-  sessionStorage.setItem("locationOption", locationOption);
-  sessionStorage.setItem("deliveryCost", convertedDeliveryCost.toString());
+    sessionStorage.setItem("userEmail", formData.email);
+    sessionStorage.setItem("cart", JSON.stringify(cart));
+    sessionStorage.setItem("locationOption", locationOption);
+    sessionStorage.setItem("deliveryCost", convertedDeliveryCost.toString());
 
-  try {
-    const orderPayload = {
-      userId: null,
-      products: cart.map((item) => ({
-        productId: item.id,
-        quantity: item.quantity,
-        unitPrice: item.price,
-        finalPrice: item.price * item.quantity,
-      })),
-      finalPrice: finalTotalPrice,
-      address: `${formData.address}, ${formData.city}, ${formData.country}`,
-      email: formData.email,
-      paymentType: paymentMethod === "Cash on Delivery" ? "cash" : "visa",
-      status: paymentMethod === "Cash on Delivery" ? "pending" : "confirmed",
-      updatedBy: null,
-    };
+    try {
+      const orderPayload = {
+        userId: null,
+        products: cart.map((item) => ({
+          productId: item.id,
+          quantity: item.quantity,
+          unitPrice: item.price,
+          finalPrice: item.price * item.quantity,
+        })),
+        finalPrice: finalTotalPrice,
+        address: `${formData.address}, ${formData.city}, ${formData.country}`,
+        email: formData.email,
+        phone: formData.phone,
+        paymentType: paymentMethod === "Cash on Delivery" ? "cash" : "visa",
+        status: paymentMethod === "Cash on Delivery" ? "pending" : "confirmed",
+        updatedBy: null,
+      };
 
-    if (paymentMethod === "Cash on Delivery") {
-      const res = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/order`, orderPayload);
+      if (paymentMethod === "Cash on Delivery") {
+        const res = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/order`, orderPayload);
 
-      // Save order id and payment type for success page
-      sessionStorage.setItem("orderId", res.data._id);
-      sessionStorage.setItem("paymentType", orderPayload.paymentType);
-      sessionStorage.setItem("finalTotalPrice", finalTotalPrice.toFixed(2));
+        // Save order id and payment type for success page
+        sessionStorage.setItem("orderId", res.data._id);
+        sessionStorage.setItem("paymentType", orderPayload.paymentType);
+        sessionStorage.setItem("finalTotalPrice", finalTotalPrice.toFixed(2));
 
-      toast.success("Order placed successfully! Redirecting...");
+        toast.success("Order placed successfully! Redirecting...");
 
-      window.location.href = `/payment-success?orderId=${res.data._id}&paymentType=${orderPayload.paymentType}&totalPrice=${finalTotalPrice.toFixed(2)}`;
-    } else {
-      const res = await axios.post(
-        "https://api.lahza.io/transaction/initialize",
-        {
-          amount: finalTotalPrice * 100,
-          email: formData.email,
-          currency,
-          callback_url: `http://maysabeauty.store/payment-success?paymentType=visa&totalPrice=${finalTotalPrice.toFixed(2)}`,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${SECRET_KEY}`,
-            "Content-Type": "application/json",
+        window.location.href = `/payment-success?orderId=${res.data._id}&paymentType=${orderPayload.paymentType}&totalPrice=${finalTotalPrice.toFixed(2)}`;
+      } else {
+        const res = await axios.post(
+          "https://api.lahza.io/transaction/initialize",
+          {
+            amount: finalTotalPrice * 100,
+            email: formData.email,
+            currency,
+            callback_url: `http://maysabeauty.store/payment-success?paymentType=visa&totalPrice=${finalTotalPrice.toFixed(2)}`,
           },
-        }
-      );
+          {
+            headers: {
+              Authorization: `Bearer ${SECRET_KEY}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
-      sessionStorage.setItem("orderPayload", JSON.stringify(orderPayload));
-      sessionStorage.setItem("paymentType", orderPayload.paymentType);
-      sessionStorage.setItem("finalTotalPrice", finalTotalPrice.toFixed(2));
+        sessionStorage.setItem("orderPayload", JSON.stringify(orderPayload));
+        sessionStorage.setItem("paymentType", orderPayload.paymentType);
+        sessionStorage.setItem("finalTotalPrice", finalTotalPrice.toFixed(2));
 
-      toast.success("Redirecting to payment...");
-      window.location.href = res.data.data.authorization_url;
+        toast.success("Redirecting to payment...");
+        window.location.href = res.data.data.authorization_url;
+      }
+    } catch (error) {
+      console.error("Transaction error:", error);
+      toast.error("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
     }
-  } catch (error) {
-    console.error("Transaction error:", error);
-    toast.error("Something went wrong. Please try again.");
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
 
 
@@ -257,6 +259,7 @@ const handleProcess = async () => {
             <div className="space-y-4">
               <Input name="fullName" placeholder="Full Name" onChange={handleInputChange} />
               <Input name="email" placeholder="Email" onChange={handleInputChange} />
+              <Input name="phone" placeholder="Phone Number" onChange={handleInputChange} />
               <Input name="address" placeholder="Address" onChange={handleInputChange} />
               <Input name="city" placeholder="City" onChange={handleInputChange} />
               <Input name="country" placeholder="Country" onChange={handleInputChange} />

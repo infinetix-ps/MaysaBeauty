@@ -4,6 +4,8 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const announcements = [
     {
+        image:
+            "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?ixlib=rb-4.0.3&auto=format&fit=crop&w=2035&q=80",
         id: 1,
         title: "Welcome to Maysa Beauty Brands",
         description: "An online store for slimming, fattening, and skin care products",
