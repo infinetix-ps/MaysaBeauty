@@ -88,7 +88,7 @@ const OrderDetails = ({ order, open, onOpenChange, onStatusChange }) => {
               />
             </p>
             <p>
-              <span className="font-semibold">Total Price:</span> ${order.finalPrice.toFixed(2)}
+              <span className="font-semibold">Total Price:</span> ₪ {order.finalPrice.toFixed(2)}
             </p>
           </div>
         </div>
@@ -115,8 +115,8 @@ const OrderDetails = ({ order, open, onOpenChange, onStatusChange }) => {
                 <div>
                   <p className="font-semibold">{item.productId?.name || "Unknown product"}</p>
                   <p>Quantity: {item.quantity}</p>
-                  <p>Unit Price: ${item.unitPrice}</p>
-                  <p>Final Price: ${item.finalPrice}</p>
+                  <p>Unit Price: ₪ {item.unitPrice}</p>
+                  <p>Final Price: ₪ {item.finalPrice}</p>
                 </div>
               </div>
             ))}
