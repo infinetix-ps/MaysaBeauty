@@ -77,7 +77,7 @@ const initApp = (app, express) => {
             <td style="padding: 10px;"><img src="${item.image}" alt="${item.name}" style="width: 60px; border-radius: 8px;" /></td>
             <td style="padding: 10px;">${item.name}</td>
             <td style="padding: 10px;">${item.quantity}</td>
-            <td style="padding: 10px;">$${item.price}</td>
+            <td style="padding: 10px;">₪ ${item.price}</td>
         </tr>
     `).join('');
 
@@ -114,7 +114,7 @@ const initApp = (app, express) => {
                 </tbody>
             </table>
 
-            <h3 style="text-align: right; margin-top: 20px;">Total: <span style="color: #4CAF50;">$${totalPrice}</span></h3>
+            <h3 style="text-align: right; margin-top: 20px;">Total: <span style="color: #4CAF50;">₪ ${totalPrice}</span></h3>
 
             <h4 style="margin-top: 20px;">Payment Details</h4>
             <p><strong>Date:</strong> ${formattedDate}</p>
