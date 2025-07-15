@@ -181,23 +181,42 @@ const OrdersPage = () => {
   }, [localStatuses])
 
   // Handle status change (local state + localStorage)
-  const handleStatusChange = (orderId, newStatus) => {
+const handleStatusChange = async (orderId, newStatus) => {
+  try {
+    // Send PATCH request to backend
+    await axios.patch(`https://api.maysabeauty.store/order/${orderId}/status`, {
+      status: newStatus,
+    });
+
+    // Update UI
     setOrders((prev) =>
       prev.map((order) =>
-        order.id === orderId ? { ...order, status: newStatus, raw: { ...order.raw, status: newStatus } } : order
+        order.id === orderId
+          ? {
+              ...order,
+              status: newStatus,
+              raw: { ...order.raw, status: newStatus },
+            }
+          : order
       )
-    )
+    );
 
     if (selectedOrder && selectedOrder._id === orderId) {
-      setSelectedOrder((prev) => ({ ...prev, status: newStatus }))
+      setSelectedOrder((prev) => ({ ...prev, status: newStatus }));
     }
 
+    // Save to localStorage
     setLocalStatuses((prev) => {
-      const updated = { ...prev, [orderId]: newStatus }
-      localStorage.setItem("orderStatuses", JSON.stringify(updated))
-      return updated
-    })
+      const updated = { ...prev, [orderId]: newStatus };
+      localStorage.setItem('orderStatuses', JSON.stringify(updated));
+      return updated;
+    });
+  } catch (err) {
+    console.error('Failed to update order status:', err);
+    alert('Failed to update status. Please try again.');
   }
+};
+
 
   const handleViewDetails = (order) => {
     if (order.raw) {
