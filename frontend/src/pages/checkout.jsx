@@ -152,6 +152,7 @@ const handleProcess = async () => {
       // Save order id and payment type for success page
       sessionStorage.setItem("orderId", res.data._id);
       sessionStorage.setItem("paymentType", orderPayload.paymentType);
+      sessionStorage.setItem("finalTotalPrice", finalTotalPrice.toFixed(2));
 
       toast.success("Order placed successfully! Redirecting...");
 
@@ -175,6 +176,7 @@ const handleProcess = async () => {
 
       sessionStorage.setItem("orderPayload", JSON.stringify(orderPayload));
       sessionStorage.setItem("paymentType", orderPayload.paymentType);
+      sessionStorage.setItem("finalTotalPrice", finalTotalPrice.toFixed(2));
 
       toast.success("Redirecting to payment...");
       window.location.href = res.data.data.authorization_url;
