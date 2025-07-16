@@ -1,4 +1,3 @@
-"use client"
 
 import { motion } from "framer-motion"
 import { useEffect, useState, useRef } from "react"
@@ -69,13 +68,13 @@ const fallbackCategories = [
     description: "تقنيات حديثة لإشراق طبيعي",
     icon: Sparkles,
     badge: "جديد",
-    image: "https://images.unsplash.com/photo-1556228720-195a672e8a03?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+    image: "/images/maysa1.jpg",
     glowColor: "shadow-[#d4a5a5]/20",
     particles: ["🌸", "💫", "🌺"],
   },
   {
-    name: "منتجات الأطفال",
-    subtitle: "عناية آمنة ولطيفة للصغار",
+    name: "منتجات الجسم",
+    subtitle: "عناية آمنة ولطيفة للجسم",
     description: "منتجات طبيعية 100% للأطفال",
     icon: Baby,
     badge: "آمن",
@@ -134,11 +133,11 @@ const enhanceCategoryData = (apiCategories) => {
     const getImageForCategory = (name) => {
       const lowerName = name.toLowerCase()
       if (lowerName.includes("شعر") || lowerName.includes("hair")) {
-        return "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+        return "/images/maysa2.jpg";
       } else if (lowerName.includes("بشرة") || lowerName.includes("skin")) {
-        return "https://images.unsplash.com/photo-1556228720-195a672e8a03?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
-      } else if (lowerName.includes("أطفال") || lowerName.includes("baby") || lowerName.includes("kids")) {
-        return "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+        return "/images/maysa1.jpg";
+      } else if (lowerName.includes("جسم") || lowerName.includes("body") || lowerName.includes("care")) {
+        return "/images/maysa3.jpg";
       } else if (lowerName.includes("رويال") || lowerName.includes("وزن") || lowerName.includes("weight")) {
         return "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
       }
@@ -172,6 +171,14 @@ const ProductCategories = () => {
   const containerRef = useRef(null)
   const navigate = useNavigate()
 
+  const desiredCategoryNames = [
+    "رويال",
+    "منتجات البشرة",
+    "منتجات الجسم",
+    "منتجات الشعر",
+  ]
+
+
   // Fetch categories from the API
   useEffect(() => {
     const fetchCategories = async () => {
@@ -181,17 +188,27 @@ const ProductCategories = () => {
         const data = await response.json()
 
         if (data.message === "success" && data.categorise) {
-          const enhancedCategories = enhanceCategoryData(data.categorise)
-          setCategories(enhancedCategories)
+          // Filter to only show desired categories by name
+          const filtered = data.categorise.filter(cat =>
+            desiredCategoryNames.includes(cat.name)
+          )
+
+          // Enhance filtered categories
+          const enhancedCategories = enhanceCategoryData(filtered)
+
+          // Keep order consistent with fallback
+          const orderedCategories = desiredCategoryNames
+            .map(name => enhancedCategories.find(cat => cat.name === name))
+            .filter(Boolean) // remove undefined results
+
+
+          setCategories(orderedCategories)
         } else {
-          // Use fallback categories if API fails
-          console.warn("API response not successful, using fallback categories")
           setCategories(fallbackCategories)
         }
       } catch (error) {
         console.error("Error fetching categories:", error)
         setError("فشل في تحميل الفئات")
-        // Use fallback categories on error
         setCategories(fallbackCategories)
       } finally {
         setLoading(false)
@@ -200,6 +217,9 @@ const ProductCategories = () => {
 
     fetchCategories()
   }, [])
+
+
+
 
   // Mouse tracking for magnetic effect
   useEffect(() => {
@@ -557,7 +577,7 @@ const ProductCategories = () => {
             })}
           </div>
 
-          
+
         </div>
       </section>
     </div>

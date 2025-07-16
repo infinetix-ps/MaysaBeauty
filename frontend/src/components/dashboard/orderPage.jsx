@@ -69,6 +69,9 @@ const OrderDetails = ({ order, open, onOpenChange, onStatusChange }) => {
               <span className="font-semibold">Email:</span> {order.email || "Guest"}
             </p>
             <p>
+              <span className="font-semibold">Phone:</span> {order.phone || "N/A"}
+            </p>
+            <p>
               <span className="font-semibold">Address:</span> {order.address}
             </p>
             <p>
@@ -181,41 +184,41 @@ const OrdersPage = () => {
   }, [localStatuses])
 
   // Handle status change (local state + localStorage)
-const handleStatusChange = async (orderId, newStatus) => {
-  try {
-    // Send PATCH request to backend
-    await axios.patch(`https://api.maysabeauty.store/order/${orderId}/status`, {
-      status: newStatus,
-    });
+  const handleStatusChange = async (orderId, newStatus) => {
+    try {
+      // Send PATCH request to backend
+      await axios.patch(`https://api.maysabeauty.store/order/${orderId}/status`, {
+        status: newStatus,
+      });
 
-    // Update UI
-    setOrders((prev) =>
-      prev.map((order) =>
-        order.id === orderId
-          ? {
+      // Update UI
+      setOrders((prev) =>
+        prev.map((order) =>
+          order.id === orderId
+            ? {
               ...order,
               status: newStatus,
               raw: { ...order.raw, status: newStatus },
             }
-          : order
-      )
-    );
+            : order
+        )
+      );
 
-    if (selectedOrder && selectedOrder._id === orderId) {
-      setSelectedOrder((prev) => ({ ...prev, status: newStatus }));
+      if (selectedOrder && selectedOrder._id === orderId) {
+        setSelectedOrder((prev) => ({ ...prev, status: newStatus }));
+      }
+
+      // Save to localStorage
+      setLocalStatuses((prev) => {
+        const updated = { ...prev, [orderId]: newStatus };
+        localStorage.setItem('orderStatuses', JSON.stringify(updated));
+        return updated;
+      });
+    } catch (err) {
+      console.error('Failed to update order status:', err);
+      alert('Failed to update status. Please try again.');
     }
-
-    // Save to localStorage
-    setLocalStatuses((prev) => {
-      const updated = { ...prev, [orderId]: newStatus };
-      localStorage.setItem('orderStatuses', JSON.stringify(updated));
-      return updated;
-    });
-  } catch (err) {
-    console.error('Failed to update order status:', err);
-    alert('Failed to update status. Please try again.');
-  }
-};
+  };
 
 
   const handleViewDetails = (order) => {
@@ -302,8 +305,8 @@ const handleStatusChange = async (orderId, newStatus) => {
                     filters.dateRange.from ||
                     filters.priceRange.min ||
                     filters.priceRange.max) && (
-                    <span className="absolute -top-1 -right-1 h-3 w-3 rounded-full bg-black" />
-                  )}
+                      <span className="absolute -top-1 -right-1 h-3 w-3 rounded-full bg-black" />
+                    )}
                 </Button>
               </PopoverTrigger>
 

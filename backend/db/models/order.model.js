@@ -1,77 +1,79 @@
-import { Schema, Types, model } from 'mongoose';
+import { Schema, Types, model } from "mongoose";
 
-const orderSchema = new Schema({
+const orderSchema = new Schema(
+  {
     userId: {
-        type: Types.ObjectId,
-        ref: 'User',
-        required: false,
+      type: Types.ObjectId,
+      ref: "User",
+      required: false,
     },
-    products: [{
+    products: [
+      {
         productId: {
-            type: Types.ObjectId,
-            ref: 'Product',
-            required: false,
+          type: Types.ObjectId,
+          ref: "Product",
+          required: false,
         },
         quantity: {
-            type: Number,
-            default: 1,
-            required: false,
+          type: Number,
+          default: 1,
+          required: false,
         },
         unitPrice: {
-            type: Number,
-            required: false,
+          type: Number,
+          required: false,
         },
         finalPrice: {
-            type: Number,
-            required: false,
-
-        }
-    }],
+          type: Number,
+          required: false,
+        },
+      },
+    ],
     finalPrice: {
-        type: Number,
-        required: true,
-
+      type: Number,
+      required: true,
     },
     address: {
-        type: String,
-        required: true,
+      type: String,
+      required: true,
     },
     email: {
-        type: String,
-        required: true,
-
+      type: String,
+      required: true,
+    },
+    phone: {
+      type: String,
+      required: true,
     },
     paymentType: {
-        type: String,
-        enum: ['cash', 'visa'],
-        default: 'cash',
+      type: String,
+      enum: ["cash", "visa"],
+      default: "cash",
     },
-    couponId:{
-        type:Types.ObjectId,
-        ref:'Coupon',
+    couponId: {
+      type: Types.ObjectId,
+      ref: "Coupon",
     },
     status: {
-        type: String,
-        default: 'pending',
+      type: String,
+      default: "pending",
     },
     notes: {
-        type: String
+      type: String,
     },
     rejectedReason: {
-        type: String
+      type: String,
     },
     updatedBy: {
-        type: Types.ObjectId,
-        ref: 'User',
-        required: false,
-    }
+      type: Types.ObjectId,
+      ref: "User",
+      required: false,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
 
-},
-    {
-        timestamps: true,
-
-    });
-
-
-const orderModel = model('Order', orderSchema);
+const orderModel = model("Order", orderSchema);
 export default orderModel;
