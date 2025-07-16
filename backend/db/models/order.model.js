@@ -41,6 +41,10 @@ const orderSchema = new Schema({
         required: true,
 
     },
+    phone : {
+        type: String,
+        required: true,
+    }
     paymentType: {
         type: String,
         enum: ['cash', 'visa'],
