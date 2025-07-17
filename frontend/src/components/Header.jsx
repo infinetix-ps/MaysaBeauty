@@ -155,14 +155,14 @@ const Header = () => {
                 to="/"
                 className="hover:text-pink-400 transition-colors relative group"
               >
-                Home
+                الرئيسية
               </Link>
 
               <Link
                 to="/products"
                 className="hover:text-pink-400 transition-colors relative group"
               >
-                All Products
+                جميع المنتجات
               </Link>
 
               <div

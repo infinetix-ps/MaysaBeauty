@@ -254,19 +254,18 @@ const TransactionForm = () => {
         >
           <div className="w-full md:w-1/2 pr-4">
             <h1 className="text-3xl font-semibold mb-6 text-center text-gray-800 dark:text-gray-100">
-              Complete Your Purchase
+              أكمال عملية الشراء
             </h1>
             <div className="space-y-4">
-              <Input name="fullName" placeholder="Full Name" onChange={handleInputChange} />
-              <Input name="email" placeholder="Email" onChange={handleInputChange} />
-              <Input name="phone" placeholder="Phone Number" onChange={handleInputChange} />
-              <Input name="address" placeholder="Address" onChange={handleInputChange} />
-              <Input name="city" placeholder="City" onChange={handleInputChange} />
-              <Input name="country" placeholder="Country" onChange={handleInputChange} />
+              <Input name="fullName" placeholder="الاسم كامل" onChange={handleInputChange} />
+              <Input name="email" placeholder="البريد الالكتروني" onChange={handleInputChange} />
+              <Input name="phone" placeholder="رقم الهاتف" onChange={handleInputChange} />
+              <Input name="city" placeholder="المدينة" onChange={handleInputChange} />
+              <Input name="country" placeholder="العنوان" onChange={handleInputChange} />
 
               <div className="mb-6">
                 <Label htmlFor="currency" className="text-gray-800 dark:text-gray-200 mb-2 block">
-                  Choose Currency
+                  اختيار العملة
                 </Label>
                 <select
                   id="currency"
@@ -279,25 +278,25 @@ const TransactionForm = () => {
                 </select>
               </div>
 
-              <h2 className="text-xl font-semibold my-4 dark:text-white">Payment Method</h2>
+              <h2 className="text-xl font-semibold my-4 dark:text-white">طريقة الدفع</h2>
               <RadioGroup value={paymentMethod} onValueChange={setPaymentMethod} className="space-y-4 mb-4">
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="Cash on Delivery" id="cod" />
                   <Label htmlFor="cod" className="flex items-center gap-2 dark:text-gray-300">
-                    <Truck className="w-5 h-5" /> <span>Cash on Delivery</span>
+                    <Truck className="w-5 h-5" /> <span>الدفع عند الاستلام</span>
                   </Label>
                 </div>
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="Credit/Debit Card" id="card" />
                   <Label htmlFor="card" className="flex items-center gap-2 dark:text-gray-300">
-                    <CreditCard className="w-5 h-5" /> <span>Credit/Debit Card</span>
+                    <CreditCard className="w-5 h-5" /> <span>الدفع عبر بطاقة الائتمان</span>
                   </Label>
                 </div>
               </RadioGroup>
 
               <div className="mb-6">
                 <Label htmlFor="deliveryLocation" className="text-gray-800 dark:text-gray-200 mb-2 block">
-                  Select Delivery Location
+                  أختيار موقع التوصيل
                 </Label>
                 <select
                   id="deliveryLocation"
@@ -305,7 +304,7 @@ const TransactionForm = () => {
                   onChange={(e) => setLocationOption(e.target.value)}
                   className="w-full p-2 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100"
                 >
-                  <option value="">-- Choose Location --</option>
+                  <option value="">--  الموقع الحالي --</option>
                   <option value="الداخل">الداخل</option>
                   <option value="الضفة">الضفة</option>
                   <option value="رام الله وسط البلد">رام الله وسط البلد</option>
@@ -321,7 +320,7 @@ const TransactionForm = () => {
           </div>
 
           <div className="w-full md:w-1/2 pl-4">
-            <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-100">Order Summary</h2>
+            <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-100">ملخص الطلب</h2>
             <ul className="space-y-2 text-sm bg-gray-50 dark:bg-gray-700 p-4 rounded-lg shadow-lg">
               {cart.map((item, idx) => (
                 <li key={idx} className="flex justify-between">
@@ -332,13 +331,13 @@ const TransactionForm = () => {
                 </li>
               ))}
               <li className="flex justify-between font-semibold">
-                <span className="text-gray-800 dark:text-gray-200">Delivery Fee</span>
+                <span className="text-gray-800 dark:text-gray-200">رسوم التوصيل</span>
                 <span className="text-gray-600 dark:text-gray-300">
                   {getCurrencySymbol(currency)}{convertedDeliveryCost.toFixed(2)}
                 </span>
               </li>
               <li className="flex justify-between font-semibold text-lg">
-                <span className="text-gray-800 dark:text-gray-200">Total</span>
+                <span className="text-gray-800 dark:text-gray-200">المجموع</span>
                 <span className="text-gray-600 dark:text-gray-300">
                   {getCurrencySymbol(currency)}{finalTotalPrice.toFixed(2)}
                 </span>
